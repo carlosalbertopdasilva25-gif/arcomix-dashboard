@@ -371,6 +371,7 @@
    CONFIG
 ========================================== */
 const SHEETS_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT2kJGzytbQ6-WZs1fEsaD7AoCmkNkuWC626i0DU2MkY7Xixyhz3cpEfbGpIs0ZHVXHa7-Z_0IzFVud/pub?gid=1712919962&single=true&output=csv';
+const SHEETS_PROXY = 'https://cors.isomorphic-git.org/';
 
 /* ==========================================
    DEMO
@@ -571,7 +572,62 @@ function setStatus(txt,color){
   document.getElementById('statusDot').className='dot dot-'+color;
 }
 
-/* ==============================
+/* ==========================================
+   FETCH COM FALLBACK
+========================================== */
+async function fetchTextWithFallback(url){
+  // Tentativa 1: direto
+  try{
+    const res=await fetch(url,{
+      method:'GET',
+      cache:'no-store',
+      mode:'cors'
+    });
+
+    if(!res.ok){
+      throw new Error(`HTTP ${res.status}`);
+    }
+
+    const text=await res.text();
+    if(!text || text.trim().length<20){
+      throw new Error('CSV vazio');
+    }
+
+    const lower=text.toLowerCase();
+    if(lower.includes('<html') || lower.includes('<!doctype html')){
+      throw new Error('Resposta HTML em vez de CSV');
+    }
+
+    return text;
+  }catch(err1){
+    console.warn('Fetch direto falhou:', err1);
+
+    // Tentativa 2: proxy
+    const proxyUrl=SHEETS_PROXY+url;
+    const res2=await fetch(proxyUrl,{
+      method:'GET',
+      cache:'no-store'
+    });
+
+    if(!res2.ok){
+      throw new Error(`Proxy HTTP ${res2.status}`);
+    }
+
+    const text2=await res2.text();
+    if(!text2 || text2.trim().length<20){
+      throw new Error('CSV vazio via proxy');
+    }
+
+    const lower2=text2.toLowerCase();
+    if(lower2.includes('<html') || lower2.includes('<!doctype html')){
+      throw new Error('Resposta HTML via proxy');
+    }
+
+    return text2;
+  }
+}
+
+/* ==========================================
    CSV
 ============================== */
 function splitCsvLine(line){
@@ -596,7 +652,7 @@ function parseCSV(csvText){
   return parseRowsRobusto(rows);
 }
 
-/* ==============================
+/* ==========================================
    WORKBOOK
 ============================== */
 function chooseBestSheet(workbook){
@@ -631,7 +687,7 @@ function parseExcelWorkbook(workbook){
   return parseRowsRobusto(chosen.rows);
 }
 
-/* ==============================
+/* ==========================================
    PARSER ROBUSTO
 ============================== */
 function parseRowsRobusto(rows){
@@ -755,12 +811,6 @@ function parsePeso(rows){
   const dataRowIx=findNextNumericRow(rows,idx+1,4,5);
   const dataRow=dataRowIx!==-1?rows[dataRowIx]:[];
 
-  console.log('=== parsePeso ===');
-  console.log('idx bloco kg:', idx);
-  console.log('subHeaderRow:', subHeaderRow);
-  console.log('dataRowIx:', dataRowIx);
-  console.log('dataRow:', dataRow);
-
   const normHeader=(subHeaderRow||[]).map(c=>normalizeText(c));
 
   let dK_auto=toNum(dataRow[0]);
@@ -801,7 +851,6 @@ function parsePeso(rows){
     }
   }
 
-  console.log('Peso final:',{dK_auto,dK_dig,dK_tot,pK_tot,pK_dig,pK_auto});
   return {dK_auto,dK_dig,dK_tot,pK_tot,pK_dig,pK_auto};
 }
 
@@ -897,26 +946,13 @@ async function loadFromSheets(){
 
   try{
     const url = SHEETS_CSV + '&cacheBust=' + Date.now();
+    let text='';
 
-    const res = await fetch(url,{
-      method:'GET',
-      cache:'no-store',
-      mode:'cors'
-    });
-
-    if(!res.ok){
-      throw new Error(`HTTP ${res.status}`);
-    }
-
-    const text = await res.text();
-
-    if(!text || text.trim().length < 20){
-      throw new Error('CSV vazio');
-    }
-
-    const lower = text.toLowerCase();
-    if(lower.includes('<html') || lower.includes('<!doctype html')){
-      throw new Error('Resposta HTML em vez de CSV');
+    try{
+      text = await fetchTextWithFallback(url);
+    }catch(fetchErr){
+      console.warn('Sheets fetch falhou, tentando fallback demo:', fetchErr);
+      throw fetchErr;
     }
 
     const upper = text.toUpperCase();
@@ -928,9 +964,6 @@ async function loadFromSheets(){
     ){
       throw new Error('Conteúdo do CSV não reconhecido');
     }
-
-    console.log('=== CSV RECEBIDO ===');
-    console.log(text.substring(0,1500));
 
     const parsed = parseCSV(text);
 
@@ -961,6 +994,59 @@ async function loadFromSheets(){
     renderAll();
   }finally{
     hideOverlay();
+  }
+}
+
+/* ==============================
+   FETCH COM FALLBACK
+============================== */
+async function fetchTextWithFallback(url){
+  try{
+    const res = await fetch(url,{
+      method:'GET',
+      cache:'no-store',
+      mode:'cors'
+    });
+
+    if(!res.ok){
+      throw new Error(`HTTP ${res.status}`);
+    }
+
+    const text = await res.text();
+    if(!text || text.trim().length<20){
+      throw new Error('CSV vazio');
+    }
+
+    const lower = text.toLowerCase();
+    if(lower.includes('<html') || lower.includes('<!doctype html')){
+      throw new Error('Resposta HTML em vez de CSV');
+    }
+
+    return text;
+  }catch(err1){
+    console.warn('Fetch direto falhou:', err1);
+
+    const proxyUrl = SHEETS_PROXY + url;
+    const res2 = await fetch(proxyUrl,{
+      method:'GET',
+      cache:'no-store'
+    });
+
+    if(!res2.ok){
+      throw new Error(`Proxy HTTP ${res2.status}`);
+    }
+
+    const text2 = await res2.text();
+    if(!text2 || text2.trim().length<20){
+      throw new Error('CSV vazio via proxy');
+    }
+
+    const lower2 = text2.toLowerCase();
+    if(lower2.includes('<html') || lower2.includes('<!doctype html')){
+      throw new Error('Resposta HTML via proxy');
+    }
+
+    return text2;
   }
 }
 
