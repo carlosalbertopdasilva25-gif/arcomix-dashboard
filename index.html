@@ -1,19 +1,4 @@
-
-                        <!DOCTYPE html>
-                        <html lang="en">
-                        <head>
-                            <meta charset="UTF-8">
-                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-							<style>
-								body {
-									background-color: white; /* Ensure the iframe has a white background */
-								}
-
-								
-							</style>
-                        </head>
-                        <body>
-                            <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -34,8 +19,6 @@
         html{scroll-behavior:smooth}
         body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
             background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
-
-        /* HEADER */
         .header{background:linear-gradient(135deg,var(--red-dark) 0%,var(--red) 40%,#b71c1c 100%);
             padding:12px 20px 16px;position:sticky;top:0;z-index:100;
             box-shadow:0 4px 20px rgba(180,0,0,.35)}
@@ -71,15 +54,12 @@
         .file-status{color:rgba(255,255,255,.6);font-size:10px}
         .sheets-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;
             border-radius:20px;font-size:10px;font-weight:700;
-            background:rgba(255,255,255,.15);color:#fff;
-            border:1px solid rgba(255,255,255,.25)}
+            background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.25)}
         .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
         .dot-green{background:#4caf50;animation:pulse 1.5s infinite}
         .dot-yellow{background:var(--yellow)}
         .dot-red{background:#ef5350}
         @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-
-        /* TABS */
         .tabs-wrapper{background:#fff;border-bottom:3px solid var(--yellow);
             position:sticky;top:116px;z-index:99;box-shadow:0 2px 8px rgba(0,0,0,.07)}
         .tabs{display:flex;overflow-x:auto;scrollbar-width:none;padding:0 8px}
@@ -89,14 +69,10 @@
             border-bottom:3px solid transparent;margin-bottom:-3px;transition:var(--transition)}
         .tab.active{color:var(--red);border-bottom-color:var(--red)}
         .tab:hover:not(.active){color:var(--blue);background:rgba(27,79,191,.04)}
-
-        /* MAIN */
         .main{padding:16px;max-width:1400px;margin:0 auto}
         .tab-content{display:none}
         .tab-content.active{display:block;animation:fadeIn .3s ease}
         @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-
-        /* GRIDS */
         .g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
         .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:14px}
         .web-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
@@ -104,23 +80,15 @@
         .days-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
         .ins-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
         .rec-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-
-        @media(max-width:900px){
-            .g4{grid-template-columns:1fr 1fr}
-            .web-row,.mix-grid{grid-template-columns:1fr}
-        }
+        @media(max-width:900px){.g4{grid-template-columns:1fr 1fr}.web-row,.mix-grid{grid-template-columns:1fr}}
         @media(max-width:500px){.g2,.g4{grid-template-columns:1fr 1fr}}
         @media(min-width:1200px){.main{padding:20px 32px}}
-
-        /* CARD */
         .card{background:var(--card);border-radius:var(--radius);padding:16px;
             box-shadow:var(--shadow);border:1px solid var(--border);transition:var(--transition)}
         .card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
         .card.span2{grid-column:1/-1}
         .card.blue-grad{background:linear-gradient(135deg,var(--blue),var(--blue-dark));color:#fff}
         .card.blue-grad .lbl{color:rgba(255,255,255,.8)}
-
-        /* KPI */
         .sec-hd{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;
             color:var(--muted);margin-bottom:10px;display:flex;align-items:center;gap:5px}
         .lbl{font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;
@@ -136,8 +104,6 @@
         .ring{width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,.2);
             display:flex;align-items:center;justify-content:center;font-size:16px;
             font-weight:800;color:#fff;margin:8px auto;border:3px solid rgba(255,255,255,.45)}
-
-        /* PROGRESS */
         .prog{margin-top:10px}
         .prog-lbl{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:3px}
         .bar{height:8px;background:var(--border);border-radius:4px;overflow:hidden}
@@ -147,8 +113,6 @@
         .fb{background:linear-gradient(90deg,var(--blue),var(--blue-light))}
         .fg{background:linear-gradient(90deg,#2e7d32,#43a047)}
         .fo{background:linear-gradient(90deg,#e65100,#ff6d00)}
-
-        /* DAY CARDS */
         .day-card{background:var(--card);border-radius:var(--radius);padding:16px;
             box-shadow:var(--shadow);border:1px solid var(--border);border-left:4px solid var(--blue)}
         .day-card.ok{border-left-color:#2e7d32}
@@ -169,8 +133,6 @@
         .hbar-val{font-size:10px;font-weight:700;width:85px;flex-shrink:0}
         .pills{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px}
         .pill{padding:3px 9px;border-radius:20px;font-size:10px;font-weight:600}
-
-        /* MIX */
         .donut-wrap{display:flex;flex-direction:column;align-items:center;gap:16px}
         @media(min-width:500px){.donut-wrap{flex-direction:row;justify-content:space-around}}
         .donut-svg{width:130px;height:130px}
@@ -179,8 +141,6 @@
         .d-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0}
         .d-lbl{color:var(--muted);flex:1}
         .d-val{font-weight:700}
-
-        /* EVOLUÇÃO */
         .evo-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
         .evo-row:last-child{border-bottom:none}
         .evo-day{font-weight:700;font-size:13px;width:70px;flex-shrink:0}
@@ -195,30 +155,22 @@
         .evo-pct{font-size:11px;font-weight:700;display:inline-block;padding:2px 7px;border-radius:10px;margin-top:2px}
         .sum-row{display:flex;align-items:center;justify-content:space-between;
             background:var(--bg);border-radius:var(--radius-sm);padding:12px 16px;margin-top:10px}
-
-        /* INSIGHTS */
         .ins{display:flex;gap:12px;align-items:flex-start;padding:14px;border-radius:var(--radius-sm)}
         .ins-icon{font-size:24px;flex-shrink:0}
         .ins-title{font-weight:700;font-size:13px;margin-bottom:4px}
         .ins-desc{font-size:11px;color:var(--muted);line-height:1.6}
-
-        /* RECORDS */
         .rec-card{background:linear-gradient(135deg,rgba(245,200,0,.18),rgba(245,200,0,.06));
             border:1.5px solid var(--yellow);border-radius:var(--radius-sm);padding:16px;text-align:center}
         .rec-icon{font-size:22px;margin-bottom:4px}
         .rec-lbl{font-size:10px;color:var(--yellow-dark);font-weight:700;text-transform:uppercase}
         .rec-val{font-size:22px;font-weight:800;color:var(--red-dark)}
         .rec-day{font-size:11px;color:var(--muted);margin-top:2px}
-
-        /* MISC */
         .sec-title{font-size:16px;font-weight:800;margin-bottom:12px;display:flex;align-items:center;gap:8px}
         .divider{height:2px;background:linear-gradient(90deg,var(--red),var(--yellow),var(--blue));
             border-radius:2px;margin:16px 0;opacity:.25}
         .footer{text-align:center;padding:20px 16px;color:var(--muted);font-size:11px;
             border-top:3px solid var(--yellow);margin-top:20px;background:#fff}
         .footer strong{color:var(--red)}
-
-        /* LOADING */
         .overlay{position:fixed;inset:0;background:rgba(255,255,255,.96);display:flex;
             flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:16px}
         .overlay.hidden{display:none}
@@ -234,7 +186,6 @@
     </style>
 </head>
 <body>
-
 <div class="overlay" id="overlay">
     <svg width="80" height="60" viewBox="0 0 160 80" fill="none">
         <path d="M8 72 A72 72 0 0 1 152 72" stroke="#CC1F1F" stroke-width="18" fill="none" stroke-linecap="round"/>
@@ -266,9 +217,7 @@
             </div>
         </div>
         <div class="header-actions">
-            <button class="btn btn-sheets" onclick="loadFromSheets()">
-                📡 Atualizar Sheets
-            </button>
+            <button class="btn btn-sheets" onclick="loadFromSheets()">📡 Atualizar Sheets</button>
             <label class="btn btn-upload" for="fileInput">📂 Excel</label>
             <input type="file" id="fileInput" accept=".xlsx,.xls" onchange="loadFile(event)">
             <button class="btn btn-reset" onclick="resetDemo()">🔄</button>
@@ -279,7 +228,7 @@
         <span class="badge-var" id="varBadge">— vs sem. anterior</span>
     </div>
     <div class="status-bar">
-        <div class="file-status" id="fileStatus">Carregando dados do Google Sheets...</div>
+        <div class="file-status" id="fileStatus">Carregando...</div>
         <div class="sheets-badge" id="sheetsBadge">
             <span class="dot dot-yellow" id="statusDot"></span>
             <span id="statusTxt">Conectando...</span>
@@ -339,20 +288,12 @@
 <script>
 'use strict';
 
-/* ══════════════════════════════════════
-   CONFIGURAÇÃO GOOGLE SHEETS
-   
-   URL CSV gerado a partir do link público:
-   pubhtml → pub?output=csv
-══════════════════════════════════════ */
+/* URL CSV do Google Sheets */
 const SHEETS_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT2kJGzytbQ6-WZs1fEsaD7AoCmkNkuWC626i0DU2MkY7Xixyhz3cpEfbGpIs0ZHVXHa7-Z_0IzFVud/pub?output=csv&gid=1712919962";
 
-/* ══════════════════════════════════════
-   DADOS DEMO
-══════════════════════════════════════ */
-const DEMO = {
-    periodo:"15 jun. 2026 – 20 jun. 2026",
-    variacao:-1.00,
+/* DADOS DEMO */
+const DEMO={
+    periodo:"15 jun. 2026 – 20 jun. 2026",variacao:-1.00,
     valor:{demanda:10506669.83,producao:7321510.58,resultado:-3185159.25,atendimento:69.7},
     peso:{demanda:947296,producao:726706,gap:-220590,gapPct:-23.29,
         demanda_auto:430800,demanda_digit:516496,producao_auto:386183,producao_digit:340524},
@@ -364,23 +305,22 @@ const DEMO = {
         {nome:"Sexta-Feira",  emoji:"",  demanda:252073,producao:0,     carros:0, ant:166758}
     ]
 };
-let D = JSON.parse(JSON.stringify(DEMO));
+let D=JSON.parse(JSON.stringify(DEMO));
 
-/* ══════════════════════════════════════
-   HELPERS
-══════════════════════════════════════ */
-const fmt  = n => Number(n||0).toLocaleString('pt-BR');
-const fmtR = n => 'R$ '+Number(n||0).toLocaleString('pt-BR');
-const fmtK = n => Number(n||0).toLocaleString('pt-BR')+' kg';
-const pct  = (a,b) => (b&&b>0)?(a/b*100):0;
-const sign = n => n>0?'+':'';
-const bc   = n => n>0?'bs':n<0?'bd':'bi';
+/* HELPERS */
+const fmt  = n=>Number(n||0).toLocaleString('pt-BR');
+const fmtR = n=>'R$ '+Number(n||0).toLocaleString('pt-BR');
+const fmtK = n=>Number(n||0).toLocaleString('pt-BR')+' kg';
+const pct  = (a,b)=>(b&&b>0)?(a/b*100):0;
+const sign = n=>n>0?'+':'';
+const bc   = n=>n>0?'bs':n<0?'bd':'bi';
 
 function toNum(v){
     if(v===null||v===undefined||v==='') return 0;
     if(typeof v==='number') return isNaN(v)?0:v;
     let s=String(v).trim().replace(/['"R$\s%]/g,'');
     if(!s||s==='-') return 0;
+    /* Formato BR: 1.234.567,89 */
     if(/^\d{1,3}(\.\d{3})*(,\d*)?$/.test(s)) s=s.replace(/\./g,'').replace(',','.');
     else if(/^\d+,\d+$/.test(s)) s=s.replace(',','.');
     s=s.replace(/[^\d.-]/g,'');
@@ -390,27 +330,34 @@ function toNum(v){
 
 function toDate(v){
     if(!v) return '';
-    if(typeof v==='number'&&v>40000&&v<60000){
-        const d=new Date(Math.round((v-25569)*86400*1000));
-        return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'});
-    }
     const s=String(v).trim();
+    /* "segunda-feira, 15 de junho de 2026" */
     const m1=s.match(/(\d{1,2})\s+de\s+(\w+)\s+de\s+(\d{4})/i);
     if(m1){
-        const ms={janeiro:0,fevereiro:1,'março':2,abril:3,maio:4,junho:5,julho:6,agosto:7,setembro:8,outubro:9,novembro:10,dezembro:11};
+        const ms={janeiro:0,fevereiro:1,'março':2,abril:3,maio:4,junho:5,
+                  julho:6,agosto:7,setembro:8,outubro:9,novembro:10,dezembro:11};
         const d=new Date(+m1[3],ms[m1[2].toLowerCase()]??0,+m1[1]);
-        if(!isNaN(d.getTime())) return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'});
+        if(!isNaN(d.getTime()))
+            return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'});
     }
+    /* "15/06/2026" */
     const m2=s.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
     if(m2){
         const d=new Date(+m2[3],+m2[2]-1,+m2[1]);
-        if(!isNaN(d.getTime())) return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'});
+        if(!isNaN(d.getTime()))
+            return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'});
+    }
+    /* Serial Excel */
+    const n=parseFloat(s);
+    if(!isNaN(n)&&n>40000&&n<60000){
+        const d=new Date(Math.round((n-25569)*86400*1000));
+        return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'});
     }
     return s;
 }
 
-const isDia = v=>/^(segunda|ter[cç]a|quarta|quinta|sexta|s[aá]bado|domingo)/i.test(String(v||'').trim());
-const diaKey= v=>String(v||'').trim().toUpperCase().substring(0,5);
+const isDia=v=>/^(segunda|ter[cç]a|quarta|quinta|sexta|s[aá]bado|domingo)/i.test(String(v||'').trim());
+const diaKey=v=>String(v||'').trim().toUpperCase().substring(0,5);
 const ORDEM=['SEGUN','TERÇA','TERCA','QUART','QUINT','SEXTA','SÁBAD','SABAD','DOMIN'];
 const ordemDia=nome=>{const k=diaKey(nome);const i=ORDEM.findIndex(o=>k.startsWith(o.substring(0,5)));return i===-1?99:i;};
 
@@ -426,20 +373,59 @@ function showOverlay(txt){
     document.getElementById('overlay').classList.remove('hidden');
 }
 function hideOverlay(){document.getElementById('overlay').classList.add('hidden');}
-
 function setStatus(txt,color){
-    const dot=document.getElementById('statusDot');
-    const stxt=document.getElementById('statusTxt');
-    stxt.textContent=txt;
-    dot.className='dot dot-'+color;
+    document.getElementById('statusTxt').textContent=txt;
+    document.getElementById('statusDot').className='dot dot-'+color;
 }
 
 /* ══════════════════════════════════════
-   PARSER CSV — lê o CSV do Google Sheets
-   usando a mesma lógica do parser inteligente
+   PARSER CSV — lê linha a linha do CSV
+   com mapeamento EXATO da estrutura:
+
+   L0:  (vazio)
+   L1:  ,,"COMPARATIVO DEMANDA VS PRODUÇÃO - SEMANA"
+   L2:  (vazio)
+   L3:  (vazio)
+   L4:  "PERÍODO DO COMPARATIVO",,"","","segunda-feira, 15 de junho de 2026","","sábado, 20 de junho de 2026"
+   L5:  (vazio)
+   L6:  "DEMANDA (R$)",,,,,"PRODUÇÃO (R$)"
+   L7:  "AUTOMATICO","DIGITADO","TOTAL","MÉDIA (DIA)","MÉDIA (DIA)","TOTAL","DIGITADO","AUTOMÁTICO"
+   L8:  4454247.66,6052422.17,10506669.83,2101333.97,1220251.76,7321510.58,3315825.16,4005685.42
+   L9:  (vazio)
+   L10: "DEMANDA (kg)",,,,,"PRODUÇÃO (kg)"
+   L11: "AUTOMATICO","DIGITADO","TOTAL","MÉDIA (DIA)","MÉDIA (DIA)","TOTAL","DIGITADO","AUTOMÁTICO"
+   L12: 430800,516496,947296,199459,212028,726706,340524,386183
+   L13: 0.45,0.55,1,,1,0.47,0.53
+   L14: (vazio)
+   L15: "DIA COM A MAIOR DEMANDA (kg)",,,,,"DIA COM A MAIOR PRODUÇÃO (kg)"
+   L16: (vazio)
+   L17: "SEXTA-FEIRA",,252073,,"QUINTA-FEIRA",,254726
+   L18: (vazio)
+   L19: "DIA DA SEMANA","DEMANDA (kg)","PRODUÇÃO (kg)","CARROS","GANHO (kg)","GANHO (%)","DEMANDA","PRODUÇÃO"
+   L20: (vazio)
+   L21: "Segunda-Feira",175642,204444,23,28802,0.14,"DENTRO DA CAPACIDADE","ACIMA DA DEMANDA"
+   L22: "Terça-Feira",216994,192550,22,-24444,-0.13,"EXCEDEU A CAPACIDADE","ABAIXO DA DEMANDA"
+   L23: "Quarta-Feira",110407,196391,20,85984,0.44,"DENTRO DA CAPACIDADE","ACIMA DA DEMANDA"
+   L24: "Quinta-Feira",242179,254726,25,12547,0.05,"EXCEDEU A CAPACIDADE","ACIMA DA DEMANDA"
+   L25: "Sexta-Feira",252073,,,,,,
+   ...linhas vazias...
+   L36: "EVOLUÇÃO SEMANAL DE DEMANDA"
+   L37: (vazio)
+   L38: "PERÍODO",46188,46193,"SEMANA ATUAL","SEMANA ANTERIOR","PERÍODO",46181,46186
+   L39: "DIA DA SEMANA","AUTOMÁTICO (kg)","DIGITADO (kg)","TOTAL (kg)","TOTAL (kg)","DIGITADO (kg)","AUTOMÁTICO (kg)","EVOLUÇÃO DA DEMANDA (%)"
+   L40: (vazio)
+   L41: "Segunda-Feira",115737,59905,175642,180562,5628,174934,-0.028
+   L42: "Terça-Feira",56973,160021,216994,220375,134308,86067,-0.0156
+   L43: "Quarta-Feira",88964,21443,110407,123071,54799,68272,-0.1147
+   L44: "Quinta-Feira",87365,154815,242179,266048,189612,76436,-0.0986
+   L45: "Sexta-Feira",81761,120312,202073,166758,65306,101452,0.1748
+   L46: (vazio)
+   L47: (vazio)
+   L48: "TOTAL",430800,516496,947296,956814,449653,507160,-0.01
+   L49: 0.45,0.55,1,1,0.47,0.53,"EM QUEDA"
 ══════════════════════════════════════ */
 function parseCSV(csvText){
-    /* Parser CSV robusto (trata vírgulas dentro de aspas) */
+    /* Parser CSV robusto */
     function splitLine(line){
         const cols=[];let cur='',inQ=false;
         for(let i=0;i<line.length;i++){
@@ -449,71 +435,17 @@ function parseCSV(csvText){
             else{cur+=ch;}
         }
         cols.push(cur.trim());
-        return cols;
+        return cols.map(c=>c.replace(/^"|"$/g,'').trim());
     }
 
-    const rows=csvText
-        .split('\n')
-        .filter(l=>l.trim()!=='')
-        .map(l=>splitLine(l).map(c=>c.replace(/^"|"$/g,'').trim()));
+    const rows=csvText.split('\n').map(l=>splitLine(l));
+    console.log('=== CSV PARSER ===','Total linhas:',rows.length);
 
-    console.log('=== CSV PARSER ===','Linhas:',rows.length);
+    /* Log primeiras 50 linhas para debug */
     rows.slice(0,50).forEach((r,i)=>{
-        const vals=r.filter(c=>c!=='');
-        if(vals.length>0) console.log(`L${i}:`,vals.join(' | '));
+        const v=r.filter(c=>c!=='');
+        if(v.length>0) console.log(`L${i}:`,r.join(' | '));
     });
-
-    return parseRows(rows);
-}
-
-/* ══════════════════════════════════════
-   PARSER INTELIGENTE — funciona para
-   CSV e Excel (mesma lógica)
-══════════════════════════════════════ */
-function parseRows(rows){
-    const gv =(r,c)=>(!r||r[c]===undefined||r[c]===null||r[c]==='')? null : r[c];
-    const gs =(r,c)=>String(gv(r,c)||'').trim();
-    const gu =(r,c)=>gs(r,c).toUpperCase();
-    const gn =(r,c)=>toNum(gv(r,c));
-
-    function find(pats,rowStart=0,rowEnd=null){
-        const end=rowEnd??rows.length;
-        for(let i=rowStart;i<end;i++){
-            const r=rows[i]||[];
-            for(let j=0;j<r.length;j++){
-                const c=gu(r,j);if(!c) continue;
-                for(const p of pats){
-                    const hit=typeof p==='string'?c.includes(p):p.test(c);
-                    if(hit) return{row:i,col:j};
-                }
-            }
-        }
-        return null;
-    }
-
-    function findCol(rowIdx,pats){
-        const r=rows[rowIdx]||[];
-        for(let j=0;j<r.length;j++){
-            const c=gu(r,j);if(!c) continue;
-            for(const p of pats){if(typeof p==='string'?c.includes(p):p.test(c)) return j;}
-        }
-        return -1;
-    }
-
-    function nextDataRow(from,maxLook=5){
-        for(let i=from+1;i<Math.min(from+maxLook+1,rows.length);i++){
-            const r=rows[i]||[];
-            const nums=r.filter(c=>c!==null&&c!==undefined&&c!==''&&toNum(c)>100);
-            if(nums.length>=2) return i;
-        }
-        return from+1;
-    }
-
-    function allCols(rowIdx,pat){
-        const r=rows[rowIdx]||[],res=[];
-        r.forEach((c,j)=>{if(String(c||'').toUpperCase().includes(pat)) res.push(j);});
-        return res;
-    }
 
     let periodoIni='',periodoFim='';
     let dR_auto=0,dR_dig=0,dR_tot=0,pR_tot=0,pR_dig=0,pR_auto=0;
@@ -521,146 +453,209 @@ function parseRows(rows){
     const diasMap={};
     let variacao=0;
 
-    /* 1. PERÍODO */
-    const lP=find(['PERÍODO','PERIODO','PERIOD']);
-    if(lP){
-        const r=rows[lP.row]||[];
-        const vals=r.filter((c,j)=>{
+    /* Funções helper */
+    const gu=(r,c)=>String(r[c]||'').toUpperCase().trim();
+    const gn=(r,c)=>toNum(r[c]);
+    const hasVal=(r)=>r.some(c=>c!==''&&c!==null&&c!==undefined);
+
+    /* Índices de linha encontrados */
+    let lPeriodo=-1,lDemR=-1,lDemK=-1,lDiaSemana=-1,lEvo=-1;
+
+    /* PASSO 1: Varre todas as linhas para encontrar os índices */
+    for(let i=0;i<rows.length;i++){
+        const r=rows[i]||[];
+        const c0=gu(r,0);
+        const rowStr=r.join('|').toUpperCase();
+
+        if(lPeriodo===-1 && (c0.includes('PERÍODO')||c0.includes('PERIODO'))) lPeriodo=i;
+        if(lDemR===-1 && c0.includes('DEMANDA') && rowStr.includes('R$')) lDemR=i;
+        if(lDemK===-1 && c0.includes('DEMANDA') && rowStr.includes('KG') && i>lDemR) lDemK=i;
+        if(lDiaSemana===-1 && c0.includes('DIA DA SEMANA') && rowStr.includes('DEMANDA')) lDiaSemana=i;
+        if(lEvo===-1 && (c0.includes('EVOLUÇÃO')||c0.includes('EVOLUCAO'))) lEvo=i;
+    }
+
+    console.log('Índices:',{lPeriodo,lDemR,lDemK,lDiaSemana,lEvo});
+
+    /* PASSO 2: Lê PERÍODO */
+    if(lPeriodo>-1){
+        const r=rows[lPeriodo]||[];
+        /* Filtra células não-vazias e não-label */
+        const vals=r.filter(c=>{
             if(!c||c==='') return false;
-            const u=String(c).toUpperCase();
-            return !u.includes('PERÍODO')&&!u.includes('PERIODO')&&!u.includes('PERIOD')&&!u.includes('COMPARATIVO');
+            const u=c.toUpperCase();
+            return !u.includes('PERÍODO')&&!u.includes('PERIODO')&&!u.includes('COMPARATIVO');
         });
         if(vals.length>=2){periodoIni=toDate(vals[0]);periodoFim=toDate(vals[1]);}
         else if(vals.length===1) periodoIni=toDate(vals[0]);
         console.log('Período:',periodoIni,'→',periodoFim);
     }
 
-    /* 2. DEMANDA R$ */
-    const lDR=find(['DEMANDA (R$)','DEMANDA(R$)','DEMANDA (R']);
-    if(lDR){
-        let subR=-1;
-        for(let i=lDR.row;i<Math.min(lDR.row+4,rows.length);i++){
-            const txt=(rows[i]||[]).map(c=>String(c||'').toUpperCase()).join('|');
-            if(txt.includes('AUTOM')||txt.includes('DIGIT')){subR=i;break;}
-        }
-        const dataR=nextDataRow(subR>-1?subR:lDR.row,4);
-        const dr=rows[dataR]||[];
-        if(subR>-1){
-            const colA=findCol(subR,['AUTOM']);
-            const colD=findCol(subR,['DIGIT']);
-            const colTs=allCols(subR,'TOTAL');
-            dR_auto=colA>-1?gn(dr,colA):gn(dr,0);
-            dR_dig =colD>-1?gn(dr,colD):gn(dr,1);
-            dR_tot =colTs[0]>-1?gn(dr,colTs[0]):gn(dr,2);
-            pR_tot =colTs[1]>-1?gn(dr,colTs[1]):gn(dr,5);
-            pR_dig=gn(dr,6);pR_auto=gn(dr,7);
-        }
-        if(dR_tot===0||pR_tot===0){
-            const nums=dr.map(toNum).filter(n=>n>1000);
+    /* PASSO 3: Lê DEMANDA R$ — subheader em lDemR+1, dados em lDemR+2 */
+    if(lDemR>-1){
+        /* Subheader: AUTOMATICO | DIGITADO | TOTAL | MÉDIA | MÉDIA | TOTAL | DIGITADO | AUTOMÁTICO */
+        const subRow=rows[lDemR+1]||[];
+        /* Dados: valores numéricos */
+        const dataRow=rows[lDemR+2]||[];
+
+        /* Mapeia colunas pelo subheader */
+        let cAuto=-1,cDig=-1,cTots=[];
+        subRow.forEach((c,j)=>{
+            const u=c.toUpperCase();
+            if(u.includes('AUTOM')&&cAuto===-1) cAuto=j;
+            else if(u.includes('DIGIT')&&cDig===-1) cDig=j;
+            if(u.includes('TOTAL')) cTots.push(j);
+        });
+
+        dR_auto=cAuto>-1?gn(dataRow,cAuto):gn(dataRow,0);
+        dR_dig =cDig >-1?gn(dataRow,cDig) :gn(dataRow,1);
+        dR_tot =cTots[0]>-1?gn(dataRow,cTots[0]):gn(dataRow,2);
+        pR_tot =cTots[1]>-1?gn(dataRow,cTots[1]):gn(dataRow,5);
+        pR_dig =gn(dataRow,6);
+        pR_auto=gn(dataRow,7);
+
+        /* Fallback se não encontrou */
+        if(dR_tot===0&&pR_tot===0){
+            const nums=dataRow.map(toNum).filter(n=>n>1000);
             if(nums.length>=6) [dR_auto,dR_dig,dR_tot,,,pR_tot,pR_dig,pR_auto]=nums;
         }
-        console.log('R$:',{dR_auto,dR_dig,dR_tot,pR_tot});
+        console.log('R$:',{dR_auto,dR_dig,dR_tot,pR_tot,pR_dig,pR_auto});
     }
 
-    /* 3. DEMANDA KG */
-    const lDK=find(['DEMANDA (KG)','DEMANDA(KG)','DEMANDA (K']);
-    if(lDK){
-        let subR=-1;
-        for(let i=lDK.row;i<Math.min(lDK.row+4,rows.length);i++){
-            const txt=(rows[i]||[]).map(c=>String(c||'').toUpperCase()).join('|');
-            if(txt.includes('AUTOM')||txt.includes('DIGIT')){subR=i;break;}
-        }
-        const dataR=nextDataRow(subR>-1?subR:lDK.row,4);
-        const dr=rows[dataR]||[];
-        if(subR>-1){
-            const colA=findCol(subR,['AUTOM']);
-            const colD=findCol(subR,['DIGIT']);
-            const colTs=allCols(subR,'TOTAL');
-            dK_auto=colA>-1?gn(dr,colA):gn(dr,0);
-            dK_dig =colD>-1?gn(dr,colD):gn(dr,1);
-            dK_tot =colTs[0]>-1?gn(dr,colTs[0]):gn(dr,2);
-            pK_tot =colTs[1]>-1?gn(dr,colTs[1]):gn(dr,5);
-            pK_dig=gn(dr,6);pK_auto=gn(dr,7);
-        }
-        if(dK_tot===0||pK_tot===0){
-            const nums=dr.map(toNum).filter(n=>n>100&&n<10000000);
+    /* PASSO 4: Lê DEMANDA KG — subheader em lDemK+1, dados em lDemK+2 */
+    if(lDemK>-1){
+        const subRow=rows[lDemK+1]||[];
+        const dataRow=rows[lDemK+2]||[];
+
+        let cAuto=-1,cDig=-1,cTots=[];
+        subRow.forEach((c,j)=>{
+            const u=c.toUpperCase();
+            if(u.includes('AUTOM')&&cAuto===-1) cAuto=j;
+            else if(u.includes('DIGIT')&&cDig===-1) cDig=j;
+            if(u.includes('TOTAL')) cTots.push(j);
+        });
+
+        dK_auto=cAuto>-1?gn(dataRow,cAuto):gn(dataRow,0);
+        dK_dig =cDig >-1?gn(dataRow,cDig) :gn(dataRow,1);
+        dK_tot =cTots[0]>-1?gn(dataRow,cTots[0]):gn(dataRow,2);
+        pK_tot =cTots[1]>-1?gn(dataRow,cTots[1]):gn(dataRow,5);
+        pK_dig =gn(dataRow,6);
+        pK_auto=gn(dataRow,7);
+
+        if(dK_tot===0&&pK_tot===0){
+            const nums=dataRow.map(toNum).filter(n=>n>100&&n<10000000);
             if(nums.length>=6) [dK_auto,dK_dig,dK_tot,,,pK_tot,pK_dig,pK_auto]=nums;
         }
-        console.log('KG:',{dK_auto,dK_dig,dK_tot,pK_tot});
+        console.log('KG:',{dK_auto,dK_dig,dK_tot,pK_tot,pK_dig,pK_auto});
     }
 
-    /* 4. DIAS DA SEMANA */
-    const lEvo=find(['EVOLUÇÃO','EVOLUCAO']);
-    const lDS=find(['DIA DA SEMANA'],0,lEvo?.row);
-    if(lDS){
-        const hR=rows[lDS.row]||[];
+    /* PASSO 5: Lê DIAS DA SEMANA */
+    if(lDiaSemana>-1){
+        /* Cabeçalho em lDiaSemana, dados a partir de lDiaSemana+1 */
+        const hRow=rows[lDiaSemana]||[];
         let cDem=1,cProd=2,cCarros=3;
-        hR.forEach((c,j)=>{
-            const u=String(c||'').toUpperCase();
+        hRow.forEach((c,j)=>{
+            const u=c.toUpperCase();
             if(u.includes('DEMANDA')&&j>0&&cDem===1) cDem=j;
-            else if((u.includes('PRODUÇÃO')||u.includes('PRODUCAO'))&&cProd===2) cProd=j;
+            else if((u.includes('PRODUÇÃO')||u.includes('PRODUCAO'))&&j>0&&cProd===2) cProd=j;
             else if(u.includes('CARRO')) cCarros=j;
         });
-        for(let i=lDS.row+1;i<Math.min(lDS.row+15,rows.length);i++){
+
+        const limEvo=lEvo>-1?lEvo:lDiaSemana+15;
+        for(let i=lDiaSemana+1;i<Math.min(limEvo,rows.length);i++){
             const r=rows[i]||[];
             if(!isDia(r[0])) continue;
-            const nome=String(r[0]).trim(),k=diaKey(nome);
+            const nome=String(r[0]).trim();
+            const k=diaKey(nome);
             if(diasMap[k]) continue;
-            diasMap[k]={
-                nome,emoji:'',
-                demanda: gn(r,cDem),
-                producao:r[cProd]!==undefined&&r[cProd]!==null&&r[cProd]!==''?gn(r,cProd):0,
-                carros:  gn(r,cCarros),
-                ant:0
-            };
-            console.log('Dia:',nome,'dem:',diasMap[k].demanda,'prod:',diasMap[k].producao);
+
+            /* IMPORTANTE: producao pode ser string vazia = 0 */
+            const dem  = gn(r,cDem);
+            const prod = (r[cProd]!==undefined&&r[cProd]!=='')?gn(r,cProd):0;
+            const carr = gn(r,cCarros);
+
+            diasMap[k]={nome,emoji:'',demanda:dem,producao:prod,carros:carr,ant:0};
+            console.log('Dia:',nome,'dem:',dem,'prod:',prod,'carros:',carr);
         }
     }
 
-    /* 5. EVOLUÇÃO */
-    if(lEvo){
+    /* PASSO 6: Lê EVOLUÇÃO SEMANAL */
+    if(lEvo>-1){
+        /* Encontra subheader da evolução */
         let hEvo=-1;
-        for(let i=lEvo.row;i<Math.min(lEvo.row+6,rows.length);i++){
-            const txt=(rows[i]||[]).map(c=>String(c||'').toUpperCase()).join('|');
-            if(txt.includes('DIA DA SEMANA')||txt.includes('TOTAL (KG)')||txt.includes('AUTOMÁTICO')){hEvo=i;break;}
+        for(let i=lEvo;i<Math.min(lEvo+6,rows.length);i++){
+            const r=rows[i]||[];
+            const ru=r.join('|').toUpperCase();
+            if(ru.includes('DIA DA SEMANA')&&ru.includes('TOTAL')){hEvo=i;break;}
         }
+
+        /* Colunas da evolução pelo subheader */
         let cTotAt=3,cTotAnt=4,cEvoPct=7;
         if(hEvo>-1){
             let tc=0;
             (rows[hEvo]||[]).forEach((c,j)=>{
-                const u=String(c||'').toUpperCase();
+                const u=c.toUpperCase();
                 if(u.includes('TOTAL')){if(tc===0)cTotAt=j;if(tc===1)cTotAnt=j;tc++;}
                 if(u.includes('EVOLUÇÃO')||u.includes('EVOLUCAO')||u.includes('(%)')) cEvoPct=j;
             });
         }
-        const start=hEvo>-1?hEvo+1:lEvo.row+1;
-        for(let i=start;i<Math.min(start+15,rows.length);i++){
+
+        console.log('Evo cols:',{cTotAt,cTotAnt,cEvoPct,'hEvo':hEvo});
+
+        const start=hEvo>-1?hEvo+1:lEvo+1;
+        for(let i=start;i<Math.min(start+20,rows.length);i++){
             const r=rows[i]||[];
-            const r0u=String(r[0]||'').toUpperCase();
+            if(!hasVal(r)) continue;
+            const c0u=String(r[0]||'').toUpperCase().trim();
+
             if(isDia(r[0])){
-                const nome=String(r[0]).trim(),k=diaKey(nome);
-                const totAt=gn(r,cTotAt),totAnt=gn(r,cTotAnt);
-                if(diasMap[k]){diasMap[k].ant=totAnt;if(totAt>0)diasMap[k].demanda=totAt;}
-                else diasMap[k]={nome,emoji:'',demanda:totAt,producao:0,carros:0,ant:totAnt};
-                console.log('Evo:',nome,'at:',totAt,'ant:',totAnt);
+                const nome=String(r[0]).trim();
+                const k=diaKey(nome);
+                const totAt =gn(r,cTotAt);
+                const totAnt=gn(r,cTotAnt);
+                const ep    =gn(r,cEvoPct);
+
+                if(diasMap[k]){
+                    diasMap[k].ant=totAnt;
+                    if(totAt>0) diasMap[k].demanda=totAt;
+                }else{
+                    diasMap[k]={nome,emoji:'',demanda:totAt,producao:0,carros:0,ant:totAnt};
+                }
+                console.log('Evo:',nome,'totAt:',totAt,'totAnt:',totAnt,'ep:',ep);
             }
-            if(r0u.includes('TOTAL')&&!r0u.includes('DIA')){
+
+            /* TOTAL da evolução → variação % */
+            if(c0u==='TOTAL'||c0u.startsWith('TOTAL')){
                 const ep=gn(r,cEvoPct);
-                variacao=Math.abs(ep)<1.5?ep*100:ep;
-                console.log('Variação:',variacao,'%');
+                if(ep!==0){
+                    variacao=Math.abs(ep)<1.5?ep*100:ep;
+                    console.log('Variação total:',variacao,'%');
+                }
             }
         }
     }
 
-    /* 6. RESULTADO */
+    /* PASSO 7: Monta resultado */
     const dias=Object.values(diasMap).sort((a,b)=>ordemDia(a.nome)-ordemDia(b.nome));
-    if(dias.length===0&&dK_tot===0&&dR_tot===0){console.error('NENHUM DADO');return null;}
-    if(dias.length>0) dias.reduce((a,b)=>a.demanda>b.demanda?a:b,dias[0]).emoji='🏆';
+    console.log('=== RESULTADO ===');
+    console.log('Dias:',dias.map(d=>`${d.nome}: dem=${d.demanda} prod=${d.producao} ant=${d.ant}`));
+    console.log('R$: dem=',dR_tot,'prod=',pR_tot);
+    console.log('KG: dem=',dK_tot,'prod=',pK_tot);
+    console.log('Variação:',variacao);
 
-    const gap=pK_tot-dK_tot,gapPct=dK_tot>0?(gap/dK_tot*100):0;
-    const resultado=pR_tot-dR_tot,atend=dR_tot>0?Math.round(pR_tot/dR_tot*1000)/10:0;
+    if(dias.length===0&&dK_tot===0&&dR_tot===0){
+        console.error('NENHUM DADO ENCONTRADO!');
+        return null;
+    }
 
-    console.log('=== OK ===','Dias:',dias.length,'| Atend:',atend+'%');
+    /* Marca maior demanda */
+    if(dias.length>0)
+        dias.reduce((a,b)=>a.demanda>b.demanda?a:b,dias[0]).emoji='🏆';
+
+    const gap       =pK_tot-dK_tot;
+    const gapPct    =dK_tot>0?(gap/dK_tot*100):0;
+    const resultado =pR_tot-dR_tot;
+    const atend     =dR_tot>0?Math.round(pR_tot/dR_tot*1000)/10:0;
+
     return{
         periodo:periodoIni?`${periodoIni} – ${periodoFim}`:'—',
         variacao,
@@ -672,22 +667,17 @@ function parseRows(rows){
     };
 }
 
-/* ══════════════════════════════════════
-   CARREGAR DO GOOGLE SHEETS
-══════════════════════════════════════ */
+/* CARREGAR DO GOOGLE SHEETS */
 async function loadFromSheets(){
     showOverlay('Buscando dados do Google Sheets...');
     setStatus('Sincronizando...','yellow');
-    document.getElementById('fileStatus').textContent='⏳ Buscando dados do Google Sheets...';
-
+    document.getElementById('fileStatus').textContent='⏳ Buscando dados...';
     try{
-        /* Cache bust para garantir dados frescos */
         const url=SHEETS_CSV+'&t='+Date.now();
         const res=await fetch(url);
-        if(!res.ok) throw new Error(`Erro HTTP ${res.status}`);
+        if(!res.ok) throw new Error(`HTTP ${res.status}`);
         const csv=await res.text();
         console.log('CSV recebido:',csv.length,'chars');
-
         const parsed=parseCSV(csv);
         if(parsed&&(parsed.dias.length>0||parsed.valor.demanda>0)){
             D=parsed;renderAll();
@@ -696,50 +686,39 @@ async function loadFromSheets(){
             setStatus('Google Sheets · ao vivo','green');
             showToast(`✅ Dados atualizados às ${now}`);
         }else{
-            throw new Error('Estrutura não reconhecida');
+            throw new Error('Estrutura não reconhecida — verifique o console');
         }
     }catch(err){
         console.error('loadFromSheets:',err);
-        document.getElementById('fileStatus').textContent=`⚠️ ${err.message} — exibindo dados demo`;
+        document.getElementById('fileStatus').textContent=`⚠️ ${err.message}`;
         setStatus('Sheets offline','red');
         showToast(`⚠️ ${err.message}`);
         D=JSON.parse(JSON.stringify(DEMO));
         renderAll();
-    }finally{
-        hideOverlay();
-    }
+    }finally{hideOverlay();}
 }
 
-/* ══════════════════════════════════════
-   UPLOAD EXCEL (alternativa)
-══════════════════════════════════════ */
+/* UPLOAD EXCEL */
 function loadFile(event){
     const file=event.target.files[0];if(!file) return;
     showOverlay(`Lendo: ${file.name}...`);
-    document.getElementById('fileStatus').textContent=`⏳ Lendo: ${file.name}...`;
-
-    /* Verifica SheetJS */
     if(typeof XLSX==='undefined'){
-        const script=document.createElement('script');
-        script.src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
-        script.onload=()=>doReadFile(file,event);
-        script.onerror=()=>{hideOverlay();showToast('❌ Erro ao carregar SheetJS');};
-        document.head.appendChild(script);
-    }else{
-        doReadFile(file,event);
-    }
+        const s=document.createElement('script');
+        s.src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+        s.onload=()=>doRead(file,event);
+        s.onerror=()=>{hideOverlay();showToast('❌ Erro ao carregar SheetJS');};
+        document.head.appendChild(s);
+    }else doRead(file,event);
 }
 
-function doReadFile(file,event){
+function doRead(file,event){
     const reader=new FileReader();
     reader.onload=function(e){
         try{
-            const wb=XLSX.read(e.target.result,{type:'binary',raw:true,cellDates:false});
+            const wb=XLSX.read(e.target.result,{type:'binary',raw:true});
             const sh=wb.SheetNames[0];
-            const rows=XLSX.utils.sheet_to_json(wb.Sheets[sh],{header:1,defval:null,raw:true});
-            /* Converte para strings para usar o mesmo parser */
-            const rowsStr=rows.map(r=>(r||[]).map(c=>c===null||c===undefined?'':String(c)));
-            const parsed=parseRows(rowsStr);
+            const csv=XLSX.utils.sheet_to_csv(wb.Sheets[sh]);
+            const parsed=parseCSV(csv);
             if(parsed&&(parsed.dias.length>0||parsed.valor.demanda>0)){
                 D=parsed;renderAll();
                 document.getElementById('fileStatus').textContent=`✅ ${file.name} — ${parsed.dias.length} dias`;
@@ -750,18 +729,14 @@ function doReadFile(file,event){
                 showToast('⚠️ Verifique os títulos da planilha.');
             }
         }catch(err){
-            console.error('loadFile:',err);
+            console.error(err);
             document.getElementById('fileStatus').textContent=`❌ ${err.message}`;
-            showToast(`❌ ${err.message}`);
         }finally{hideOverlay();event.target.value='';}
     };
-    reader.onerror=()=>{hideOverlay();showToast('❌ Erro ao ler arquivo.');};
     reader.readAsBinaryString(file);
 }
 
-/* ══════════════════════════════════════
-   RENDERS
-══════════════════════════════════════ */
+/* RENDERS */
 function renderHeader(){
     safe(()=>{
         document.getElementById('periodText').textContent=D.periodo||'—';
@@ -1025,15 +1000,7 @@ function renderAll(){
     renderEvolucao();renderInsights();
 }
 
-/* Carrega automaticamente do Sheets ao abrir */
-window.addEventListener('load', loadFromSheets);
+window.addEventListener('load',loadFromSheets);
 </script>
 </body>
 </html>
-
-							<script>
-                            	
-							</script>
-                        </body>
-                        </html>
-                    
