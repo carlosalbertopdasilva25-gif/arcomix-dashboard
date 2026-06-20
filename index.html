@@ -17,27 +17,42 @@
       --transition:all .3s cubic-bezier(.4,0,.2,1)
     }
     html{scroll-behavior:smooth}
-    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+    body{
+      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+      background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden
+    }
 
-    .header{background:linear-gradient(135deg,var(--red-dark) 0%,var(--red) 40%,#b71c1c 100%);
+    .header{
+      background:linear-gradient(135deg,var(--red-dark) 0%,var(--red) 40%,#b71c1c 100%);
       padding:12px 20px 16px;position:sticky;top:0;z-index:100;
-      box-shadow:0 4px 20px rgba(180,0,0,.35)}
+      box-shadow:0 4px 20px rgba(180,0,0,.35)
+    }
     .header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
     .header-brand{display:flex;align-items:center;gap:14px}
-    .logo-wrap{display:flex;flex-direction:column;align-items:center;background:rgba(255,255,255,.12);
-      border-radius:12px;padding:6px 10px;backdrop-filter:blur(8px);
-      border:1px solid rgba(255,255,255,.2);flex-shrink:0}
+    .logo-wrap{
+      display:flex;flex-direction:column;align-items:center;
+      background:rgba(255,255,255,.12);border-radius:12px;padding:6px 10px;
+      backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);flex-shrink:0
+    }
     .logo-svg{width:72px;height:38px}
-    .logo-text{font-size:13px;font-weight:900;letter-spacing:1px;color:#fff;
+    .logo-text{
+      font-size:13px;font-weight:900;letter-spacing:1px;color:#fff;
       text-shadow:1px 1px 0 var(--blue-dark),-1px -1px 0 var(--blue-dark),
       1px -1px 0 var(--blue-dark),-1px 1px 0 var(--blue-dark),0 2px 4px rgba(0,0,0,.4);
-      line-height:1;margin-top:2px}
-    .logo-sub{font-size:7px;font-weight:600;color:rgba(255,255,255,.8);
-      letter-spacing:1.5px;text-transform:uppercase;margin-top:1px}
-    .header-actions{display:flex;gap:7px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end}
-    .btn{padding:9px 14px;border:none;border-radius:var(--radius-sm);cursor:pointer;
+      line-height:1;margin-top:2px
+    }
+    .logo-sub{
+      font-size:7px;font-weight:600;color:rgba(255,255,255,.8);
+      letter-spacing:1.5px;text-transform:uppercase;margin-top:1px
+    }
+    .header-actions{
+      display:flex;gap:7px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end
+    }
+    .btn{
+      padding:9px 14px;border:none;border-radius:var(--radius-sm);cursor:pointer;
       font-size:12px;font-weight:700;transition:var(--transition);
-      display:flex;align-items:center;gap:5px;white-space:nowrap}
+      display:flex;align-items:center;gap:5px;white-space:nowrap
+    }
     .btn-sheets{background:#fff;color:var(--blue-dark)}
     .btn-sheets:hover{background:#e8f0fe}
     .btn-upload{background:rgba(255,255,255,.15);color:#fff;border:1.5px solid rgba(255,255,255,.4)}
@@ -45,28 +60,44 @@
     .btn-reset{background:var(--yellow);color:var(--red-dark)}
     .btn-reset:hover{background:#ffe033}
     #fileInput{display:none}
-    .header-period{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
-    .period-text{color:rgba(255,255,255,.9);font-size:12px;display:flex;align-items:center;gap:5px}
-    .badge-var{padding:4px 11px;border-radius:20px;font-size:11px;font-weight:700;
-      background:rgba(245,200,0,.25);color:#fff3b0;border:1px solid rgba(245,200,0,.4)}
-    .status-bar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-top:6px}
+
+    .header-period{
+      display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px
+    }
+    .period-text{
+      color:rgba(255,255,255,.9);font-size:12px;display:flex;align-items:center;gap:5px
+    }
+    .badge-var{
+      padding:4px 11px;border-radius:20px;font-size:11px;font-weight:700;
+      background:rgba(245,200,0,.25);color:#fff3b0;border:1px solid rgba(245,200,0,.4)
+    }
+
+    .status-bar{
+      display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-top:6px
+    }
     .file-status{color:rgba(255,255,255,.6);font-size:10px}
-    .sheets-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;
+    .sheets-badge{
+      display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;
       font-size:10px;font-weight:700;background:rgba(255,255,255,.15);color:#fff;
-      border:1px solid rgba(255,255,255,.25)}
+      border:1px solid rgba(255,255,255,.25)
+    }
     .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
     .dot-green{background:#4caf50;animation:pulse 1.5s infinite}
     .dot-yellow{background:var(--yellow)}
     .dot-red{background:#ef5350}
     @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
-    .tabs-wrapper{background:#fff;border-bottom:3px solid var(--yellow);
-      position:sticky;top:116px;z-index:99;box-shadow:0 2px 8px rgba(0,0,0,.07)}
+    .tabs-wrapper{
+      background:#fff;border-bottom:3px solid var(--yellow);
+      position:sticky;top:116px;z-index:99;box-shadow:0 2px 8px rgba(0,0,0,.07)
+    }
     .tabs{display:flex;overflow-x:auto;scrollbar-width:none;padding:0 8px}
     .tabs::-webkit-scrollbar{display:none}
-    .tab{padding:12px 20px;border:none;background:none;cursor:pointer;font-size:12px;font-weight:700;
+    .tab{
+      padding:12px 20px;border:none;background:none;cursor:pointer;font-size:12px;font-weight:700;
       color:var(--muted);white-space:nowrap;border-bottom:3px solid transparent;
-      margin-bottom:-3px;transition:var(--transition)}
+      margin-bottom:-3px;transition:var(--transition)
+    }
     .tab.active{color:var(--red);border-bottom-color:var(--red)}
     .tab:hover:not(.active){color:var(--blue);background:rgba(27,79,191,.04)}
 
@@ -82,32 +113,51 @@
     .days-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
     .ins-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
     .rec-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    @media(max-width:900px){.g4{grid-template-columns:1fr 1fr}.web-row,.mix-grid{grid-template-columns:1fr}}
-    @media(max-width:500px){.g2,.g4{grid-template-columns:1fr 1fr}}
-    @media(min-width:1200px){.main{padding:20px 32px}}
 
-    .card{background:var(--card);border-radius:var(--radius);padding:16px;
-      box-shadow:var(--shadow);border:1px solid var(--border);transition:var(--transition)}
+    @media(max-width:900px){
+      .g4{grid-template-columns:1fr 1fr}
+      .web-row,.mix-grid{grid-template-columns:1fr}
+    }
+    @media(max-width:500px){
+      .g2,.g4{grid-template-columns:1fr 1fr}
+    }
+    @media(min-width:1200px){
+      .main{padding:20px 32px}
+    }
+
+    .card{
+      background:var(--card);border-radius:var(--radius);padding:16px;
+      box-shadow:var(--shadow);border:1px solid var(--border);transition:var(--transition)
+    }
     .card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
     .card.span2{grid-column:1/-1}
     .card.blue-grad{background:linear-gradient(135deg,var(--blue),var(--blue-dark));color:#fff}
     .card.blue-grad .lbl{color:rgba(255,255,255,.8)}
 
-    .sec-hd{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;
-      color:var(--muted);margin-bottom:10px;display:flex;align-items:center;gap:5px}
-    .lbl{font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;
-      letter-spacing:.5px;margin-bottom:5px}
+    .sec-hd{
+      font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;
+      color:var(--muted);margin-bottom:10px;display:flex;align-items:center;gap:5px
+    }
+    .lbl{
+      font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;
+      letter-spacing:.5px;margin-bottom:5px
+    }
     .val{font-size:22px;font-weight:800;color:var(--text);line-height:1;margin-bottom:3px}
     .sub{font-size:11px;color:var(--muted);line-height:1.6}
-    .badge{display:inline-flex;align-items:center;gap:3px;padding:3px 9px;
-      border-radius:20px;font-size:10px;font-weight:700;margin-top:5px}
+    .badge{
+      display:inline-flex;align-items:center;gap:3px;padding:3px 9px;
+      border-radius:20px;font-size:10px;font-weight:700;margin-top:5px
+    }
     .bs{background:#e8f5e9;color:#2e7d32}
     .bd{background:#ffebee;color:#c62828}
     .bw{background:#fff8e1;color:#f57f17}
     .bi{background:#e3f2fd;color:#1565c0}
-    .ring{width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,.2);
-      display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;
-      margin:8px auto;border:3px solid rgba(255,255,255,.45)}
+
+    .ring{
+      width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,.2);
+      display:flex;align-items:center;justify-content:center;font-size:16px;
+      font-weight:800;color:#fff;margin:8px auto;border:3px solid rgba(255,255,255,.45)
+    }
 
     .prog{margin-top:10px}
     .prog-lbl{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:3px}
@@ -119,8 +169,10 @@
     .fg{background:linear-gradient(90deg,#2e7d32,#43a047)}
     .fo{background:linear-gradient(90deg,#e65100,#ff6d00)}
 
-    .day-card{background:var(--card);border-radius:var(--radius);padding:16px;
-      box-shadow:var(--shadow);border:1px solid var(--border);border-left:4px solid var(--blue)}
+    .day-card{
+      background:var(--card);border-radius:var(--radius);padding:16px;
+      box-shadow:var(--shadow);border:1px solid var(--border);border-left:4px solid var(--blue)
+    }
     .day-card.ok{border-left-color:#2e7d32}
     .day-card.nok{border-left-color:var(--red)}
     .day-card.np{border-left-color:var(--yellow-dark)}
@@ -161,38 +213,46 @@
     .evo-cur{font-size:13px;font-weight:700;color:var(--red)}
     .evo-prv{font-size:11px;color:var(--muted)}
     .evo-pct{font-size:11px;font-weight:700;display:inline-block;padding:2px 7px;border-radius:10px;margin-top:2px}
-    .sum-row{display:flex;align-items:center;justify-content:space-between;background:var(--bg);border-radius:var(--radius-sm);padding:12px 16px;margin-top:10px}
+    .sum-row{
+      display:flex;align-items:center;justify-content:space-between;
+      background:var(--bg);border-radius:var(--radius-sm);padding:12px 16px;margin-top:10px
+    }
 
     .ins{display:flex;gap:12px;align-items:flex-start;padding:14px;border-radius:var(--radius-sm)}
     .ins-icon{font-size:24px;flex-shrink:0}
     .ins-title{font-weight:700;font-size:13px;margin-bottom:4px}
     .ins-desc{font-size:11px;color:var(--muted);line-height:1.6}
 
-    .rec-card{background:linear-gradient(135deg,rgba(245,200,0,.18),rgba(245,200,0,.06));
-      border:1.5px solid var(--yellow);border-radius:var(--radius-sm);padding:16px;text-align:center}
+    .rec-card{
+      background:linear-gradient(135deg,rgba(245,200,0,.18),rgba(245,200,0,.06));
+      border:1.5px solid var(--yellow);border-radius:var(--radius-sm);padding:16px;text-align:center
+    }
     .rec-icon{font-size:22px;margin-bottom:4px}
     .rec-lbl{font-size:10px;color:var(--yellow-dark);font-weight:700;text-transform:uppercase}
     .rec-val{font-size:22px;font-weight:800;color:var(--red-dark)}
     .rec-day{font-size:11px;color:var(--muted);margin-top:2px}
 
     .sec-title{font-size:16px;font-weight:800;margin-bottom:12px;display:flex;align-items:center;gap:8px}
-    .divider{height:2px;background:linear-gradient(90deg,var(--red),var(--yellow),var(--blue));
-      border-radius:2px;margin:16px 0;opacity:.25}
-    .footer{text-align:center;padding:20px 16px;color:var(--muted);font-size:11px;
-      border-top:3px solid var(--yellow);margin-top:20px;background:#fff}
+    .divider{height:2px;background:linear-gradient(90deg,var(--red),var(--yellow),var(--blue));border-radius:2px;margin:16px 0;opacity:.25}
+    .footer{text-align:center;padding:20px 16px;color:var(--muted);font-size:11px;border-top:3px solid var(--yellow);margin-top:20px;background:#fff}
     .footer strong{color:var(--red)}
 
-    .overlay{position:fixed;inset:0;background:rgba(255,255,255,.96);display:flex;
-      flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:16px}
+    .overlay{
+      position:fixed;inset:0;background:rgba(255,255,255,.96);display:flex;
+      flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:16px
+    }
     .overlay.hidden{display:none}
     .spinner{width:48px;height:48px;border:4px solid var(--border);border-top-color:var(--red);
       border-radius:50%;animation:spin .8s linear infinite}
     @keyframes spin{to{transform:rotate(360deg)}}
     .overlay-txt{font-size:13px;font-weight:600;color:var(--muted)}
-    .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+
+    .toast{
+      position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
       background:#1a1a2e;color:#fff;padding:10px 22px;border-radius:20px;
       font-size:12px;font-weight:600;z-index:9999;opacity:0;
-      transition:opacity .3s ease;pointer-events:none}
+      transition:opacity .3s ease;pointer-events:none
+    }
     .toast.show{opacity:1}
   </style>
 </head>
@@ -236,10 +296,12 @@
       <button class="btn btn-reset" onclick="resetDemo()">🔄</button>
     </div>
   </div>
+
   <div class="header-period">
     <span class="period-text">📅 <span id="periodText">—</span></span>
     <span class="badge-var" id="varBadge">— vs sem. anterior</span>
   </div>
+
   <div class="status-bar">
     <div class="file-status" id="fileStatus">Carregando...</div>
     <div class="sheets-badge">
@@ -302,13 +364,20 @@
   Dashboard Demanda × Produção · <span id="footerPeriod">—</span>
 </footer>
 
+<!-- SheetJS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
 <script>
 'use strict';
 
-/* ========= CONFIG ========= */
-const SHEETS_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT2kJGzytbQ6-WZs1fEsaD7AoCmkNkuWC626i0DU2MkY7Xixyhz3cpEfbGpIs0ZHVXHa7-Z_0IzFVud/pub?output=csv&gid=1712919962";
+/* ==========================================
+   CONFIG
+========================================== */
+const SHEETS_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT2kJGzytbQ6-WZs1fEsaD7AoCmkNkuWC626i0DU2MkY7Xixyhz3cpEfbGpIs0ZHVXHa7-Z_0IzFVud/pub?gid=1712919962&single=true&output=csv';
 
-/* ========= DEMO ========= */
+/* ==========================================
+   DEMO
+========================================== */
 const DEMO = {
   periodo:"15 jun. 2026 – 20 jun. 2026",
   variacao:-1.00,
@@ -326,13 +395,15 @@ const DEMO = {
 
 let D = JSON.parse(JSON.stringify(DEMO));
 
-/* ========= HELPERS ========= */
+/* ==========================================
+   HELPERS
+========================================== */
 const fmt  = n => Number(n||0).toLocaleString('pt-BR');
-const fmtR = n => 'R$ '+Number(n||0).toLocaleString('pt-BR');
-const fmtK = n => Number(n||0).toLocaleString('pt-BR')+' kg';
+const fmtR = n => 'R$ ' + Number(n||0).toLocaleString('pt-BR');
+const fmtK = n => Number(n||0).toLocaleString('pt-BR') + ' kg';
 const pct  = (a,b) => (b&&b>0) ? (a/b*100) : 0;
-const sign = n => n>0?'+':'';
-const bc   = n => n>0?'bs':n<0?'bd':'bi';
+const sign = n => n>0 ? '+' : '';
+const bc   = n => n>0 ? 'bs' : n<0 ? 'bd' : 'bi';
 
 function normalizeText(v){
   return String(v ?? '')
@@ -346,44 +417,47 @@ function toNum(v){
   if(v===null||v===undefined||v==='') return 0;
   if(typeof v==='number') return isNaN(v)?0:v;
 
-  let s=String(v).trim();
-  s=s.replace(/R\$/gi,'').replace(/%/g,'').replace(/\s/g,'');
+  let s = String(v).trim();
+  s = s.replace(/R\$/gi,'').replace(/%/g,'').replace(/\s/g,'');
 
   if(/^\d{1,3}(\.\d{3})*,\d+$/.test(s)){
-    s=s.replace(/\./g,'').replace(',','.');
+    s = s.replace(/\./g,'').replace(',','.');
   }else if(/^\d+,\d+$/.test(s)){
-    s=s.replace(',','.');
+    s = s.replace(',','.');
   }else{
-    s=s.replace(/,/g,'');
+    s = s.replace(/,/g,'');
   }
 
-  const n=parseFloat(s);
-  return isNaN(n)?0:n;
+  const n = parseFloat(s);
+  return isNaN(n) ? 0 : n;
 }
 
 function toDate(v){
   if(!v) return '';
 
   if(typeof v==='number' && v>40000 && v<60000){
-    const d=new Date(Math.round((v-25569)*86400*1000));
+    const d = new Date(Math.round((v-25569)*86400*1000));
     return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'});
   }
 
-  const s=String(v).trim();
+  const s = String(v).trim();
 
-  const m1=s.match(/(\d{1,2})\s+de\s+(\w+)\s+de\s+(\d{4})/i);
+  const m1 = s.match(/(\d{1,2})\s+de\s+(\w+)\s+de\s+(\d{4})/i);
   if(m1){
-    const ms={janeiro:0,fevereiro:1,marco:2,abril:3,maio:4,junho:5,julho:6,agosto:7,setembro:8,outubro:9,novembro:10,dezembro:11};
-    const mes=ms[normalizeText(m1[2]).toLowerCase()] ?? 0;
-    const d=new Date(+m1[3],mes,+m1[1]);
+    const meses = {
+      janeiro:0,fevereiro:1,marco:2,abril:3,maio:4,junho:5,
+      julho:6,agosto:7,setembro:8,outubro:9,novembro:10,dezembro:11
+    };
+    const mes = meses[normalizeText(m1[2]).toLowerCase()] ?? 0;
+    const d = new Date(+m1[3],mes,+m1[1]);
     if(!isNaN(d.getTime())){
       return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'});
     }
   }
 
-  const m2=s.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})$/);
+  const m2 = s.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})$/);
   if(m2){
-    const d=new Date(+m2[3],+m2[2]-1,+m2[1]);
+    const d = new Date(+m2[3],+m2[2]-1,+m2[1]);
     if(!isNaN(d.getTime())){
       return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'});
     }
@@ -393,7 +467,7 @@ function toDate(v){
 }
 
 function isDiaSemana(v){
-  const s=normalizeText(v);
+  const s = normalizeText(v);
   return ['SEGUNDA','TERCA','QUARTA','QUINTA','SEXTA','SABADO','DOMINGO']
     .some(d=>s.startsWith(d));
 }
@@ -403,10 +477,10 @@ function diaKey(v){
 }
 
 function ordemDia(v){
-  const s=normalizeText(v);
-  const ordem=['SEGUNDA','TERCA','QUARTA','QUINTA','SEXTA','SABADO','DOMINGO'];
-  const idx=ordem.findIndex(d=>s.startsWith(d));
-  return idx===-1?99:idx;
+  const s = normalizeText(v);
+  const ordem = ['SEGUNDA','TERCA','QUARTA','QUINTA','SEXTA','SABADO','DOMINGO'];
+  const idx = ordem.findIndex(d=>s.startsWith(d));
+  return idx===-1 ? 99 : idx;
 }
 
 function rowToText(row){
@@ -414,29 +488,29 @@ function rowToText(row){
 }
 
 function rowHasAll(row, terms){
-  const txt=rowToText(row);
+  const txt = rowToText(row);
   return terms.every(t=>txt.includes(normalizeText(t)));
 }
 
 function rowHasSome(row, terms){
-  const txt=rowToText(row);
+  const txt = rowToText(row);
   return terms.some(t=>txt.includes(normalizeText(t)));
 }
 
 function findRowIndex(rows, predicate, start=0, end=null){
-  const lim=end ?? rows.length;
+  const lim = end ?? rows.length;
   for(let i=start;i<lim;i++){
-    if(predicate(rows[i]||[], i)) return i;
+    if(predicate(rows[i]||[],i)) return i;
   }
   return -1;
 }
 
 function findRowContaining(rows, terms, start=0, end=null){
-  return findRowIndex(rows, row=>rowHasAll(row,terms), start, end);
+  return findRowIndex(rows,row=>rowHasAll(row,terms),start,end);
 }
 
 function findRowContainingSome(rows, terms, start=0, end=null){
-  return findRowIndex(rows, row=>rowHasSome(row,terms), start, end);
+  return findRowIndex(rows,row=>rowHasSome(row,terms),start,end);
 }
 
 function findNextNumericRow(rows, start, minCount=2, maxLook=6){
@@ -468,7 +542,7 @@ function allColsLike(row, patterns){
     const c=normalizeText(row[i]);
     if(!c) continue;
     for(const p of patterns){
-      const ok=typeof p==='string'
+      const ok = typeof p==='string'
         ? c.includes(normalizeText(p))
         : p.test(c);
       if(ok){
@@ -480,31 +554,43 @@ function allColsLike(row, patterns){
   return out;
 }
 
-function safe(fn){try{return fn();}catch(e){console.error(e);}}
+function safe(fn){
+  try{return fn();}
+  catch(e){console.error(e);}
+}
+
 let _tt=null;
 function showToast(msg,ms=3000){
   const t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('show');
-  clearTimeout(_tt);_tt=setTimeout(()=>t.classList.remove('show'),ms);
+  t.textContent=msg;
+  t.classList.add('show');
+  clearTimeout(_tt);
+  _tt=setTimeout(()=>t.classList.remove('show'),ms);
 }
+
 function showOverlay(txt){
   document.getElementById('overlayTxt').textContent=txt||'Carregando...';
   document.getElementById('overlay').classList.remove('hidden');
 }
-function hideOverlay(){document.getElementById('overlay').classList.add('hidden');}
+function hideOverlay(){
+  document.getElementById('overlay').classList.add('hidden');
+}
+
 function setStatus(txt,color){
   document.getElementById('statusTxt').textContent=txt;
   document.getElementById('statusDot').className='dot dot-'+color;
 }
 
-/* ========= CSV PARSER ========= */
+/* ==========================================
+   CSV
+========================================== */
 function splitCsvLine(line){
   const cols=[]; let cur=''; let inQ=false;
   for(let i=0;i<line.length;i++){
     const ch=line[i];
     if(ch === '"'){
       if(inQ && line[i+1] === '"'){ cur+='"'; i++; }
-      else inQ=!inQ;
+      else inQ = !inQ;
     }else if(ch===',' && !inQ){
       cols.push(cur); cur='';
     }else{
@@ -521,24 +607,14 @@ function parseCSV(csvText){
     .split('\n')
     .map(splitCsvLine);
 
-  console.log('=== CSV ===');
-  rows.slice(0,60).forEach((r,i)=>{
-    if((r||[]).some(v=>String(v||'').trim()!=='')) console.log(i,r);
-  });
-
   return parseRowsRobusto(rows);
 }
 
-/* ========= EXCEL PARSER ========= */
-function parseExcelWorkbook(workbook){
-  const best = chooseBestSheet(workbook);
-  if(!best) return null;
-  return parseRowsRobusto(best.rows);
-}
-
+/* ==========================================
+   WORKBOOK
+========================================== */
 function chooseBestSheet(workbook){
-  let best=null;
-  let bestScore=-1;
+  let best=null, bestScore=-1;
 
   for(const name of workbook.SheetNames){
     const rows=XLSX.utils.sheet_to_json(workbook.Sheets[name],{
@@ -560,42 +636,49 @@ function chooseBestSheet(workbook){
       best={name,rows};
     }
   }
-
-  console.log('Melhor aba:',best?.name,'score:',bestScore);
   return best;
 }
 
-/* ========= PARSER ROBUSTO ========= */
+function parseExcelWorkbook(workbook){
+  const chosen=chooseBestSheet(workbook);
+  if(!chosen) return null;
+  return parseRowsRobusto(chosen.rows);
+}
+
+/* ==========================================
+   PARSER ROBUSTO
+========================================== */
 function parseRowsRobusto(rows){
   try{
-    const periodo = parsePeriodo(rows);
-    const fin     = parseFinanceiro(rows);
-    const peso    = parsePeso(rows);
-    let diasMap   = parseDias(rows);
-    const evo     = parseEvolucao(rows,diasMap);
-    diasMap       = evo.diasMap;
+    const periodo=parsePeriodo(rows);
+    const fin=parseFinanceiro(rows);
+    const peso=parsePeso(rows);
+    let diasMap=parseDias(rows);
+    const evo=parseEvolucao(rows,diasMap);
+    diasMap=evo.diasMap;
 
-    const dias = Object.values(diasMap).sort((a,b)=>ordemDia(a.nome)-ordemDia(b.nome));
+    const dias=Object.values(diasMap).sort((a,b)=>ordemDia(a.nome)-ordemDia(b.nome));
+
     if(dias.length>0){
       dias.reduce((a,b)=>a.demanda>b.demanda?a:b,dias[0]).emoji='🏆';
     }
 
-    const dR_tot = fin?.dR_tot || 0;
-    const pR_tot = fin?.pR_tot || 0;
-    const dK_tot = peso?.dK_tot || 0;
-    const pK_tot = peso?.pK_tot || 0;
+    const dR_tot=fin?.dR_tot||0;
+    const pR_tot=fin?.pR_tot||0;
+    const dK_tot=peso?.dK_tot||0;
+    const pK_tot=peso?.pK_tot||0;
 
-    const resultado = pR_tot - dR_tot;
-    const atendimento = dR_tot>0 ? Math.round((pR_tot/dR_tot)*1000)/10 : 0;
-    const gap = pK_tot - dK_tot;
-    const gapPct = dK_tot>0 ? (gap/dK_tot*100) : 0;
+    const resultado=pR_tot-dR_tot;
+    const atendimento=dR_tot>0?Math.round((pR_tot/dR_tot)*1000)/10:0;
+    const gap=pK_tot-dK_tot;
+    const gapPct=dK_tot>0?(gap/dK_tot*100):0;
 
-    const hasCore = dR_tot>0 || dK_tot>0 || dias.length>0;
+    const hasCore=dR_tot>0||dK_tot>0||dias.length>0;
     if(!hasCore) return null;
 
-    const result = {
-      periodo: periodo.inicio ? `${periodo.inicio}${periodo.fim ? ' – '+periodo.fim : ''}` : '—',
-      variacao: evo.variacao || 0,
+    return{
+      periodo:periodo.inicio?`${periodo.inicio}${periodo.fim?' – '+periodo.fim:''}`:'—',
+      variacao:evo.variacao||0,
       valor:{
         demanda:dR_tot,
         producao:pR_tot,
@@ -614,16 +697,12 @@ function parseRowsRobusto(rows){
       },
       dias
     };
-
-    console.log('RESULTADO FINAL:', result);
-    return result;
   }catch(err){
     console.error('parseRowsRobusto:',err);
     return null;
   }
 }
 
-/* ========= BLOCOS ========= */
 function parsePeriodo(rows){
   const idx=findRowContainingSome(rows,['PERIODO'],0);
   if(idx===-1) return {inicio:'',fim:''};
@@ -634,9 +713,9 @@ function parsePeriodo(rows){
     return n && !n.includes('PERIODO') && !n.includes('COMPARATIVO');
   });
 
-  return {
-    inicio: vals[0] ? toDate(vals[0]) : '',
-    fim:    vals[1] ? toDate(vals[1]) : ''
+  return{
+    inicio:vals[0]?toDate(vals[0]):'',
+    fim:vals[1]?toDate(vals[1]):''
   };
 }
 
@@ -648,29 +727,29 @@ function parseFinanceiro(rows){
 
   if(idx===-1) return null;
 
-  const subHeaderRow = rows[idx+1] || [];
-  const dataRowIx = findNextNumericRow(rows, idx+1, 4, 4);
-  const dataRow = dataRowIx!==-1 ? rows[dataRowIx] : [];
+  const subHeaderRow=rows[idx+1]||[];
+  const dataRowIx=findNextNumericRow(rows,idx+1,4,4);
+  const dataRow=dataRowIx!==-1?rows[dataRowIx]:[];
 
-  const colAuto = firstColLike(subHeaderRow,['AUTOMATICO']);
-  const colDig  = firstColLike(subHeaderRow,['DIGITADO']);
-  const colTots = allColsLike(subHeaderRow,['TOTAL']);
+  const colAuto=firstColLike(subHeaderRow,['AUTOMATICO']);
+  const colDig=firstColLike(subHeaderRow,['DIGITADO']);
+  const colTots=allColsLike(subHeaderRow,['TOTAL']);
 
-  let dR_auto = toNum(dataRow[colAuto>=0?colAuto:0]);
-  let dR_dig  = toNum(dataRow[colDig >=0?colDig :1]);
-  let dR_tot  = toNum(dataRow[colTots[0] ?? 2]);
-  let pR_tot  = toNum(dataRow[colTots[1] ?? 5]);
-  let pR_dig  = toNum(dataRow[6]);
-  let pR_auto = toNum(dataRow[7]);
+  let dR_auto=toNum(dataRow[colAuto>=0?colAuto:0]);
+  let dR_dig=toNum(dataRow[colDig>=0?colDig:1]);
+  let dR_tot=toNum(dataRow[colTots[0]??2]);
+  let pR_tot=toNum(dataRow[colTots[1]??5]);
+  let pR_dig=toNum(dataRow[6]);
+  let pR_auto=toNum(dataRow[7]);
 
   if(dR_tot===0 || pR_tot===0){
     const nums=dataRow.map(toNum).filter(n=>n>1000);
     if(nums.length>=6){
       dR_auto=nums[0]||0;
-      dR_dig =nums[1]||0;
-      dR_tot =nums[2]||0;
-      pR_tot =nums[5]||0;
-      pR_dig =nums[6]||0;
+      dR_dig=nums[1]||0;
+      dR_tot=nums[2]||0;
+      pR_tot=nums[5]||0;
+      pR_dig=nums[6]||0;
       pR_auto=nums[7]||0;
     }
   }
@@ -686,29 +765,29 @@ function parsePeso(rows){
 
   if(idx===-1) return null;
 
-  const subHeaderRow = rows[idx+1] || [];
-  const dataRowIx = findNextNumericRow(rows, idx+1, 4, 4);
-  const dataRow = dataRowIx!==-1 ? rows[dataRowIx] : [];
+  const subHeaderRow=rows[idx+1]||[];
+  const dataRowIx=findNextNumericRow(rows,idx+1,4,4);
+  const dataRow=dataRowIx!==-1?rows[dataRowIx]:[];
 
-  const colAuto = firstColLike(subHeaderRow,['AUTOMATICO']);
-  const colDig  = firstColLike(subHeaderRow,['DIGITADO']);
-  const colTots = allColsLike(subHeaderRow,['TOTAL']);
+  const colAuto=firstColLike(subHeaderRow,['AUTOMATICO']);
+  const colDig=firstColLike(subHeaderRow,['DIGITADO']);
+  const colTots=allColsLike(subHeaderRow,['TOTAL']);
 
-  let dK_auto = toNum(dataRow[colAuto>=0?colAuto:0]);
-  let dK_dig  = toNum(dataRow[colDig >=0?colDig :1]);
-  let dK_tot  = toNum(dataRow[colTots[0] ?? 2]);
-  let pK_tot  = toNum(dataRow[colTots[1] ?? 5]);
-  let pK_dig  = toNum(dataRow[6]);
-  let pK_auto = toNum(dataRow[7]);
+  let dK_auto=toNum(dataRow[colAuto>=0?colAuto:0]);
+  let dK_dig=toNum(dataRow[colDig>=0?colDig:1]);
+  let dK_tot=toNum(dataRow[colTots[0]??2]);
+  let pK_tot=toNum(dataRow[colTots[1]??5]);
+  let pK_dig=toNum(dataRow[6]);
+  let pK_auto=toNum(dataRow[7]);
 
   if(dK_tot===0 || pK_tot===0){
     const nums=dataRow.map(toNum).filter(n=>n>100 && n<10000000);
     if(nums.length>=6){
       dK_auto=nums[0]||0;
-      dK_dig =nums[1]||0;
-      dK_tot =nums[2]||0;
-      pK_tot =nums[5]||0;
-      pK_dig =nums[6]||0;
+      dK_dig=nums[1]||0;
+      dK_tot=nums[2]||0;
+      pK_tot=nums[5]||0;
+      pK_dig=nums[6]||0;
       pK_auto=nums[7]||0;
     }
   }
@@ -719,27 +798,28 @@ function parsePeso(rows){
 function parseDias(rows){
   const diasMap={};
 
-  const idxEvo = findRowContainingSome(rows,['EVOLUCAO'],0);
-  const idxDia = findRowContaining(rows,['DIA DA SEMANA','DEMANDA','PRODUCAO'],0,idxEvo===-1?null:idxEvo);
+  const idxEvo=findRowContainingSome(rows,['EVOLUCAO'],0);
+  const idxDia=findRowContaining(rows,['DIA DA SEMANA','DEMANDA','PRODUCAO'],0,idxEvo===-1?null:idxEvo);
 
   if(idxDia===-1) return diasMap;
 
-  const header = rows[idxDia] || [];
-  const colDem = firstColLike(header,['DEMANDA']);
-  const colProd= firstColLike(header,['PRODUCAO']);
-  const colCar = firstColLike(header,['CARROS']);
+  const header=rows[idxDia]||[];
+  const colDem=firstColLike(header,['DEMANDA']);
+  const colProd=firstColLike(header,['PRODUCAO']);
+  const colCarros=firstColLike(header,['CARROS']);
 
   for(let i=idxDia+1;i<rows.length;i++){
     const row=rows[i]||[];
+
     if(isDiaSemana(row[0])){
       const nome=String(row[0]).trim();
       const key=diaKey(nome);
       diasMap[key]={
         nome,
         emoji:'',
-        demanda: toNum(row[colDem>=0?colDem:1]),
-        producao: toNum(row[colProd>=0?colProd:2]),
-        carros: toNum(row[colCar>=0?colCar:3]),
+        demanda:toNum(row[colDem>=0?colDem:1]),
+        producao:toNum(row[colProd>=0?colProd:2]),
+        carros:toNum(row[colCarros>=0?colCarros:3]),
         ant:0
       };
       continue;
@@ -761,9 +841,9 @@ function parseEvolucao(rows,diasMap){
 
   const header=rows[headerIdx]||[];
   const totalCols=allColsLike(header,['TOTAL']);
-  const colTotAtual=totalCols[0] ?? 3;
-  const colTotAnt  =totalCols[1] ?? 4;
-  const colPct     =firstColLike(header,['EVOLUCAO']) >=0 ? firstColLike(header,['EVOLUCAO']) : 7;
+  const colTotAtual=totalCols[0]??3;
+  const colTotAnt=totalCols[1]??4;
+  const colPct=firstColLike(header,['EVOLUCAO'])>=0?firstColLike(header,['EVOLUCAO']):7;
 
   let variacao=0;
 
@@ -797,89 +877,146 @@ function parseEvolucao(rows,diasMap){
   return {variacao,diasMap};
 }
 
-/* ========= SHEETS ========= */
+/* ==========================================
+   LOAD SHEETS
+========================================== */
 async function loadFromSheets(){
   showOverlay('Buscando dados do Google Sheets...');
   setStatus('Sincronizando...','yellow');
   document.getElementById('fileStatus').textContent='⏳ Buscando dados...';
 
   try{
-    const url=SHEETS_CSV+'&t='+Date.now();
-    const res=await fetch(url);
-    if(!res.ok) throw new Error(`HTTP ${res.status}`);
-    const csv=await res.text();
+    const url = SHEETS_CSV + '&cacheBust=' + Date.now();
 
-    const parsed=parseCSV(csv);
+    const res = await fetch(url,{
+      method:'GET',
+      cache:'no-store',
+      mode:'cors'
+    });
+
+    if(!res.ok){
+      throw new Error(`HTTP ${res.status}`);
+    }
+
+    const text = await res.text();
+
+    if(!text || text.trim().length < 20){
+      throw new Error('CSV vazio');
+    }
+
+    const lower = text.toLowerCase();
+    if(lower.includes('<html') || lower.includes('<!doctype html')){
+      throw new Error('Resposta HTML em vez de CSV');
+    }
+
+    const upper = text.toUpperCase();
+    if(
+      !upper.includes('DEMANDA') &&
+      !upper.includes('PRODU') &&
+      !upper.includes('DIA DA SEMANA') &&
+      !upper.includes('EVOLU')
+    ){
+      throw new Error('Conteúdo do CSV não reconhecido');
+    }
+
+    console.log('=== CSV RECEBIDO ===');
+    console.log(text.substring(0,1500));
+
+    const parsed = parseCSV(text);
+
     if(parsed){
-      D=parsed;
+      D = parsed;
       renderAll();
-      const now=new Date().toLocaleTimeString('pt-BR');
+      const now = new Date().toLocaleTimeString('pt-BR');
       document.getElementById('fileStatus').textContent=`✅ Atualizado às ${now} via Google Sheets`;
       setStatus('Google Sheets · ao vivo','green');
       showToast(`✅ Dados atualizados às ${now}`);
     }else{
-      throw new Error('Sem dados compatíveis');
+      throw new Error('Parser não reconheceu o conteúdo');
     }
+
   }catch(err){
     console.error('loadFromSheets:',err);
-    document.getElementById('fileStatus').textContent=`⚠️ ${err.message}`;
+
+    let msg = err.message || 'Erro ao buscar dados';
+    if(msg === 'Failed to fetch'){
+      msg = 'Falha de conexão com o Google Sheets';
+    }
+
+    document.getElementById('fileStatus').textContent=`⚠️ ${msg}`;
     setStatus('Sheets offline','red');
-    showToast(`⚠️ ${err.message}`);
-    D=JSON.parse(JSON.stringify(DEMO));
+    showToast(`⚠️ ${msg}`);
+
+    D = JSON.parse(JSON.stringify(DEMO));
     renderAll();
   }finally{
     hideOverlay();
   }
 }
 
-/* ========= EXCEL ========= */
+/* ==========================================
+   LOAD EXCEL
+========================================== */
 function loadFile(event){
   const file=event.target.files[0];
   if(!file) return;
 
   showOverlay(`Lendo: ${file.name}...`);
 
-  const ensureXLSX = () => new Promise((resolve,reject)=>{
-    if(typeof XLSX!=='undefined') return resolve();
-    const s=document.createElement('script');
-    s.src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
-    s.onload=resolve;
-    s.onerror=()=>reject(new Error('Erro ao carregar SheetJS'));
-    document.head.appendChild(s);
-  });
+  const reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      const wb=XLSX.read(e.target.result,{type:'binary',raw:true});
+      const parsed=parseExcelWorkbook(wb);
 
-  ensureXLSX().then(()=>{
-    const reader=new FileReader();
-    reader.onload=function(e){
-      try{
-        const wb=XLSX.read(e.target.result,{type:'binary',raw:true});
-        const parsed=parseExcelWorkbook(wb);
-        if(parsed){
-          D=parsed;
-          renderAll();
-          document.getElementById('fileStatus').textContent=`✅ ${file.name} carregado`;
-          setStatus('Excel local','yellow');
-          showToast('✅ Excel carregado com sucesso');
-        }else{
-          throw new Error('Sem dados compatíveis no Excel');
-        }
-      }catch(err){
-        console.error('loadFile:',err);
-        document.getElementById('fileStatus').textContent=`❌ ${err.message}`;
-        showToast(`❌ ${err.message}`);
-      }finally{
-        hideOverlay();
-        event.target.value='';
+      if(parsed){
+        D=parsed;
+        renderAll();
+        document.getElementById('fileStatus').textContent=`✅ ${file.name} carregado`;
+        setStatus('Excel local','yellow');
+        showToast('✅ Excel carregado com sucesso');
+      }else{
+        throw new Error('Sem dados compatíveis no Excel');
       }
-    };
-    reader.readAsBinaryString(file);
-  }).catch(err=>{
-    hideOverlay();
-    showToast(`❌ ${err.message}`);
-  });
+    }catch(err){
+      console.error('loadFile:',err);
+      document.getElementById('fileStatus').textContent=`❌ ${err.message}`;
+      showToast(`❌ ${err.message}`);
+    }finally{
+      hideOverlay();
+      event.target.value='';
+    }
+  };
+  reader.readAsBinaryString(file);
 }
 
-/* ========= RENDERS ========= */
+/* ==========================================
+   STATUS / ACTIONS
+========================================== */
+function setStatus(txt,color){
+  document.getElementById('statusTxt').textContent=txt;
+  document.getElementById('statusDot').className='dot dot-'+color;
+}
+
+function switchTab(name,btn){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function resetDemo(){
+  D=JSON.parse(JSON.stringify(DEMO));
+  renderAll();
+  document.getElementById('fileStatus').textContent='Exibindo dados de demonstração';
+  setStatus('Demo','yellow');
+  showToast('🔄 Dados de demonstração restaurados');
+}
+
+/* ==========================================
+   RENDERS
+========================================== */
 function renderHeader(){
   document.getElementById('periodText').textContent=D.periodo||'—';
   document.getElementById('footerPeriod').textContent=D.periodo||'—';
@@ -1106,40 +1243,7 @@ function renderInsights(){
     </div>`).join('');
 }
 
-function renderHeader(){
-  document.getElementById('periodText').textContent=D.periodo||'—';
-  document.getElementById('footerPeriod').textContent=D.periodo||'—';
-  const v=D.variacao||0;
-  document.getElementById('varBadge').textContent=(v<0?'▼ ':'▲ ')+Math.abs(v).toFixed(2)+'% vs sem. anterior';
-}
-
-function renderAll(){
-  renderHeader();
-  renderKpiValor();
-  renderKpiPeso();
-  renderRecords();
-  renderDayCards();
-  renderMix();
-  renderEvolucao();
-  renderInsights();
-}
-
-function switchTab(name,btn){
-  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById('tab-'+name).classList.add('active');
-  btn.classList.add('active');
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-
-function resetDemo(){
-  D=JSON.parse(JSON.stringify(DEMO));
-  renderAll();
-  document.getElementById('fileStatus').textContent='Exibindo dados de demonstração';
-  setStatus('Demo','yellow');
-  showToast('🔄 Dados de demonstração restaurados');
-}
-
+/* ========= INIT ========= */
 window.addEventListener('load',loadFromSheets);
 </script>
 </body>
