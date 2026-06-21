@@ -1,0 +1,1896 @@
+
+                        <!DOCTYPE html>
+                        <html lang="en">
+                        <head>
+                            <meta charset="UTF-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+							<style>
+								body {
+									background-color: white; /* Ensure the iframe has a white background */
+								}
+
+								
+							</style>
+                        </head>
+                        <body>
+                            <!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Arco-Mix — Demanda vs Produção</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    :root{
+      --red:#CC1F1F;--red-dark:#a01818;--red-light:#e53935;
+      --yellow:#F5C800;--yellow-dark:#c9a800;--yellow-soft:#ffd94d;
+      --blue:#1B4FBF;--blue-dark:#0d3a99;--blue-light:#2962ff;--blue-strong:#123fb3;
+      --green:#2e7d32;--green-light:#43a047;
+      --bg:#f5f6fa;--card:#fff;--text:#1a1a2e;--muted:#6b7280;
+      --border:#e5e7eb;--shadow:0 2px 12px rgba(0,0,0,.08);
+      --shadow-lg:0 8px 32px rgba(0,0,0,.14);
+      --radius:16px;--radius-sm:10px;
+      --transition:all .3s cubic-bezier(.4,0,.2,1)
+    }
+    html{scroll-behavior:smooth}
+    body{
+      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+      background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden
+    }
+
+    .header{
+      background:
+        radial-gradient(circle at 20% 20%, rgba(245,200,0,.28), transparent 22%),
+        radial-gradient(circle at 75% 25%, rgba(27,79,191,.22), transparent 24%),
+        linear-gradient(135deg,#0b2d82 0%,#1340b1 34%,#1B4FBF 62%,#2f6cff 100%);
+      padding:12px 20px 16px;
+      position:sticky;
+      top:0;
+      z-index:100;
+      box-shadow:0 10px 28px rgba(14,52,145,.35);
+      border-bottom:3px solid rgba(255,217,77,.65)
+    }
+
+    .header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+    .header-brand{display:flex;align-items:center;gap:14px}
+    .logo-wrap{
+      display:flex;flex-direction:column;align-items:center;
+      background:rgba(255,255,255,.12);
+      border-radius:12px;padding:6px 10px;
+      backdrop-filter:blur(8px);
+      border:1px solid rgba(255,255,255,.2);
+      flex-shrink:0
+    }
+    .logo-svg{width:72px;height:38px}
+    .logo-text{
+      font-size:13px;font-weight:900;letter-spacing:1px;color:#fff;
+      text-shadow:1px 1px 0 var(--blue-dark),-1px -1px 0 var(--blue-dark),
+      1px -1px 0 var(--blue-dark),-1px 1px 0 var(--blue-dark),0 2px 4px rgba(0,0,0,.4);
+      line-height:1;margin-top:2px
+    }
+    .logo-sub{
+      font-size:7px;font-weight:600;color:rgba(255,255,255,.86);
+      letter-spacing:1.5px;text-transform:uppercase;margin-top:1px
+    }
+
+    .header-actions{
+      display:flex;gap:7px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end
+    }
+    .btn{
+      padding:9px 14px;border:none;border-radius:var(--radius-sm);cursor:pointer;
+      font-size:12px;font-weight:700;transition:var(--transition);
+      display:flex;align-items:center;gap:5px;white-space:nowrap
+    }
+    .btn-sheets{background:#fff;color:var(--blue-dark)}
+    .btn-sheets:hover{background:#e8f0fe}
+    .btn-upload{background:rgba(255,255,255,.14);color:#fff;border:1.5px solid rgba(255,255,255,.35)}
+    .btn-upload:hover{background:rgba(255,255,255,.24)}
+    .btn-reset{background:var(--yellow);color:var(--blue-dark)}
+    .btn-reset:hover{background:#ffe033}
+    #fileInput{display:none}
+
+    .header-period{
+      display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px
+    }
+    .period-text{
+      color:rgba(255,255,255,.95);font-size:12px;display:flex;align-items:center;gap:5px
+    }
+    .badge-var{
+      padding:4px 11px;border-radius:20px;font-size:11px;font-weight:700;
+      background:rgba(255,255,255,.18);
+      color:#fff;
+      border:1px solid rgba(255,255,255,.30)
+    }
+    .status-bar{
+      display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-top:6px
+    }
+    .file-status{color:rgba(255,255,255,.78);font-size:10px}
+    .sheets-badge{
+      display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;
+      font-size:10px;font-weight:700;background:rgba(255,255,255,.12);color:#fff;
+      border:1px solid rgba(255,255,255,.22)
+    }
+    .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+    .dot-green{background:#4caf50;animation:pulse 1.5s infinite}
+    .dot-yellow{background:var(--yellow)}
+    .dot-red{background:#ef5350}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+    .tabs-wrapper{
+      background:#fff;border-bottom:3px solid var(--yellow);
+      position:sticky;top:116px;z-index:99;box-shadow:0 2px 8px rgba(0,0,0,.07)
+    }
+    .tabs{display:flex;overflow-x:auto;scrollbar-width:none;padding:0 8px}
+    .tabs::-webkit-scrollbar{display:none}
+    .tab{
+      padding:12px 20px;border:none;background:none;cursor:pointer;font-size:12px;font-weight:700;
+      color:var(--muted);white-space:nowrap;border-bottom:3px solid transparent;
+      margin-bottom:-3px;transition:var(--transition)
+    }
+    .tab.active{color:var(--red);border-bottom-color:var(--red)}
+    .tab:hover:not(.active){color:var(--blue);background:rgba(27,79,191,.04)}
+
+    .main{padding:16px;max-width:1400px;margin:0 auto}
+    .tab-content{display:none}
+    .tab-content.active{display:block;animation:fadeIn .3s ease}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+    .g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+    .g3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:14px}
+    .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:14px}
+    .web-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+    .mix-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .days-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+    .ins-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+    .rec-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .dd-tables{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+    .dd-top-cards{
+      display:flex;
+      justify-content:center;
+      align-items:stretch;
+      gap:14px;
+      flex-wrap:wrap;
+      margin-bottom:14px;
+    }
+    .dd-top-cards .card{
+      width:280px;
+      max-width:100%;
+    }
+
+    @media (max-width: 900px){
+      .dd-top-cards{
+        justify-content:center;
+      }
+      .dd-top-cards .card{
+        width:calc(50% - 10px);
+        min-width:240px;
+      }
+    }
+
+    @media (max-width: 560px){
+      .dd-top-cards .card{
+        width:100%;
+      }
+    }
+
+    @media(max-width:1000px){
+      .dd-tables{grid-template-columns:1fr}
+    }
+    @media(max-width:900px){
+      .g4{grid-template-columns:1fr 1fr}
+      .web-row,.mix-grid{grid-template-columns:1fr}
+    }
+    @media(max-width:500px){
+      .g2,.g3,.g4{grid-template-columns:1fr 1fr}
+      .header{padding:12px 14px 16px}
+      .tabs-wrapper{top:132px}
+    }
+    @media(min-width:1200px){
+      .main{padding:20px 32px}
+    }
+
+    .card{
+      background:var(--card);border-radius:var(--radius);padding:16px;
+      box-shadow:var(--shadow);border:1px solid var(--border);transition:var(--transition)
+    }
+    .card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+    .card.span2{grid-column:1/-1}
+    .card.blue-grad{background:linear-gradient(135deg,var(--blue),var(--blue-dark));color:#fff}
+    .card.blue-grad .lbl{color:rgba(255,255,255,.8)}
+    .card.green-grad{
+      background:linear-gradient(135deg,#2e7d32,#43a047);
+      color:#fff;border:none
+    }
+    .card.green-grad .lbl,.card.green-grad .sub{color:rgba(255,255,255,.88)}
+    .card.red-grad{
+      background:linear-gradient(135deg,#c62828,#e53935);
+      color:#fff;border:none
+    }
+    .card.red-grad .lbl,.card.red-grad .sub{color:rgba(255,255,255,.88)}
+
+    .sec-hd{
+      font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;
+      color:var(--muted);margin-bottom:10px;display:flex;align-items:center;gap:5px
+    }
+    .lbl{
+      font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;
+      letter-spacing:.5px;margin-bottom:5px
+    }
+    .val{font-size:22px;font-weight:800;color:var(--text);line-height:1;margin-bottom:3px}
+    .sub{font-size:11px;color:var(--muted);line-height:1.6}
+    .badge{
+      display:inline-flex;align-items:center;gap:3px;padding:3px 9px;
+      border-radius:20px;font-size:10px;font-weight:700;margin-top:5px
+    }
+    .bs{background:#e8f5e9;color:#2e7d32}
+    .bd{background:#ffebee;color:#c62828}
+    .bw{background:#fff8e1;color:#f57f17}
+    .bi{background:#e3f2fd;color:#1565c0}
+    .ring{
+      width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,.2);
+      display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;
+      margin:8px auto;border:3px solid rgba(255,255,255,.45)
+    }
+
+    .prog{margin-top:10px}
+    .prog-lbl{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:3px}
+    .bar{height:8px;background:var(--border);border-radius:4px;overflow:hidden}
+    .bar-lg{height:12px;background:var(--border);border-radius:6px;overflow:hidden}
+    .fill{height:100%;border-radius:4px;transition:width 1.2s cubic-bezier(.4,0,.2,1)}
+    .fr{background:linear-gradient(90deg,var(--red),var(--red-light))}
+    .fb{background:linear-gradient(90deg,var(--blue),var(--blue-light))}
+    .fg{background:linear-gradient(90deg,#2e7d32,#43a047)}
+    .fo{background:linear-gradient(90deg,#e65100,#ff6d00)}
+
+    .day-card{
+      background:var(--card);border-radius:var(--radius);padding:16px;
+      box-shadow:var(--shadow);border:1px solid var(--border);border-left:4px solid var(--blue)
+    }
+    .day-card.ok{border-left-color:#2e7d32}
+    .day-card.nok{border-left-color:var(--red)}
+    .day-card.np{border-left-color:var(--yellow-dark)}
+    .day-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+    .day-nm{font-weight:800;font-size:15px}
+    .day-bdg{padding:4px 10px;border-radius:20px;font-size:10px;font-weight:700}
+    .day-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
+    .dg-item{text-align:center;padding:10px 4px;background:var(--bg);border-radius:var(--radius-sm)}
+    .dg-lbl{font-size:9px;color:var(--muted);font-weight:700;text-transform:uppercase;margin-bottom:4px}
+    .dg-val{font-size:16px;font-weight:800}
+    .dg-sub{font-size:9px;color:var(--muted)}
+    .hbar{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+    .hbar-lbl{font-size:10px;color:var(--muted);width:55px;text-align:right;flex-shrink:0;font-weight:600}
+    .hbar-track{flex:1;height:10px;background:var(--border);border-radius:5px;overflow:hidden}
+    .hbar-fill{height:100%;border-radius:5px;transition:width 1s ease}
+    .hbar-val{font-size:10px;font-weight:700;width:85px;flex-shrink:0}
+    .pills{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px}
+    .pill{padding:3px 9px;border-radius:20px;font-size:10px;font-weight:600}
+
+    .donut-wrap{display:flex;flex-direction:column;align-items:center;gap:16px}
+    @media(min-width:500px){.donut-wrap{flex-direction:row;justify-content:space-around}}
+    .donut-svg{width:130px;height:130px}
+    .d-legend{display:flex;flex-direction:column;gap:10px;flex:1}
+    .d-item{display:flex;align-items:center;gap:8px;font-size:12px}
+    .d-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0}
+    .d-lbl{color:var(--muted);flex:1}
+    .d-val{font-weight:700}
+
+    .evo-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
+    .evo-row:last-child{border-bottom:none}
+    .evo-day{font-weight:700;font-size:13px;width:70px;flex-shrink:0}
+    .evo-bars{flex:1}
+    .evo-br{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+    .evo-lbl{font-size:10px;color:var(--muted);width:48px;text-align:right;flex-shrink:0}
+    .evo-track{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden}
+    .evo-fill{height:100%;border-radius:4px}
+    .evo-vals{width:130px;text-align:right;flex-shrink:0}
+    .evo-cur{font-size:13px;font-weight:700;color:var(--red)}
+    .evo-prv{font-size:11px;color:var(--muted)}
+    .evo-pct{font-size:11px;font-weight:700;display:inline-block;padding:2px 7px;border-radius:10px;margin-top:2px}
+    .sum-row{
+      display:flex;align-items:center;justify-content:space-between;background:var(--bg);
+      border-radius:var(--radius-sm);padding:12px 16px;margin-top:10px
+    }
+
+    .ins{display:flex;gap:12px;align-items:flex-start;padding:14px;border-radius:var(--radius-sm)}
+    .ins-icon{font-size:24px;flex-shrink:0}
+    .ins-title{font-weight:700;font-size:13px;margin-bottom:4px}
+    .ins-desc{font-size:11px;color:var(--muted);line-height:1.6}
+
+    .rec-card{
+      background:linear-gradient(135deg,rgba(245,200,0,.18),rgba(245,200,0,.06));
+      border:1.5px solid var(--yellow);border-radius:var(--radius-sm);padding:16px;text-align:center
+    }
+    .rec-icon{font-size:22px;margin-bottom:4px}
+    .rec-lbl{font-size:10px;color:var(--yellow-dark);font-weight:700;text-transform:uppercase}
+    .rec-val{font-size:22px;font-weight:800;color:var(--red-dark)}
+    .rec-day{font-size:11px;color:var(--muted);margin-top:2px}
+
+    .table-wrap{overflow:auto}
+    table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:12px;
+      background:#fff;
+      border-radius:12px;
+      overflow:hidden
+    }
+    th,td{
+      padding:10px 8px;
+      border-bottom:1px solid var(--border);
+      text-align:left
+    }
+    th{
+      background:#f0f5ff;
+      color:#30405e;
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.4px
+    }
+    tr:hover td{background:#fafcff}
+
+    .sec-title{font-size:16px;font-weight:800;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+    .divider{height:2px;background:linear-gradient(90deg,var(--red),var(--yellow),var(--blue));border-radius:2px;margin:16px 0;opacity:.25}
+    .footer{text-align:center;padding:20px 16px;color:var(--muted);font-size:11px;border-top:3px solid var(--yellow);margin-top:20px;background:#fff}
+    .footer strong{color:var(--red)}
+
+    .overlay{
+      position:fixed;inset:0;background:rgba(255,255,255,.96);display:flex;
+      flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:16px
+    }
+    .overlay.hidden{display:none}
+    .spinner{
+      width:48px;height:48px;border:4px solid var(--border);border-top-color:var(--red);
+      border-radius:50%;animation:spin .8s linear infinite
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .overlay-txt{font-size:13px;font-weight:600;color:var(--muted)}
+    .toast{
+      position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+      background:#1a1a2e;color:#fff;padding:10px 22px;border-radius:20px;
+      font-size:12px;font-weight:600;z-index:9999;opacity:0;
+      transition:opacity .3s ease;pointer-events:none
+    }
+    .toast.show{opacity:1}
+  </style>
+</head>
+<body>
+
+<div class="overlay" id="overlay">
+  <svg width="80" height="60" viewBox="0 0 160 80" fill="none">
+    <path d="M8 72 A72 72 0 0 1 152 72" stroke="#CC1F1F" stroke-width="18" fill="none" stroke-linecap="round"/>
+    <path d="M22 72 A58 58 0 0 1 138 72" stroke="#F5C800" stroke-width="15" fill="none" stroke-linecap="round"/>
+    <path d="M38 72 A42 42 0 0 1 122 72" stroke="#1B4FBF" stroke-width="13" fill="none" stroke-linecap="round"/>
+  </svg>
+  <div class="spinner"></div>
+  <div class="overlay-txt" id="overlayTxt">Carregando dados...</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<header class="header">
+  <div class="header-top">
+    <div class="header-brand">
+      <div class="logo-wrap">
+        <svg class="logo-svg" viewBox="0 0 160 80" fill="none">
+          <path d="M10 74 A70 70 0 0 1 150 74" stroke="#7a0000" stroke-width="20" fill="none" stroke-linecap="round" opacity="0.3"/>
+          <path d="M8 72 A72 72 0 0 1 152 72" stroke="#CC1F1F" stroke-width="18" fill="none" stroke-linecap="round"/>
+          <path d="M20 52 A72 72 0 0 1 90 36" stroke="rgba(255,120,120,0.4)" stroke-width="5" fill="none" stroke-linecap="round"/>
+          <path d="M24 74 A56 56 0 0 1 136 74" stroke="#7a6000" stroke-width="17" fill="none" stroke-linecap="round" opacity="0.3"/>
+          <path d="M22 72 A58 58 0 0 1 138 72" stroke="#F5C800" stroke-width="15" fill="none" stroke-linecap="round"/>
+          <path d="M34 57 A58 58 0 0 1 90 44" stroke="rgba(255,240,120,0.5)" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <path d="M40 74 A42 42 0 0 1 120 74" stroke="#001060" stroke-width="15" fill="none" stroke-linecap="round" opacity="0.3"/>
+          <path d="M38 72 A42 42 0 0 1 122 72" stroke="#1B4FBF" stroke-width="13" fill="none" stroke-linecap="round"/>
+          <path d="M48 63 A42 42 0 0 1 90 53" stroke="rgba(100,160,255,0.5)" stroke-width="4" fill="none" stroke-linecap="round"/>
+        </svg>
+        <div class="logo-text">ARCO-MIX</div>
+        <div class="logo-sub">O Supermercado da Família</div>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-sheets" onclick="loadFromSheets()">📡 Atualizar Sheets</button>
+      <label class="btn btn-upload" for="fileInput">📂 Excel</label>
+      <input type="file" id="fileInput" accept=".xlsx,.xls" onchange="loadFile(event)">
+      <button class="btn btn-reset" onclick="resetDemo()">🔄</button>
+    </div>
+  </div>
+
+  <div class="header-period">
+    <span class="period-text">📅 <span id="periodText">—</span></span>
+    <span class="badge-var" id="varBadge">— vs sem. anterior</span>
+  </div>
+
+  <div class="status-bar">
+    <div class="file-status" id="fileStatus">Carregando...</div>
+    <div class="sheets-badge">
+      <span class="dot dot-yellow" id="statusDot"></span>
+      <span id="statusTxt">Conectando...</span>
+    </div>
+  </div>
+</header>
+
+<div class="tabs-wrapper">
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('resumo',this)">📊 Semana</button>
+    <button class="tab" onclick="switchTab('pordia',this)">📅 Por Dia</button>
+    <button class="tab" onclick="switchTab('mix',this)">🔄 Comparativo</button>
+    <button class="tab" onclick="switchTab('evolucao',this)">📈 Evolução da Demanda</button>
+    <button class="tab" onclick="switchTab('insights',this)">💡 Insights</button>
+    <button class="tab" onclick="switchTab('demandadia',this)">📦 Demanda Dia</button>
+  </div>
+</div>
+
+<main class="main">
+  <div class="tab-content active" id="tab-resumo">
+    <div class="web-row">
+      <div>
+        <p class="sec-hd">💰 Valor (R$)</p>
+        <div class="g2" id="kpiValor"></div>
+      </div>
+      <div>
+        <p class="sec-hd">⚖️ Peso (kg)</p>
+        <div id="kpiPeso"></div>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <p class="sec-title">🏆 Recordes da Semana</p>
+    <div class="rec-grid" id="records"></div>
+  </div>
+
+  <div class="tab-content" id="tab-pordia">
+    <p class="sec-title">📅 Análise Diária</p>
+    <div class="days-grid" id="dayCards"></div>
+  </div>
+
+  <div class="tab-content" id="tab-mix">
+    <p class="sec-title">🔄 Comparativo Automático × Digitado</p>
+    <div class="mix-grid" id="mixContent"></div>
+  </div>
+
+  <div class="tab-content" id="tab-evolucao">
+    <p class="sec-title">📈 Evolução da Demanda</p>
+    <div class="card" id="evolucaoContent"></div>
+  </div>
+
+  <div class="tab-content" id="tab-insights">
+    <p class="sec-title">💡 Insights da Semana</p>
+    <div class="ins-grid" id="insightsContent"></div>
+  </div>
+
+  <div class="tab-content" id="tab-demandadia">
+    <div id="ddTitleWrap"></div>
+
+    <div class="dd-top-cards" id="ddTopCards"></div>
+
+    <div class="g3" id="ddSecondCards"></div>
+
+    <div class="mix-grid" style="margin-top:16px">
+      <div class="card">
+        <div style="font-size:14px;font-weight:800;margin-bottom:16px">⚖️ Participação em kg</div>
+        <div id="ddKgMix"></div>
+      </div>
+      <div class="card">
+        <div style="font-size:14px;font-weight:800;margin-bottom:16px">💰 Participação em R$</div>
+        <div id="ddValueMix"></div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="dd-tables">
+      <div class="card">
+        <div style="font-size:14px;font-weight:800;margin-bottom:14px">🤖 Ressuprimento Automático</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Categoria</th>
+                <th>Gestor</th>
+                <th>Itens</th>
+                <th>Peso (kg)</th>
+                <th>Total Pedido (R$)</th>
+              </tr>
+            </thead>
+            <tbody id="ddAutoTable"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="font-size:14px;font-weight:800;margin-bottom:14px">⌨️ Ressuprimento Digitado</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Categoria</th>
+                <th>Gestor</th>
+                <th>Itens</th>
+                <th>Peso (kg)</th>
+                <th>Total Pedido (R$)</th>
+              </tr>
+            </thead>
+            <tbody id="ddDigTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  <strong>ARCO-MIX</strong> — O Supermercado da Família<br>
+  Dashboard Demanda × Produção · <span id="footerPeriod">—</span>
+</footer>
+
+<script>
+'use strict';
+
+/* CONFIG */
+const SHEETS_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT2kJGzytbQ6-WZs1fEsaD7AoCmkNkuWC626i0DU2MkY7Xixyhz3cpEfbGpIs0ZHVXHa7-Z_0IzFVud/pub?gid=1712919962&single=true&output=csv';
+const SHEETS_CSV_DEMANDA_DIA = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT2kJGzytbQ6-WZs1fEsaD7AoCmkNkuWC626i0DU2MkY7Xixyhz3cpEfbGpIs0ZHVXHa7-Z_0IzFVud/pub?gid=1384527200&single=true&output=csv';
+
+/* Proxies CORS genéricos, usados em sequência como fallback caso o fetch direto seja bloqueado por CORS.
+   (O antigo cors.isomorphic-git.org foi removido pois só aceita requisições no formato git.) */
+const CORS_PROXIES = [
+  url => url, // tentativa direta, sem proxy
+  url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+  url => `https://corsproxy.io/?url=${encodeURIComponent(url)}`,
+  url => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`
+];
+
+/* DEMO */
+const DEMO = {
+  periodo:"15 jun. 2026 – 20 jun. 2026",
+  variacao:-1.00,
+  valor:{demanda:10506669.83,producao:7321510.58,resultado:-3185159.25,atendimento:69.7},
+  peso:{demanda:947296,producao:726706,gap:-220590,gapPct:-23.29,
+    demanda_auto:430800,demanda_digit:516496,producao_auto:386183,producao_digit:340524},
+  dias:[
+    {nome:"Segunda-Feira",emoji:"",demanda:175642,producao:204444,carros:23,ant:180562},
+    {nome:"Terça-Feira",emoji:"",demanda:216994,producao:192550,carros:22,ant:220375},
+    {nome:"Quarta-Feira",emoji:"",demanda:110407,producao:196391,carros:20,ant:123071},
+    {nome:"Quinta-Feira",emoji:"🏆",demanda:242179,producao:254726,carros:25,ant:266048},
+    {nome:"Sexta-Feira",emoji:"",demanda:252073,producao:0,carros:0,ant:166758}
+  ],
+  demandaDia:{
+    data:'20 jun. 2026',
+    totalRessuprimentoKg:63137,
+    totalDigitadoKg:160404,
+    totalGeralKg:220541,
+    percRessuprimento:27.87,
+    percDigitado:72.13,
+    percTotal:100,
+    totalRessuprimentoRs:910910.05,
+    totalDigitadoRs:1779669.05,
+    totalGeralRs:2690579.10,
+    itensAuto:875,
+    itensDigit:88,
+    itensTotal:963,
+    automatico:[
+      {categoria:'MERCEARIA',gestor:'VICTOR',itens:140,peso:19277,total:149751},
+      {categoria:'LIMPEZA',gestor:'MICAELLA',itens:124,peso:15922,total:141531},
+      {categoria:'MERCEARIA',gestor:'HUGO',itens:238,peso:13395,total:360721}
+    ],
+    digitado:[
+      {categoria:'MERCEARIA',gestor:'HUGO',itens:9,peso:79282,total:873178},
+      {categoria:'LIMPEZA',gestor:'MICAELLA',itens:27,peso:67190,total:434632},
+      {categoria:'MERCEARIA',gestor:'RAPHAEL MENDES',itens:23,peso:7130,total:62510}
+    ]
+  }
+};
+
+let D = JSON.parse(JSON.stringify(DEMO));
+
+/* HELPERS */
+const fmt  = n => Number(n||0).toLocaleString('pt-BR');
+const fmtR = n => 'R$ ' + Number(n||0).toLocaleString('pt-BR');
+const fmtK = n => Number(n||0).toLocaleString('pt-BR') + ' kg';
+const pct  = (a,b) => (b&&b>0) ? (a/b*100) : 0;
+const sign = n => n>0 ? '+' : '';
+const bc   = n => n>0 ? 'bs' : n<0 ? 'bd' : 'bi';
+
+function normalizeText(v){
+  return String(v ?? '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g,'')
+    .trim()
+    .toUpperCase();
+}
+function toNum(v){
+  if(v===null||v===undefined||v==='') return 0;
+  if(typeof v==='number') return isNaN(v)?0:v;
+  let s=String(v).trim();
+  s=s.replace(/R\$/gi,'').replace(/%/g,'').replace(/\s/g,'');
+  if(/^\d{1,3}(\.\d{3})*,\d+$/.test(s)){
+    s=s.replace(/\./g,'').replace(',','.');
+  }else if(/^\d+,\d+$/.test(s)){
+    s=s.replace(',','.');
+  }else{
+    s=s.replace(/,/g,'');
+  }
+  const n=parseFloat(s);
+  return isNaN(n)?0:n;
+}
+function toDate(v){
+  if(!v) return '';
+  if(typeof v==='number' && v>40000 && v<60000){
+    const d=new Date(Math.round((v-25569)*86400*1000));
+    return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'});
+  }
+  const s=String(v).trim();
+  const m1=s.match(/(\d{1,2})\s+de\s+(\w+)\s+de\s+(\d{4})/i);
+  if(m1){
+    const meses={janeiro:0,fevereiro:1,marco:2,abril:3,maio:4,junho:5,julho:6,agosto:7,setembro:8,outubro:9,novembro:10,dezembro:11};
+    const mes=meses[normalizeText(m1[2]).toLowerCase()] ?? 0;
+    const d=new Date(+m1[3],mes,+m1[1]);
+    if(!isNaN(d.getTime())){
+      return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'});
+    }
+  }
+  const m2=s.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})$/);
+  if(m2){
+    const d=new Date(+m2[3],+m2[2]-1,+m2[1]);
+    if(!isNaN(d.getTime())){
+      return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'});
+    }
+  }
+  return s;
+}
+function isDiaSemana(v){
+  const s=normalizeText(v);
+  return ['SEGUNDA','TERCA','QUARTA','QUINTA','SEXTA','SABADO','DOMINGO'].some(d=>s.startsWith(d));
+}
+function diaKey(v){ return normalizeText(v).substring(0,5); }
+function ordemDia(v){
+  const s=normalizeText(v);
+  const ordem=['SEGUNDA','TERCA','QUARTA','QUINTA','SEXTA','SABADO','DOMINGO'];
+  const idx=ordem.findIndex(d=>s.startsWith(d));
+  return idx===-1?99:idx;
+}
+function rowToText(row){ return (row||[]).map(normalizeText).join(' | '); }
+function rowHasAll(row, terms){
+  const txt=rowToText(row);
+  return terms.every(t=>txt.includes(normalizeText(t)));
+}
+function rowHasSome(row, terms){
+  const txt=rowToText(row);
+  return terms.some(t=>txt.includes(normalizeText(t)));
+}
+function findRowIndex(rows, predicate, start=0, end=null){
+  const lim=end ?? rows.length;
+  for(let i=start;i<lim;i++){
+    if(predicate(rows[i]||[],i)) return i;
+  }
+  return -1;
+}
+function findRowContaining(rows, terms, start=0, end=null){
+  return findRowIndex(rows,row=>rowHasAll(row,terms),start,end);
+}
+function findRowContainingSome(rows, terms, start=0, end=null){
+  return findRowIndex(rows,row=>rowHasSome(row,terms),start,end);
+}
+function findNextNumericRow(rows, start, minCount=2, maxLook=6){
+  for(let i=start+1;i<=Math.min(rows.length-1,start+maxLook);i++){
+    const nums=(rows[i]||[]).map(toNum).filter(n=>n!==0);
+    if(nums.length>=minCount) return i;
+  }
+  return -1;
+}
+function firstColLike(row, patterns){
+  for(let i=0;i<(row||[]).length;i++){
+    const c=normalizeText(row[i]);
+    if(!c) continue;
+    for(const p of patterns){
+      if(typeof p==='string'){
+        if(c.includes(normalizeText(p))) return i;
+      }else if(p.test(c)){
+        return i;
+      }
+    }
+  }
+  return -1;
+}
+function allColsLike(row, patterns){
+  const out=[];
+  for(let i=0;i<(row||[]).length;i++){
+    const c=normalizeText(row[i]);
+    if(!c) continue;
+    for(const p of patterns){
+      const ok=typeof p==='string'?c.includes(normalizeText(p)):p.test(c);
+      if(ok){out.push(i);break;}
+    }
+  }
+  return out;
+}
+function safe(fn){try{return fn();}catch(e){console.error(e);}}
+
+let _tt=null;
+function showToast(msg,ms=3000){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  clearTimeout(_tt);
+  _tt=setTimeout(()=>t.classList.remove('show'),ms);
+}
+function showOverlay(txt){
+  document.getElementById('overlayTxt').textContent=txt||'Carregando...';
+  document.getElementById('overlay').classList.remove('hidden');
+}
+function hideOverlay(){document.getElementById('overlay').classList.add('hidden');}
+function setStatus(txt,color){
+  document.getElementById('statusTxt').textContent=txt;
+  document.getElementById('statusDot').className='dot dot-'+color;
+}
+
+/* CSV */
+function splitCsvLine(line){
+  const cols=[]; let cur=''; let inQ=false;
+  for(let i=0;i<line.length;i++){
+    const ch=line[i];
+    if(ch === '"'){
+      if(inQ && line[i+1] === '"'){ cur+='"'; i++; }
+      else inQ=!inQ;
+    }else if(ch===',' && !inQ){
+      cols.push(cur); cur='';
+    }else{
+      cur+=ch;
+    }
+  }
+  cols.push(cur);
+  return cols.map(c=>c.trim());
+}
+function parseCSV(csvText){
+  const rows=csvText.replace(/\r/g,'').split('\n').map(splitCsvLine);
+  return parseRowsRobusto(rows);
+}
+
+/* WORKBOOK */
+function chooseBestSheet(workbook){
+  let best=null, bestScore=-1;
+  for(const name of workbook.SheetNames){
+    const rows=XLSX.utils.sheet_to_json(workbook.Sheets[name],{header:1,defval:null,raw:true});
+    const txt=rows.flat().map(normalizeText).join(' | ');
+    let score=0;
+    if(txt.includes('COMPARATIVO')) score+=4;
+    if(txt.includes('DEMANDA')) score+=3;
+    if(txt.includes('PRODUCAO')) score+=3;
+    if(txt.includes('DIA DA SEMANA')) score+=5;
+    if(txt.includes('EVOLUCAO')) score+=5;
+    if(txt.includes('KG')) score+=2;
+    if(txt.includes('R$')||txt.includes('RS')) score+=2;
+    if(txt.includes('RESSUPRIMENTO')) score+=4;
+    if(txt.includes('DISTRIBUICAO')) score+=4;
+    if(score>bestScore){bestScore=score;best={name,rows};}
+  }
+  return best;
+}
+function parseExcelWorkbook(workbook){
+  console.log('=== parseExcelWorkbook ===');
+  console.log('Abas disponíveis:', workbook.SheetNames);
+
+  const comparativoSheet =
+    workbook.SheetNames.find(n => normalizeText(n).includes('DEMANDA X PRODUCAO')) ||
+    workbook.SheetNames.find(n => normalizeText(n).includes('DEMANDA VS PRODUCAO'));
+
+  const demandaDiaSheet =
+    workbook.SheetNames.find(n => normalizeText(n).includes('DEMANDA DIA')) ||
+    workbook.SheetNames.find(n => normalizeText(n).includes('DEMANDA DO DIA'));
+
+  console.log('comparativoSheet:', comparativoSheet);
+  console.log('demandaDiaSheet:', demandaDiaSheet);
+
+  let dataBase = null;
+  let demandaDia = null;
+
+  if(comparativoSheet){
+    const rows = XLSX.utils.sheet_to_json(workbook.Sheets[comparativoSheet],{
+      header:1,defval:null,raw:true
+    });
+    console.log('Lendo aba principal:', comparativoSheet);
+    dataBase = parseRowsRobusto(rows);
+  }else{
+    const chosen = chooseBestSheet(workbook);
+    if(chosen){
+      console.log('Usando fallback de aba:', chosen.name);
+      dataBase = parseRowsRobusto(chosen.rows);
+    }
+  }
+
+  if(demandaDiaSheet){
+    const rowsDD = XLSX.utils.sheet_to_json(workbook.Sheets[demandaDiaSheet],{
+      header:1,defval:null,raw:true
+    });
+    console.log('Lendo aba Demanda Dia:', demandaDiaSheet);
+    demandaDia = parseDemandaDia(rowsDD);
+  }
+
+  if(dataBase){
+    dataBase.demandaDia = demandaDia || DEMO.demandaDia;
+  }
+
+  console.log('RESULTADO FINAL parseExcelWorkbook:', dataBase);
+  return dataBase;
+}
+
+/* PARSER COMPARATIVO */
+function parseRowsRobusto(rows){
+  try{
+    const periodo=parsePeriodo(rows);
+    const fin=parseFinanceiro(rows);
+    const peso=parsePeso(rows);
+    let diasMap=parseDias(rows);
+    const evo=parseEvolucao(rows,diasMap);
+    diasMap=evo.diasMap;
+
+    const dias=Object.values(diasMap).sort((a,b)=>ordemDia(a.nome)-ordemDia(b.nome));
+    if(dias.length>0) dias.reduce((a,b)=>a.demanda>b.demanda?a:b,dias[0]).emoji='🏆';
+
+    const dR_tot=fin?.dR_tot||0;
+    const pR_tot=fin?.pR_tot||0;
+    const dK_tot=peso?.dK_tot||0;
+    const pK_tot=peso?.pK_tot||0;
+
+    const resultado=pR_tot-dR_tot;
+    const atendimento=dR_tot>0?Math.round((pR_tot/dR_tot)*1000)/10:0;
+    const gap=pK_tot-dK_tot;
+    const gapPct=dK_tot>0?(gap/dK_tot*100):0;
+
+    const hasCore=dR_tot>0||dK_tot>0||dias.length>0;
+    if(!hasCore) return null;
+
+    return{
+      periodo:periodo.inicio?`${periodo.inicio}${periodo.fim?' – '+periodo.fim:''}`:'—',
+      variacao:evo.variacao||0,
+      valor:{demanda:dR_tot,producao:pR_tot,resultado,atendimento},
+      peso:{
+        demanda:dK_tot,producao:pK_tot,gap,gapPct,
+        demanda_auto:peso?.dK_auto||0,
+        demanda_digit:peso?.dK_dig||0,
+        producao_auto:peso?.pK_auto||0,
+        producao_digit:peso?.pK_dig||0
+      },
+      dias,
+      demandaDia: DEMO.demandaDia
+    };
+  }catch(err){
+    console.error('parseRowsRobusto:',err);
+    return null;
+  }
+}
+
+function parsePeriodo(rows){
+  const idx=findRowContainingSome(rows,['PERIODO'],0);
+  if(idx===-1) return {inicio:'',fim:''};
+  const row=rows[idx]||[];
+  const vals=row.filter(v=>{
+    const n=normalizeText(v);
+    return n && !n.includes('PERIODO') && !n.includes('COMPARATIVO');
+  });
+  return {inicio:vals[0]?toDate(vals[0]):'',fim:vals[1]?toDate(vals[1]):''};
+}
+
+function parseFinanceiro(rows){
+  const idx=findRowIndex(rows,row=>{
+    const txt=rowToText(row);
+    return txt.includes('DEMANDA') && (txt.includes('R$') || txt.includes('RS'));
+  });
+  if(idx===-1) return null;
+
+  const subHeaderRow=rows[idx+1]||[];
+  const dataRowIx=findNextNumericRow(rows,idx+1,4,4);
+  const dataRow=dataRowIx!==-1?rows[dataRowIx]:[];
+
+  const colAuto=firstColLike(subHeaderRow,['AUTOMATICO']);
+  const colDig=firstColLike(subHeaderRow,['DIGITADO']);
+  const colTots=allColsLike(subHeaderRow,['TOTAL']);
+
+  let dR_auto=toNum(dataRow[colAuto>=0?colAuto:0]);
+  let dR_dig=toNum(dataRow[colDig>=0?colDig:1]);
+  let dR_tot=toNum(dataRow[colTots[0]??2]);
+
+  let pR_tot=toNum(dataRow[colTots[1]??5]);
+  let pR_dig=toNum(dataRow[6]);
+  let pR_auto=toNum(dataRow[7]);
+
+  if(dR_tot===0 || pR_tot===0){
+    const nums=dataRow.map(toNum).filter(n=>n>1000);
+    if(nums.length>=6){
+      dR_auto=nums[0]||0;
+      dR_dig=nums[1]||0;
+      dR_tot=nums[2]||0;
+      pR_tot=nums[5]||0;
+      pR_dig=nums[6]||0;
+      pR_auto=nums[7]||0;
+    }
+  }
+
+  return {dR_auto,dR_dig,dR_tot,pR_tot,pR_dig,pR_auto};
+}
+
+function parsePeso(rows){
+  const idx=findRowIndex(rows,row=>{
+    const txt=rowToText(row);
+    return txt.includes('DEMANDA') && txt.includes('KG');
+  });
+  if(idx===-1) return null;
+
+  const subHeaderRow=rows[idx+1]||[];
+  const dataRowIx=findNextNumericRow(rows,idx+1,4,5);
+  const dataRow=dataRowIx!==-1?rows[dataRowIx]:[];
+  const normHeader=(subHeaderRow||[]).map(c=>normalizeText(c));
+
+  let dK_auto=toNum(dataRow[0]);
+  let dK_dig =toNum(dataRow[1]);
+  let dK_tot =toNum(dataRow[2]);
+
+  let pK_tot =toNum(dataRow[5]);
+  let pK_dig =toNum(dataRow[6]);
+  let pK_auto=toNum(dataRow[7]);
+
+  if((pK_tot===0 && pK_dig===0 && pK_auto===0) || dataRow.length<8){
+    const totalCols=[],autoCols=[],digCols=[];
+    normHeader.forEach((h,i)=>{
+      if(h.includes('TOTAL')) totalCols.push(i);
+      if(h.includes('AUTOMATICO')) autoCols.push(i);
+      if(h.includes('DIGITADO')) digCols.push(i);
+    });
+
+    if(autoCols.length>0) dK_auto=toNum(dataRow[autoCols[0]]);
+    if(digCols.length>0) dK_dig=toNum(dataRow[digCols[0]]);
+    if(totalCols.length>0) dK_tot=toNum(dataRow[totalCols[0]]);
+
+    if(totalCols.length>1) pK_tot=toNum(dataRow[totalCols[1]]);
+    if(digCols.length>1) pK_dig=toNum(dataRow[digCols[1]]);
+    if(autoCols.length>1) pK_auto=toNum(dataRow[autoCols[1]]);
+  }
+
+  if(pK_tot>0 && pK_auto===0 && pK_dig===0){
+    const nums=dataRow.map(toNum).filter(n=>n>0);
+    if(nums.length>=8){
+      dK_auto=nums[0];
+      dK_dig=nums[1];
+      dK_tot=nums[2];
+      pK_tot=nums[5];
+      pK_dig=nums[6];
+      pK_auto=nums[7];
+    }
+  }
+
+  return {dK_auto,dK_dig,dK_tot,pK_tot,pK_dig,pK_auto};
+}
+
+function parseDias(rows){
+  const diasMap={};
+  const idxEvo=findRowContainingSome(rows,['EVOLUCAO'],0);
+  const idxDia=findRowContaining(rows,['DIA DA SEMANA','DEMANDA','PRODUCAO'],0,idxEvo===-1?null:idxEvo);
+  if(idxDia===-1) return diasMap;
+
+  const header=rows[idxDia]||[];
+  const colDem=firstColLike(header,['DEMANDA']);
+  const colProd=firstColLike(header,['PRODUCAO']);
+  const colCarros=firstColLike(header,['CARROS']);
+
+  for(let i=idxDia+1;i<rows.length;i++){
+    const row=rows[i]||[];
+    if(isDiaSemana(row[0])){
+      const nome=String(row[0]).trim();
+      const key=diaKey(nome);
+      diasMap[key]={
+        nome,emoji:'',
+        demanda:toNum(row[colDem>=0?colDem:1]),
+        producao:toNum(row[colProd>=0?colProd:2]),
+        carros:toNum(row[colCarros>=0?colCarros:3]),
+        ant:0
+      };
+      continue;
+    }
+    const txt=rowToText(row);
+    if(txt.includes('EVOLUCAO')) break;
+  }
+  return diasMap;
+}
+
+function parseEvolucao(rows,diasMap){
+  const idx=findRowContainingSome(rows,['EVOLUCAO'],0);
+  if(idx===-1) return {variacao:0,diasMap};
+
+  const headerIdx=findRowContaining(rows,['DIA DA SEMANA','TOTAL','EVOLUCAO'],idx);
+  if(headerIdx===-1) return {variacao:0,diasMap};
+
+  const header=rows[headerIdx]||[];
+  const totalCols=allColsLike(header,['TOTAL']);
+  const colTotAtual=totalCols[0]??3;
+  const colTotAnt=totalCols[1]??4;
+  const colPct=firstColLike(header,['EVOLUCAO'])>=0?firstColLike(header,['EVOLUCAO']):7;
+
+  let variacao=0;
+
+  for(let i=headerIdx+1;i<rows.length;i++){
+    const row=rows[i]||[];
+    const first=normalizeText(row[0]);
+
+    if(isDiaSemana(row[0])){
+      const nome=String(row[0]).trim();
+      const key=diaKey(nome);
+
+      if(!diasMap[key]){
+        diasMap[key]={nome,emoji:'',demanda:0,producao:0,carros:0,ant:0};
+      }
+
+      const atual=toNum(row[colTotAtual]);
+      const ant=toNum(row[colTotAnt]);
+
+      if(atual>0) diasMap[key].demanda=atual;
+      diasMap[key].ant=ant;
+      continue;
+    }
+
+    if(first==='TOTAL'){
+      const ep=toNum(row[colPct]);
+      variacao=Math.abs(ep)<1.5 ? ep*100 : ep;
+      break;
+    }
+  }
+
+  return {variacao,diasMap};
+}
+
+/* PARSER DEMANDA DIA */
+function parseDemandaDia(rows){
+  try{
+    const result = {
+      data:'',
+      totalRessuprimentoKg:0,
+      totalDigitadoKg:0,
+      totalGeralKg:0,
+      percRessuprimento:0,
+      percDigitado:0,
+      percTotal:100,
+      totalRessuprimentoRs:0,
+      totalDigitadoRs:0,
+      totalGeralRs:0,
+      itensAuto:0,
+      itensDigit:0,
+      itensTotal:0,
+      automatico:[],
+      digitado:[]
+    };
+
+    const clean = v => String(v ?? '').trim();
+    const upper = v => clean(v).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase();
+
+    function rowText2(row){
+      return (row||[]).map(upper).join(' | ');
+    }
+    function notEmptyRow(row){
+      return (row||[]).some(v => clean(v) !== '');
+    }
+    function firstNonEmptyRow(start){
+      for(let i=start;i<rows.length;i++){
+        if(notEmptyRow(rows[i])) return i;
+      }
+      return -1;
+    }
+
+    const num = v => toNum(v);
+
+    // DATA
+    for(let i=0;i<rows.length;i++){
+      const txt = rowText2(rows[i]);
+      if(
+        txt.includes('SABADO') || txt.includes('SEGUNDA') || txt.includes('TERCA') ||
+        txt.includes('QUARTA') || txt.includes('QUINTA') || txt.includes('SEXTA') ||
+        txt.includes('DOMINGO')
+      ){
+        const vals = (rows[i]||[]).filter(v => clean(v) !== '');
+        if(vals.length){
+          result.data = toDate(vals[0]);
+          break;
+        }
+      }
+    }
+
+    // BLOCO TOTAIS
+    let idxTotais = -1;
+    for(let i=0;i<rows.length;i++){
+      const txt = rowText2(rows[i]);
+      if(
+        txt.includes('TOTAL RESSUPRIMENTO') &&
+        txt.includes('TOTAL DIGITADO') &&
+        txt.includes('TOTAL GERAL')
+      ){
+        idxTotais = i;
+        break;
+      }
+    }
+
+    if(idxTotais !== -1){
+      const linhaKgIdx   = firstNonEmptyRow(idxTotais + 1);
+      const linhaPercIdx = firstNonEmptyRow(linhaKgIdx + 1);
+      const linhaRsIdx   = firstNonEmptyRow(linhaPercIdx + 1);
+      const linhaItensTitIdx = firstNonEmptyRow(linhaRsIdx + 1);
+      const linhaItensIdx = firstNonEmptyRow(linhaItensTitIdx + 1);
+
+      const linhaKg   = rows[linhaKgIdx]   || [];
+      const linhaPerc = rows[linhaPercIdx] || [];
+      const linhaRs   = rows[linhaRsIdx]   || [];
+      const linhaItens= rows[linhaItensIdx]|| [];
+
+      result.totalRessuprimentoKg = num(linhaKg[0]);
+      result.totalDigitadoKg      = num(linhaKg[1]);
+      result.totalGeralKg         = num(linhaKg[2]) || num(linhaKg[3]);
+
+      result.percRessuprimento = num(linhaPerc[0]) * (num(linhaPerc[0]) <= 1 ? 100 : 1);
+      result.percDigitado      = num(linhaPerc[1]) * (num(linhaPerc[1]) <= 1 ? 100 : 1);
+      result.percTotal         = (num(linhaPerc[2] || linhaPerc[3]) || 1) * (((num(linhaPerc[2] || linhaPerc[3]) || 1) <= 1) ? 100 : 1);
+
+      result.totalRessuprimentoRs = num(linhaRs[0]);
+      result.totalDigitadoRs      = num(linhaRs[1]);
+      result.totalGeralRs         = num(linhaRs[2] || linhaRs[3]);
+
+      result.itensAuto  = num(linhaItens[0]);
+      result.itensDigit = num(linhaItens[1]);
+      result.itensTotal = num(linhaItens[2] || linhaItens[3]);
+    }
+
+    // AUTOMÁTICO
+    let idxAuto = -1;
+    for(let i=0;i<rows.length;i++){
+      const txt = rowText2(rows[i]);
+      if(txt.includes('RESSUPRIMENTO AUTOMATICO')){
+        idxAuto = i;
+        break;
+      }
+    }
+
+    if(idxAuto !== -1){
+      let headerIdx = -1;
+      for(let i=idxAuto+1;i<rows.length;i++){
+        const txt = rowText2(rows[i]);
+        if(txt.includes('CATEGORIA') && txt.includes('GESTOR') && txt.includes('ITENS')){
+          headerIdx = i;
+          break;
+        }
+      }
+
+      if(headerIdx !== -1){
+        for(let i=headerIdx+1;i<rows.length;i++){
+          const row = rows[i] || [];
+          const txt = rowText2(row);
+
+          if(txt.includes('RESSUPRIMENTO DIGITADO')) break;
+          if(!notEmptyRow(row)) continue;
+
+          const categoria = clean(row[0]);
+          const gestor    = clean(row[1]);
+          const itens     = num(row[2]);
+          const peso      = num(row[3]);
+          const total     = num(row[4]);
+
+          if(categoria || gestor || itens || peso || total){
+            result.automatico.push({categoria,gestor,itens,peso,total});
+          }
+        }
+      }
+    }
+
+    // DIGITADO
+    let idxDig = -1;
+    for(let i=0;i<rows.length;i++){
+      const txt = rowText2(rows[i]);
+      if(txt.includes('RESSUPRIMENTO DIGITADO')){
+        idxDig = i;
+        break;
+      }
+    }
+
+    if(idxDig !== -1){
+      let headerIdx = -1;
+      for(let i=idxDig+1;i<rows.length;i++){
+        const txt = rowText2(rows[i]);
+        if(txt.includes('CATEGORIA') && txt.includes('GESTOR') && txt.includes('ITENS')){
+          headerIdx = i;
+          break;
+        }
+      }
+
+      if(headerIdx !== -1){
+        for(let i=headerIdx+1;i<rows.length;i++){
+          const row = rows[i] || [];
+          if(!notEmptyRow(row)) continue;
+
+          const categoria = clean(row[0]);
+          const gestor    = clean(row[1]);
+          const itens     = num(row[2]);
+          const peso      = num(row[3]);
+          const total     = num(row[4]);
+
+          if(categoria || gestor || itens || peso || total){
+            result.digitado.push({categoria,gestor,itens,peso,total});
+          }
+        }
+      }
+    }
+
+    return result;
+  }catch(err){
+    console.error('parseDemandaDia erro:', err);
+    return DEMO.demandaDia;
+  }
+}
+
+/* FETCH */
+function fetchWithTimeout(url, opts={}, timeoutMs=10000){
+  const controller = new AbortController();
+  const id = setTimeout(()=>controller.abort(), timeoutMs);
+  return fetch(url,{...opts,signal:controller.signal}).finally(()=>clearTimeout(id));
+}
+
+async function fetchTextWithFallback(url){
+  let lastErr = new Error('Erro desconhecido');
+
+  for(const buildUrl of CORS_PROXIES){
+    const target = buildUrl(url);
+    try{
+      const res = await fetchWithTimeout(target,{method:'GET',cache:'no-store',mode:'cors'});
+      if(!res.ok) throw new Error(`HTTP ${res.status}`);
+      const text = await res.text();
+      if(!text || text.trim().length<20) throw new Error('CSV vazio');
+      const lower = text.toLowerCase();
+      if(lower.includes('<html') || lower.includes('<!doctype html')) throw new Error('Resposta HTML em vez de CSV');
+      return text;
+    }catch(err){
+      console.warn('Tentativa falhou ('+target+'):',err);
+      lastErr = err;
+    }
+  }
+
+  throw lastErr;
+}
+
+/* LOAD SHEETS */
+async function fetchDemandaDiaFromSheets(){
+  try{
+    const url = SHEETS_CSV_DEMANDA_DIA + '&cacheBust=' + Date.now();
+    const text = await fetchTextWithFallback(url);
+    const rows = text.replace(/\r/g,'').split('\n').map(splitCsvLine);
+    return parseDemandaDia(rows);
+  }catch(err){
+    console.warn('fetchDemandaDiaFromSheets falhou:',err);
+    return null;
+  }
+}
+
+async function loadFromSheets(){
+  showOverlay('Buscando dados do Google Sheets...');
+  setStatus('Sincronizando...','yellow');
+  document.getElementById('fileStatus').textContent='⏳ Buscando dados...';
+
+  try{
+    const url = SHEETS_CSV + '&cacheBust=' + Date.now();
+    const text = await fetchTextWithFallback(url);
+
+    const upper = text.toUpperCase();
+    if(
+      !upper.includes('DEMANDA') &&
+      !upper.includes('PRODU') &&
+      !upper.includes('DIA DA SEMANA') &&
+      !upper.includes('EVOLU')
+    ){
+      throw new Error('Conteúdo do CSV não reconhecido');
+    }
+
+    const parsed = parseCSV(text);
+
+    if(parsed){
+      const demandaDia = await fetchDemandaDiaFromSheets();
+      parsed.demandaDia = demandaDia || DEMO.demandaDia;
+
+      D = parsed;
+      renderAll();
+      const now = new Date().toLocaleTimeString('pt-BR');
+      const ddNota = demandaDia ? '' : ' · ⚠️ Demanda Dia não atualizada';
+      document.getElementById('fileStatus').textContent=`✅ Atualizado às ${now} via Google Sheets${ddNota}`;
+      setStatus('Google Sheets · ao vivo','green');
+      showToast(`✅ Dados atualizados às ${now}`);
+    }else{
+      throw new Error('Parser não reconheceu o conteúdo');
+    }
+  }catch(err){
+    console.error('loadFromSheets:',err);
+    let msg=err.message||'Erro ao buscar dados';
+    if(msg==='Failed to fetch') msg='Falha de conexão com o Google Sheets';
+    document.getElementById('fileStatus').textContent=`⚠️ ${msg}`;
+    setStatus('Sheets offline','red');
+    showToast(`⚠️ ${msg}`);
+    D=JSON.parse(JSON.stringify(DEMO));
+    renderAll();
+  }finally{
+    hideOverlay();
+  }
+}
+
+/* LOAD EXCEL */
+function loadFile(event){
+  const file=event.target.files[0];
+  if(!file) return;
+
+  showOverlay(`Lendo: ${file.name}...`);
+  document.getElementById('fileStatus').textContent = `⏳ Lendo: ${file.name}...`;
+
+  const reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      console.log('=== INÍCIO LOAD FILE ===');
+      console.log('Arquivo:', file.name);
+
+      const wb=XLSX.read(e.target.result,{type:'binary',raw:true,cellDates:false});
+      console.log('Workbook carregado. Abas:', wb.SheetNames);
+
+      const parsed=parseExcelWorkbook(wb);
+      console.log('Parsed final:', parsed);
+
+      if(parsed && (
+        (parsed.valor && parsed.valor.demanda > 0) ||
+        (parsed.peso && parsed.peso.demanda > 0) ||
+        (parsed.dias && parsed.dias.length > 0)
+      )){
+        D = JSON.parse(JSON.stringify(parsed));
+        console.log('Objeto D atualizado:', D);
+
+        renderAll();
+
+        document.getElementById('fileStatus').textContent =
+          `✅ ${file.name} carregado com sucesso`;
+        setStatus('Excel local','yellow');
+        showToast('✅ Planilha carregada com sucesso');
+      }else{
+        console.error('Parser retornou estrutura vazia ou inválida.');
+        document.getElementById('fileStatus').textContent =
+          `⚠️ Estrutura não reconhecida no Excel`;
+        showToast('⚠️ Estrutura não reconhecida no Excel');
+      }
+
+    }catch(err){
+      console.error('ERRO loadFile:', err);
+      document.getElementById('fileStatus').textContent = `❌ ${err.message}`;
+      showToast(`❌ ${err.message}`);
+    }finally{
+      hideOverlay();
+      event.target.value='';
+    }
+  };
+
+  reader.onerror=function(){
+    hideOverlay();
+    document.getElementById('fileStatus').textContent='❌ Erro ao ler o arquivo';
+    showToast('❌ Erro ao ler o arquivo');
+  };
+
+  reader.readAsBinaryString(file);
+}
+
+/* ACTIONS */
+function switchTab(name,btn){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function resetDemo(){
+  D=JSON.parse(JSON.stringify(DEMO));
+  renderAll();
+  document.getElementById('fileStatus').textContent='Exibindo dados de demonstração';
+  setStatus('Demo','yellow');
+  showToast('🔄 Dados de demonstração restaurados');
+}
+
+/* RENDERS */
+function renderHeader(){
+  document.getElementById('periodText').textContent=D.periodo||'—';
+  document.getElementById('footerPeriod').textContent=D.periodo||'—';
+  const v=D.variacao||0;
+  document.getElementById('varBadge').textContent=(v<0?'▼ ':'▲ ')+Math.abs(v).toFixed(2)+'% vs sem. anterior';
+}
+
+function renderKpiValor(){
+  const v=D.valor,mx=Math.max(v.demanda,v.producao)||1;
+  const at=v.atendimento||0,n=D.dias.length||1,np=D.dias.filter(d=>d.producao>0).length||1;
+
+  document.getElementById('kpiValor').innerHTML=`
+    <div class="card" style="border-top:3px solid var(--red)">
+      <div class="lbl">Demanda Total</div>
+      <div class="val" style="color:var(--red)">${fmtR(v.demanda)}</div>
+      <div class="sub">Média/dia: ${fmtR(Math.round(v.demanda/n))}</div>
+      <div class="prog"><div class="bar"><div class="fill fr" style="width:${pct(v.demanda,mx)}%"></div></div></div>
+    </div>
+
+    <div class="card" style="border-top:3px solid var(--blue)">
+      <div class="lbl">Produção Total</div>
+      <div class="val" style="color:var(--blue)">${fmtR(v.producao)}</div>
+      <div class="sub">Média/dia: ${fmtR(Math.round(v.producao/np))}</div>
+      <div class="prog"><div class="bar"><div class="fill fb" style="width:${pct(v.producao,mx)}%"></div></div></div>
+    </div>
+
+    <div class="card span2" style="border-top:3px solid var(--yellow)">
+      <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px">
+        <div>
+          <div class="lbl">Resultado (R$)</div>
+          <div class="val">${sign(v.resultado)}${fmtR(v.resultado)}</div>
+          <span class="badge ${bc(v.resultado)}">${v.resultado>=0?'▲':'▼'} ${Math.abs(pct(v.resultado,v.demanda)).toFixed(2)}%</span>
+        </div>
+        <div style="text-align:right">
+          <div class="lbl">Atendimento da Demanda</div>
+          <div class="val" style="color:${at>=100?'#2e7d32':'var(--red)'}">${at}%</div>
+          <span class="badge ${bc(at-100)}">${at>=100?'✅ Meta atingida':'⚠️ Abaixo da meta'}</span>
+        </div>
+      </div>
+      <div class="prog" style="margin-top:12px">
+        <div class="prog-lbl"><span>Atendimento da Demanda em Valor</span><span style="font-weight:700;color:${at>=100?'#2e7d32':'var(--red)'}">${at}%</span></div>
+        <div class="bar-lg"><div class="fill ${at>=100?'fg':'fo'}" style="width:${Math.min(100,at)}%"></div></div>
+      </div>
+    </div>`;
+}
+
+function renderKpiPeso(){
+  const p=D.peso,mx=Math.max(p.demanda,p.producao)||1;
+  const ap=Math.round(pct(p.producao,p.demanda));
+  document.getElementById('kpiPeso').innerHTML=`
+    <div class="g2" style="margin-bottom:12px">
+      <div class="card" style="border-top:3px solid var(--red)">
+        <div class="lbl">Demanda (kg)</div>
+        <div class="val" style="color:var(--red)">${fmtK(p.demanda)}</div>
+        <div class="sub">🤖 Auto: ${fmt(p.demanda_auto)} (${Math.round(pct(p.demanda_auto,p.demanda))}%)<br>✍️ Digit: ${fmt(p.demanda_digit)} (${Math.round(pct(p.demanda_digit,p.demanda))}%)</div>
+        <div class="prog"><div class="bar"><div class="fill fr" style="width:${pct(p.demanda,mx)}%"></div></div></div>
+      </div>
+      <div class="card" style="border-top:3px solid var(--blue)">
+        <div class="lbl">Produção (kg)</div>
+        <div class="val" style="color:var(--blue)">${fmtK(p.producao)}</div>
+        <div class="sub">🤖 Auto: ${fmt(p.producao_auto)} (${Math.round(pct(p.producao_auto,p.producao))}%)<br>✍️ Digit: ${fmt(p.producao_digit)} (${Math.round(pct(p.producao_digit,p.producao))}%)</div>
+        <div class="prog"><div class="bar"><div class="fill fb" style="width:${pct(p.producao,mx)}%"></div></div></div>
+      </div>
+    </div>
+    <div class="card" style="border-top:3px solid var(--yellow)">
+      <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px">
+        <div>
+          <div class="lbl">Gap Total</div>
+          <div class="val">${sign(p.gap)}${fmtK(p.gap)}</div>
+          <span class="badge ${bc(p.gap)}">${p.gap>=0?'▲':'▼'} ${Math.abs(p.gapPct).toFixed(2)}%</span>
+        </div>
+        <div style="text-align:right">
+          <div class="lbl">Atendimento da Demanda (kg)</div>
+          <div class="val" style="color:${ap>=100?'#2e7d32':'var(--red)'}">${ap}%</div>
+          <span class="badge ${bc(ap-100)}">${ap>=100?'✅ Meta atingida':'⚠️ Abaixo da meta'}</span>
+        </div>
+      </div>
+      <div class="prog" style="margin-top:12px">
+        <div class="prog-lbl"><span>Atendimento da Demanda em Peso</span><span style="font-weight:700;color:${ap>=100?'#2e7d32':'var(--red)'}">${ap}%</span></div>
+        <div class="bar-lg"><div class="fill ${ap>=100?'fg':'fo'}" style="width:${Math.min(100,ap)}%"></div></div>
+      </div>
+    </div>`;
+}
+
+function renderRecords(){
+  const dias=D.dias||[];
+  const mxDem=dias.length?dias.reduce((a,b)=>a.demanda>b.demanda?a:b):{demanda:0,nome:'—'};
+  const comProd=dias.filter(d=>d.producao>0);
+  const mxProd=comProd.length?comProd.reduce((a,b)=>a.producao>b.producao?a:b):{producao:0,nome:'—'};
+  document.getElementById('records').innerHTML=`
+    <div class="rec-card"><div class="rec-icon">📦</div><div class="rec-lbl">Maior Demanda</div><div class="rec-val">${mxDem.demanda>0?fmt(mxDem.demanda):'—'}</div><div class="rec-day">${mxDem.nome}</div></div>
+    <div class="rec-card"><div class="rec-icon">🏭</div><div class="rec-lbl">Maior Produção</div><div class="rec-val">${mxProd.producao>0?fmt(mxProd.producao):'—'}</div><div class="rec-day">${mxProd.nome}</div></div>`;
+}
+
+function renderDayCards(){
+  const mx=Math.max(...D.dias.map(d=>Math.max(d.demanda,d.producao)))||1;
+  let html='';
+  D.dias.forEach(day=>{
+    const gap=day.producao-day.demanda,hasProd=day.producao>0;
+    const gapCls=!hasProd?'bw':gap>=0?'bs':'bd';
+    const gapTxt=!hasProd?'⚠ Sem produção':(sign(gap)+fmt(gap)+' kg');
+    const cardCls=!hasProd?'np':gap>=0?'ok':'nok';
+    const atd=hasProd?Math.round(pct(day.producao,day.demanda)):0;
+    const pills=[];
+    if(hasProd){
+      if(day.carros>0) pills.push(day.carros<=23?'<span class="pill bs">✓ Dentro cap.</span>':'<span class="pill bd">✗ Excedeu cap.</span>');
+      pills.push(gap>=0?'<span class="pill bs">✓ Acima da demanda</span>':'<span class="pill bd">✗ Abaixo da demanda</span>');
+      pills.push(`<span class="pill ${atd>=100?'bs':'bd'}">📊 Atend.: ${atd}%</span>`);
+    }else pills.push('<span class="pill bw">⚠ Sem produção</span>');
+    if(day.carros>0) pills.push(`<span class="pill bi">🚗 ${day.carros} carros</span>`);
+    html+=`
+      <div class="day-card ${cardCls}">
+        <div class="day-hdr"><div class="day-nm">${day.emoji} ${day.nome}</div><span class="day-bdg ${gapCls}">${gapTxt}</span></div>
+        <div class="day-grid">
+          <div class="dg-item"><div class="dg-lbl">Demanda</div><div class="dg-val" style="color:var(--red)">${fmt(day.demanda)}</div><div class="dg-sub">kg</div></div>
+          <div class="dg-item"><div class="dg-lbl">Produção</div><div class="dg-val" style="color:var(--blue)">${hasProd?fmt(day.producao):'—'}</div><div class="dg-sub">kg</div></div>
+          <div class="dg-item"><div class="dg-lbl">Atendimento</div><div class="dg-val" style="color:${hasProd&&atd>=100?'#2e7d32':'var(--red)'}">${hasProd?atd+'%':'—'}</div><div class="dg-sub">${hasProd?(atd>=100?'✅ OK':'⚠️ Gap'):'—'}</div></div>
+        </div>
+        <div>
+          <div class="hbar"><div class="hbar-lbl">Demanda</div><div class="hbar-track"><div class="hbar-fill fr" style="width:${pct(day.demanda,mx)}%"></div></div><div class="hbar-val" style="color:var(--red)">${fmt(day.demanda)} kg</div></div>
+          ${hasProd?`<div class="hbar"><div class="hbar-lbl">Produção</div><div class="hbar-track"><div class="hbar-fill fb" style="width:${pct(day.producao,mx)}%"></div></div><div class="hbar-val" style="color:var(--blue)">${fmt(day.producao)} kg</div></div>`:''}
+        </div>
+        ${hasProd?`<div class="prog" style="margin-top:8px"><div class="prog-lbl"><span>Atendimento da Demanda</span><span style="font-weight:700;color:${atd>=100?'#2e7d32':'var(--red)'}">${atd}%</span></div><div class="bar-lg"><div class="fill ${atd>=100?'fg':'fo'}" style="width:${Math.min(100,atd)}%"></div></div></div>`:''}
+        <div class="pills">${pills.join('')}</div>
+      </div>`;
+  });
+  document.getElementById('dayCards').innerHTML=html;
+}
+
+function renderMix(){
+  const p=D.peso;
+  const secs=[
+    {title:'📦 Demanda — Automático × Digitado',auto:p.demanda_auto,digit:p.demanda_digit,total:p.demanda,c1:'#CC1F1F',c2:'#1B4FBF'},
+    {title:'🏭 Produção — Automático × Digitado',auto:p.producao_auto,digit:p.producao_digit,total:p.producao,c1:'#1B4FBF',c2:'#c9a800'}
+  ];
+  let html='';
+  secs.forEach(s=>{
+    const ap=s.total>0?Math.round(pct(s.auto,s.total)):0,dp=100-ap;
+    const C=2*Math.PI*46,off=C*(1-ap/100);
+    html+=`
+      <div class="card" style="border-top:3px solid ${s.c1}">
+        <div style="font-size:14px;font-weight:800;margin-bottom:16px">${s.title}</div>
+        <div class="donut-wrap">
+          <svg class="donut-svg" viewBox="0 0 110 110">
+            <circle cx="55" cy="55" r="46" fill="none" stroke="#e5e7eb" stroke-width="14"/>
+            <circle cx="55" cy="55" r="46" fill="none" stroke="${s.c1}" stroke-width="14"
+              stroke-dasharray="${C.toFixed(2)}" stroke-dashoffset="${off.toFixed(2)}"
+              stroke-linecap="round" transform="rotate(-90 55 55)"
+              style="transition:stroke-dashoffset 1.2s ease"/>
+            <text x="55" y="50" text-anchor="middle" font-size="17" font-weight="800" fill="#1a1a2e">${ap}%</text>
+            <text x="55" y="65" text-anchor="middle" font-size="8" fill="#6b7280">automático</text>
+          </svg>
+          <div class="d-legend">
+            <div class="d-item"><div class="d-dot" style="background:${s.c1}"></div><span class="d-lbl">Automático</span><span class="d-val">${ap}% · ${fmt(s.auto)} kg</span></div>
+            <div class="d-item"><div class="d-dot" style="background:${s.c2}"></div><span class="d-lbl">Digitado</span><span class="d-val">${dp}% · ${fmt(s.digit)} kg</span></div>
+            <div class="d-item" style="border-top:1px solid #e5e7eb;padding-top:8px;margin-top:4px"><div class="d-dot" style="background:#6b7280"></div><span class="d-lbl">Total</span><span class="d-val">${fmt(s.total)} kg</span></div>
+          </div>
+        </div>
+        <div style="margin-top:16px">
+          <div class="bar" style="height:14px;border-radius:7px;overflow:hidden;display:flex">
+            <div style="width:${ap}%;background:${s.c1};height:100%"></div>
+            <div style="width:${dp}%;background:${s.c2};height:100%"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:11px;margin-top:6px">
+            <span style="color:${s.c1};font-weight:700">● Auto ${ap}%</span>
+            <span style="color:${s.c2};font-weight:700">● Digit ${dp}%</span>
+          </div>
+        </div>
+      </div>`;
+  });
+  document.getElementById('mixContent').innerHTML=html;
+}
+
+function renderEvolucao(){
+  const dias=D.dias,mx=Math.max(...dias.map(d=>Math.max(d.demanda,d.ant||0)))||1;
+  let html='',totA=0,totP=0;
+  dias.forEach(day=>{
+    totA+=day.demanda;totP+=(day.ant||0);
+    const vp=day.ant>0?((day.demanda-day.ant)/day.ant*100):0;
+    html+=`
+      <div class="evo-row">
+        <div class="evo-day">${day.nome.split('-')[0].trim()}</div>
+        <div class="evo-bars">
+          <div class="evo-br"><div class="evo-lbl">Atual</div><div class="evo-track"><div class="evo-fill fr" style="width:${pct(day.demanda,mx)}%;height:8px"></div></div></div>
+          <div class="evo-br"><div class="evo-lbl">Anterior</div><div class="evo-track"><div class="evo-fill" style="width:${pct(day.ant||0,mx)}%;height:8px;background:#bdbdbd"></div></div></div>
+        </div>
+        <div class="evo-vals">
+          <div class="evo-cur">${fmt(day.demanda)}</div>
+          <div class="evo-prv">ant: ${fmt(day.ant||0)}</div>
+          <span class="evo-pct ${vp<0?'bd':'bs'}">${vp<0?'▼':'▲'} ${Math.abs(vp).toFixed(1)}%</span>
+        </div>
+      </div>`;
+  });
+  const tv=totP>0?((totA-totP)/totP*100):0;
+  html+=`<div class="sum-row"><div style="font-size:12px;font-weight:800">TOTAL DEMANDA DA SEMANA</div><div style="text-align:right"><div style="font-size:16px;font-weight:800;color:var(--red)">${fmt(totA)} kg</div><div style="font-size:11px;color:var(--muted)">ant: ${fmt(totP)} kg</div><span class="evo-pct ${tv<0?'bd':'bs'}" style="display:inline-block;padding:2px 8px;border-radius:10px">${tv<0?'▼':'▲'} ${Math.abs(tv).toFixed(2)}%</span></div></div>`;
+  document.getElementById('evolucaoContent').innerHTML=html;
+}
+
+function renderInsights(){
+  const dias=D.dias,p=D.peso,v=D.valor;
+  const acimaDem=dias.filter(d=>d.producao>=d.demanda&&d.producao>0);
+  const atG=Math.round(pct(p.producao,p.demanda));
+  const totAtual=dias.reduce((a,d)=>a+d.demanda,0),totAnt=dias.reduce((a,d)=>a+(d.ant||0),0);
+  const somaCarrosSemana=dias.reduce((a,d)=>a+(d.carros||0),0);
+
+  const melhorDia = dias
+    .filter(d=>d.producao>0)
+    .sort((a,b)=>b.producao-a.producao)[0] || null;
+
+  const diffSemana = p.producao - p.demanda;
+  const diffSemanaAbs = Math.abs(diffSemana);
+
+  let tituloProducao = '';
+  let descProducao = '';
+  let iconeProducao = '';
+  let corProducao = '';
+
+  if (diffSemana > 0) {
+    tituloProducao = 'Produção acima da demanda na semana';
+    descProducao = `Excedente de ${fmt(diffSemanaAbs)} kg sobre a demanda total da semana · Atendimento semanal: ${atG}%`;
+    iconeProducao = '✅';
+    corProducao = '#2e7d32';
+  } else if (diffSemana < 0) {
+    tituloProducao = 'Produção abaixo da demanda na semana';
+    descProducao = `Déficit de ${fmt(diffSemanaAbs)} kg em relação à demanda total da semana · Atendimento semanal: ${atG}%`;
+    iconeProducao = '⚠️';
+    corProducao = '#f57f17';
+  } else {
+    tituloProducao = 'Produção igual à demanda na semana';
+    descProducao = 'A produção atendeu exatamente a demanda total da semana';
+    iconeProducao = '✅';
+    corProducao = '#2e7d32';
+  }
+
+  const items=[
+    {
+      icon:'📉',
+      bg:'#fff5f5',
+      border:'#CC1F1F',
+      title:D.variacao<0?`Demanda em queda: ${Math.abs(D.variacao).toFixed(2)}%`:`Demanda em alta: ${Math.abs(D.variacao).toFixed(2)}%`,
+      desc:`Evolução da demanda: de ${fmt(totAnt)} → ${fmt(totAtual)} kg vs semana anterior`
+    },
+    {
+      icon:'🚚',
+      bg:'#eef7ff',
+      border:'#1B4FBF',
+      title:'Soma de carros da semana',
+      desc:`Foram utilizados ${fmt(somaCarrosSemana)} carros na semana analisada`
+    },
+    {
+      icon:'🏆',
+      bg:'#fffde7',
+      border:'#c9a800',
+      title:melhorDia?`${melhorDia.nome}: melhor dia de produção`:'Nenhum dia com produção registrada',
+      desc:melhorDia?`${fmt(melhorDia.producao)} kg · ${fmt(melhorDia.carros)} carros`:'Sem produção registrada na semana'
+    },
+    {
+      icon:iconeProducao,
+      bg:diffSemana>=0 ? '#eefaf1' : '#fff8e1',
+      border:corProducao,
+      title:tituloProducao,
+      desc:descProducao
+    },
+    {
+      icon:'🔄',
+      bg:'#e8eaf6',
+      border:'#1B4FBF',
+      title:'Automático × digitado',
+      desc:`Demanda: Auto ${Math.round(pct(p.demanda_auto,p.demanda))}% · Digit ${Math.round(pct(p.demanda_digit,p.demanda))}% | Produção: Auto ${Math.round(pct(p.producao_auto,p.producao))}% · Digit ${Math.round(pct(p.producao_digit,p.producao))}%`
+    },
+    {
+      icon:'📊',
+      bg:'#e8f5e9',
+      border:'#2e7d32',
+      title:`Atendimento: ${v.atendimento}% (R$) · ${atG}% (kg)`,
+      desc:`Resultado: ${sign(v.resultado)}${fmtR(v.resultado)} · Gap peso: ${sign(p.gap)}${fmtK(p.gap)} (${p.gapPct.toFixed(2)}%)`}
+  ];
+
+  document.getElementById('insightsContent').innerHTML=items.map(i=>`
+    <div class="ins" style="background:${i.bg};border-left:3px solid ${i.border}">
+      <div class="ins-icon">${i.icon}</div>
+      <div>
+        <div class="ins-title">${i.title}</div>
+        <div class="ins-desc">${i.desc}</div>
+      </div>
+    </div>`).join('');
+}
+
+function renderDemandaDia(){
+  const d = D.demandaDia || DEMO.demandaDia;
+
+  document.getElementById('ddTitleWrap').innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px">
+      <div class="sec-title" style="margin-bottom:0">📦 Demanda Dia — Digitado x Automático</div>
+      <div style="font-size:13px;font-weight:800;color:var(--blue-dark);background:#eef4ff;border:1px solid #d8e3ff;padding:7px 12px;border-radius:999px;">
+        📅 ${d.data || '—'}
+      </div>
+    </div>
+  `;
+
+  document.getElementById('ddTopCards').innerHTML = `
+    <div class="card" style="border-top:3px solid var(--red)">
+      <div class="lbl">Total Ressuprimento (kg)</div>
+      <div class="val" style="color:var(--red)">${fmt(d.totalRessuprimentoKg)}</div>
+      <div class="sub">${(d.percRessuprimento||0).toFixed(2).replace('.',',')}%</div>
+    </div>
+    <div class="card" style="border-top:3px solid var(--blue)">
+      <div class="lbl">Total Digitado (kg)</div>
+      <div class="val" style="color:var(--blue)">${fmt(d.totalDigitadoKg)}</div>
+      <div class="sub">${(d.percDigitado||0).toFixed(2).replace('.',',')}%</div>
+    </div>
+    <div class="card" style="border-top:3px solid var(--yellow)">
+      <div class="lbl">Total Geral (kg)</div>
+      <div class="val">${fmt(d.totalGeralKg)}</div>
+      <div class="sub">${(d.percTotal||100).toFixed(2).replace('.',',')}%</div>
+    </div>
+  `;
+
+  document.getElementById('ddSecondCards').innerHTML = `
+    <div class="card">
+      <div class="lbl">R$ Ressuprimento</div>
+      <div class="val" style="color:var(--red)">${fmtR(d.totalRessuprimentoRs)}</div>
+    </div>
+    <div class="card">
+      <div class="lbl">R$ Digitado</div>
+      <div class="val" style="color:var(--blue)">${fmtR(d.totalDigitadoRs)}</div>
+    </div>
+    <div class="card">
+      <div class="lbl">R$ Total</div>
+      <div class="val">${fmtR(d.totalGeralRs)}</div>
+    </div>
+    <div class="card">
+      <div class="lbl">Itens Automático</div>
+      <div class="val" style="color:var(--red)">${fmt(d.itensAuto)}</div>
+    </div>
+    <div class="card">
+      <div class="lbl">Itens Digitado</div>
+      <div class="val" style="color:var(--blue)">${fmt(d.itensDigit)}</div>
+    </div>
+    <div class="card">
+      <div class="lbl">Total de Itens</div>
+      <div class="val">${fmt(d.itensTotal)}</div>
+    </div>
+  `;
+
+  function calcPercent(value,total){
+    if(!total || total<=0) return 0;
+    return (Number(value)/Number(total))*100;
+  }
+  function clampPercent(p){
+    if(isNaN(p)||!isFinite(p)) return 0;
+    return Math.max(0,Math.min(100,p));
+  }
+  function formatPercentFromValues(value,total,decimals=2){
+    return clampPercent(calcPercent(value,total)).toFixed(decimals).replace('.',',');
+  }
+  function renderDonutFromValues({
+    primaryLabel,
+    primaryColor,
+    primaryValue,
+    secondaryLabel,
+    secondaryColor,
+    secondaryValue,
+    totalLabel='Total',
+    unit='kg',
+    centerLabel=''
+  }){
+    const total = Number(primaryValue||0) + Number(secondaryValue||0);
+    const p1 = clampPercent(calcPercent(primaryValue,total));
+    const p2 = clampPercent(calcPercent(secondaryValue,total));
+    const r=46;
+    const c=2*Math.PI*r;
+    const dash1=c*(p1/100);
+    const dash2=c*(p2/100);
+
+    const formatValue = (v) => unit === 'R$' ? fmtR(v) : `${fmt(v)} ${unit}`;
+
+    return `
+      <div class="donut-wrap">
+        <svg class="donut-svg" viewBox="0 0 110 110">
+          <circle cx="55" cy="55" r="${r}" fill="none" stroke="#e5e7eb" stroke-width="14"></circle>
+
+          <circle
+            cx="55" cy="55" r="${r}"
+            fill="none"
+            stroke="${primaryColor}"
+            stroke-width="14"
+            stroke-linecap="round"
+            stroke-dasharray="${dash1} ${c-dash1}"
+            stroke-dashoffset="0"
+            transform="rotate(-90 55 55)">
+          </circle>
+
+          <circle
+            cx="55" cy="55" r="${r}"
+            fill="none"
+            stroke="${secondaryColor}"
+            stroke-width="14"
+            stroke-linecap="round"
+            stroke-dasharray="${dash2} ${c-dash2}"
+            stroke-dashoffset="${-dash1}"
+            transform="rotate(-90 55 55)">
+          </circle>
+
+          <text x="55" y="43" text-anchor="middle" font-size="16" font-weight="900" fill="${primaryColor}">
+            ${Math.round(p1)}%
+          </text>
+          <text x="55" y="61" text-anchor="middle" font-size="14" font-weight="900" fill="${secondaryColor}">
+            ${Math.round(p2)}%
+          </text>
+          <text x="55" y="76" text-anchor="middle" font-size="7" fill="#6b7280">
+            ${centerLabel}
+          </text>
+        </svg>
+
+        <div class="d-legend">
+          <div class="d-item">
+            <div class="d-dot" style="background:${primaryColor}"></div>
+            <span class="d-lbl">${primaryLabel}</span>
+            <span class="d-val">${formatPercentFromValues(primaryValue,total)}% · ${formatValue(primaryValue)}</span>
+          </div>
+
+          <div class="d-item">
+            <div class="d-dot" style="background:${secondaryColor}"></div>
+            <span class="d-lbl">${secondaryLabel}</span>
+            <span class="d-val">${formatPercentFromValues(secondaryValue,total)}% · ${formatValue(secondaryValue)}</span>
+          </div>
+
+          <div class="d-item" style="border-top:1px solid #e5e7eb;padding-top:8px;margin-top:4px">
+            <div class="d-dot" style="background:#6b7280"></div>
+            <span class="d-lbl">${totalLabel}</span>
+            <span class="d-val">${formatValue(total)}</span>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  document.getElementById('ddKgMix').innerHTML = renderDonutFromValues({
+    primaryLabel:'Ressuprimento',
+    primaryColor:'#CC1F1F',
+    primaryValue:d.totalRessuprimentoKg||0,
+    secondaryLabel:'Digitado',
+    secondaryColor:'#1B4FBF',
+    secondaryValue:d.totalDigitadoKg||0,
+    unit:'kg',
+    centerLabel:'kg'
+  });
+
+  document.getElementById('ddValueMix').innerHTML = renderDonutFromValues({
+    primaryLabel:'Ressuprimento',
+    primaryColor:'#1B4FBF',
+    primaryValue:d.totalRessuprimentoRs||0,
+    secondaryLabel:'Digitado',
+    secondaryColor:'#F5C800',
+    secondaryValue:d.totalDigitadoRs||0,
+    unit:'R$',
+    centerLabel:'R$'
+  });
+
+  document.getElementById('ddAutoTable').innerHTML = (d.automatico||[]).map(r=>`
+    <tr>
+      <td>${r.categoria||'—'}</td>
+      <td>${r.gestor||'—'}</td>
+      <td>${fmt(r.itens)}</td>
+      <td>${fmt(r.peso)}</td>
+      <td>${fmtR(r.total)}</td>
+    </tr>
+  `).join('');
+
+  document.getElementById('ddDigTable').innerHTML = (d.digitado||[]).map(r=>`
+    <tr>
+      <td>${r.categoria||'—'}</td>
+      <td>${r.gestor||'—'}</td>
+      <td>${fmt(r.itens)}</td>
+      <td>${fmt(r.peso)}</td>
+      <td>${fmtR(r.total)}</td>
+    </tr>
+  `).join('');
+}
+
+function renderAll(){
+  renderHeader();
+  renderKpiValor();
+  renderKpiPeso();
+  renderRecords();
+  renderDayCards();
+  renderMix();
+  renderEvolucao();
+  renderInsights();
+  renderDemandaDia();
+}
+
+/* INIT */
+window.addEventListener('load',loadFromSheets);
+</script>
+</body>
+</html>
+
+							<script>
+                            	
+							</script>
+                        </body>
+                        </html>
+                    
