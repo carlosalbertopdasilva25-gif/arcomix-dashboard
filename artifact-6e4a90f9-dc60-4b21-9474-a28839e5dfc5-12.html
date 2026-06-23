@@ -1,0 +1,1100 @@
+
+                        <!DOCTYPE html>
+                        <html lang="en">
+                        <head>
+                            <meta charset="UTF-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+							<style>
+								body {
+									background-color: white; /* Ensure the iframe has a white background */
+								}
+
+								
+							</style>
+                        </head>
+                        <body>
+                            <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>body{background-color:white}</style>
+</head>
+<body>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <title>Arco-Mix — Demanda vs Produção</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    :root{
+      --red:#CC1F1F;--red-dark:#a01818;--red-light:#e53935;
+      --yellow:#F5C800;--yellow-dark:#c9a800;--yellow-soft:#ffd94d;
+      --blue:#1B4FBF;--blue-dark:#0d3a99;--blue-light:#2962ff;
+      --green:#2e7d32;--green-light:#43a047;
+      --bg:#f5f6fa;--card:#fff;--text:#1a1a2e;--muted:#6b7280;
+      --border:#e5e7eb;--shadow:0 2px 12px rgba(0,0,0,.08);
+      --shadow-lg:0 8px 32px rgba(0,0,0,.14);
+      --radius:16px;--radius-sm:10px;
+      --transition:all .3s cubic-bezier(.4,0,.2,1)
+    }
+    html{scroll-behavior:smooth}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+      background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+
+    /* ══════════════════════════════════════════════
+       HEADER
+       ══════════════════════════════════════════════ */
+    .header{
+      background:
+        radial-gradient(circle at 20% 20%,rgba(245,200,0,.28),transparent 22%),
+        radial-gradient(circle at 75% 25%,rgba(27,79,191,.22),transparent 24%),
+        linear-gradient(135deg,#0b2d82 0%,#1340b1 34%,#1B4FBF 62%,#2f6cff 100%);
+      padding:10px 20px 14px;position:sticky;top:0;z-index:100;
+      box-shadow:0 10px 28px rgba(14,52,145,.35);
+      border-bottom:3px solid rgba(255,217,77,.65)
+    }
+    .header-top{
+      display:grid;
+      grid-template-columns:auto 1fr auto;
+      align-items:center;
+      column-gap:16px;
+      margin-bottom:8px
+    }
+
+    /* Logo */
+    .logo-wrap{display:flex;flex-direction:column;align-items:center;
+      background:rgba(255,255,255,.12);border-radius:12px;padding:6px 10px;
+      backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.18);flex-shrink:0}
+    .logo-svg{width:80px;height:42px}
+    .logo-text{font-size:14px;font-weight:900;letter-spacing:1px;color:#fff;
+      text-shadow:0 1px 3px rgba(0,0,0,.4);line-height:1;margin-top:2px}
+    .logo-sub{font-size:7px;font-weight:600;color:rgba(255,255,255,.8);
+      letter-spacing:1.5px;text-transform:uppercase;margin-top:1px}
+
+    /* ══════════════════════════════════════════════
+       AJUSTE 1 — Título central: branco, maior,
+       sem fundo separado, integrado ao gradiente
+       ══════════════════════════════════════════════ */
+    .header-title{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      line-height:1.15;
+      padding:0 8px;
+      min-width:0;
+    }
+    .hd-line1{
+      font-family:inherit;
+      font-size:20px;
+      font-weight:800;
+      letter-spacing:3px;
+      text-transform:uppercase;
+      color:#ffffff;
+      text-shadow:0 1px 6px rgba(0,0,0,.25);
+    }
+    .hd-sep{
+      width:100%;
+      height:1px;
+      background:rgba(255,255,255,.3);
+      margin:4px 0;
+    }
+    .hd-line2{
+      font-family:inherit;
+      font-size:13px;
+      font-weight:600;
+      letter-spacing:4px;
+      text-transform:uppercase;
+      color:rgba(255,255,255,.88);
+      text-shadow:0 1px 4px rgba(0,0,0,.2);
+    }
+
+    /* Botões */
+    .header-actions{display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end;align-items:center}
+    .btn{padding:8px 12px;border:none;border-radius:var(--radius-sm);cursor:pointer;font-size:12px;font-weight:700;
+      transition:var(--transition);display:flex;align-items:center;gap:4px;white-space:nowrap}
+    .btn-sheets{background:#fff;color:var(--blue-dark)}.btn-sheets:hover{background:#e8f0fe}
+    .btn-upload{background:rgba(255,255,255,.14);color:#fff;border:1.5px solid rgba(255,255,255,.35)}.btn-upload:hover{background:rgba(255,255,255,.24)}
+    .btn-reset{background:var(--yellow);color:var(--blue-dark)}.btn-reset:hover{background:#ffe033}
+    #fileInput{display:none}
+
+    .header-period{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+    .period-text{color:rgba(255,255,255,.95);font-size:12px;display:flex;align-items:center;gap:5px}
+    .badge-var{padding:4px 11px;border-radius:20px;font-size:11px;font-weight:700;
+      background:rgba(255,255,255,.18);color:#fff;border:1px solid rgba(255,255,255,.30)}
+    .status-bar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-top:6px}
+    .file-status{color:rgba(255,255,255,.78);font-size:10px}
+    .sheets-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;
+      font-size:10px;font-weight:700;background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.22)}
+    .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+    .dot-green{background:#4caf50;animation:pulse 1.5s infinite}.dot-yellow{background:var(--yellow)}.dot-red{background:#ef5350}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+    /* Mobile header */
+    @media(max-width:700px){
+      .header{padding:8px 12px 12px}
+      .header-top{column-gap:8px;margin-bottom:6px}
+      .logo-wrap{padding:4px 7px;border-radius:9px}
+      .logo-svg{width:52px;height:28px}
+      .logo-text{font-size:10px}.logo-sub{font-size:6px}
+      .hd-line1{font-size:13px;letter-spacing:1.5px}
+      .hd-sep{margin:3px 0}
+      .hd-line2{font-size:9px;letter-spacing:2px}
+      .btn{padding:6px 8px;font-size:10px;gap:3px}
+      .btn-lbl{display:none}
+    }
+
+    .tabs-wrapper{background:#fff;border-bottom:3px solid var(--yellow);
+      position:sticky;top:110px;z-index:99;box-shadow:0 2px 8px rgba(0,0,0,.07)}
+    @media(max-width:700px){.tabs-wrapper{top:84px}}
+    .tabs{display:flex;overflow-x:auto;scrollbar-width:none;padding:0 8px}
+    .tabs::-webkit-scrollbar{display:none}
+    .tab{padding:12px 20px;border:none;background:none;cursor:pointer;font-size:12px;font-weight:700;
+      color:var(--muted);white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-3px;transition:var(--transition)}
+    .tab.active{color:var(--red);border-bottom-color:var(--red)}
+    .tab:hover:not(.active){color:var(--blue);background:rgba(27,79,191,.04)}
+
+    .main{padding:16px;max-width:1400px;margin:0 auto}
+    .tab-content{display:none}
+    .tab-content.active{display:block;animation:fadeIn .3s ease}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+    .g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+    .g3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:14px}
+    .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:14px}
+    .web-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+    .mix-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .days-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+    .ins-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+    .rec-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .dd-tables{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .dd-nine-grid{display:grid;grid-template-columns:repeat(3,minmax(0,340px));gap:14px;margin-bottom:14px;justify-content:center}
+    @media(max-width:900px){.dd-nine-grid{grid-template-columns:repeat(2,minmax(0,340px))}}
+    @media(max-width:560px){.dd-nine-grid{grid-template-columns:1fr}}
+    @media(max-width:1000px){.dd-tables{grid-template-columns:1fr}}
+    @media(max-width:900px){.g4{grid-template-columns:1fr 1fr}.web-row,.mix-grid{grid-template-columns:1fr}}
+    @media(max-width:500px){.g2,.g3,.g4{grid-template-columns:1fr 1fr}}
+    @media(min-width:1200px){.main{padding:20px 32px}}
+
+    .card{background:var(--card);border-radius:var(--radius);padding:16px;
+      box-shadow:var(--shadow);border:1px solid var(--border);transition:var(--transition)}
+    .card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+    .card.span2{grid-column:1/-1}
+    .sec-hd{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;
+      color:var(--muted);margin-bottom:10px;display:flex;align-items:center;gap:5px}
+    .lbl{font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+    .val{font-size:22px;font-weight:800;color:var(--text);line-height:1;margin-bottom:3px}
+    .sub{font-size:11px;color:var(--muted);line-height:1.6}
+    .badge{display:inline-flex;align-items:center;gap:3px;padding:3px 9px;
+      border-radius:20px;font-size:10px;font-weight:700;margin-top:5px}
+    .bs{background:#e8f5e9;color:#2e7d32}.bd{background:#ffebee;color:#c62828}
+    .bw{background:#fff8e1;color:#f57f17}.bi{background:#e3f2fd;color:#1565c0}
+    .prog{margin-top:10px}
+    .prog-lbl{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:3px}
+    .bar{height:8px;background:var(--border);border-radius:4px;overflow:hidden}
+    .bar-lg{height:12px;background:var(--border);border-radius:6px;overflow:hidden}
+    .fill{height:100%;border-radius:4px;transition:width 1.2s cubic-bezier(.4,0,.2,1)}
+    .fr{background:linear-gradient(90deg,var(--red),var(--red-light))}
+    .fb{background:linear-gradient(90deg,var(--blue),var(--blue-light))}
+    .fg{background:linear-gradient(90deg,#2e7d32,#43a047)}
+    .fo{background:linear-gradient(90deg,#e65100,#ff6d00)}
+    .day-card{background:var(--card);border-radius:var(--radius);padding:16px;
+      box-shadow:var(--shadow);border:1px solid var(--border);border-left:4px solid var(--blue)}
+    .day-card.ok{border-left-color:#2e7d32}.day-card.nok{border-left-color:var(--red)}.day-card.np{border-left-color:var(--yellow-dark)}
+    .day-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+    .day-nm{font-weight:800;font-size:15px}
+    .day-bdg{padding:4px 10px;border-radius:20px;font-size:10px;font-weight:700}
+    .day-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
+    .dg-item{text-align:center;padding:10px 4px;background:var(--bg);border-radius:var(--radius-sm)}
+    .dg-lbl{font-size:9px;color:var(--muted);font-weight:700;text-transform:uppercase;margin-bottom:4px}
+    .dg-val{font-size:16px;font-weight:800}.dg-sub{font-size:9px;color:var(--muted)}
+    .hbar{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+    .hbar-lbl{font-size:10px;color:var(--muted);width:55px;text-align:right;flex-shrink:0;font-weight:600}
+    .hbar-track{flex:1;height:10px;background:var(--border);border-radius:5px;overflow:hidden}
+    .hbar-fill{height:100%;border-radius:5px;transition:width 1s ease}
+    .hbar-val{font-size:10px;font-weight:700;width:85px;flex-shrink:0}
+    .pills{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px}
+    .pill{padding:3px 9px;border-radius:20px;font-size:10px;font-weight:600}
+    .donut-wrap{display:flex;flex-direction:column;align-items:center;gap:16px}
+    @media(min-width:500px){.donut-wrap{flex-direction:row;justify-content:space-around}}
+    .donut-svg{width:130px;height:130px}
+    .d-legend{display:flex;flex-direction:column;gap:10px;flex:1}
+    .d-item{display:flex;align-items:center;gap:8px;font-size:12px}
+    .d-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0}
+    .d-lbl{color:var(--muted);flex:1}.d-val{font-weight:700}
+
+    /* ══════════════════════════════════════════════
+       AJUSTE 2 — Evolução da Demanda: fontes maiores
+       ══════════════════════════════════════════════ */
+    .evo-row{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--border)}
+    .evo-row:last-child{border-bottom:none}
+    .evo-day{font-weight:800;font-size:15px;width:80px;flex-shrink:0;color:var(--text)}
+    .evo-bars{flex:1}
+    .evo-br{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+    .evo-lbl{font-size:11px;color:var(--muted);width:54px;text-align:right;flex-shrink:0;font-weight:600}
+    .evo-track{flex:1;height:10px;background:var(--border);border-radius:5px;overflow:hidden}
+    .evo-fill{height:100%;border-radius:5px}
+    .evo-vals{width:150px;text-align:right;flex-shrink:0}
+    .evo-cur{font-size:16px;font-weight:800;color:var(--red)}
+    .evo-prv{font-size:12px;color:var(--muted);margin-top:2px}
+    .evo-pct{font-size:12px;font-weight:700;display:inline-block;padding:3px 9px;border-radius:10px;margin-top:3px}
+    .sum-row{display:flex;align-items:center;justify-content:space-between;background:var(--bg);
+      border-radius:var(--radius-sm);padding:14px 18px;margin-top:12px}
+    .sum-row-lbl{font-size:13px;font-weight:800}
+    .sum-row-val{font-size:20px;font-weight:800;color:var(--red)}
+    .sum-row-ant{font-size:12px;color:var(--muted);margin-top:2px}
+
+    .ins{display:flex;gap:12px;align-items:flex-start;padding:14px;border-radius:var(--radius-sm)}
+    .ins-icon{font-size:24px;flex-shrink:0}
+    .ins-title{font-weight:700;font-size:13px;margin-bottom:4px}
+    .ins-desc{font-size:11px;color:var(--muted);line-height:1.6}
+    .rec-card{background:linear-gradient(135deg,rgba(245,200,0,.18),rgba(245,200,0,.06));
+      border:1.5px solid var(--yellow);border-radius:var(--radius-sm);padding:16px;text-align:center}
+    .rec-icon{font-size:22px;margin-bottom:4px}
+    .rec-lbl{font-size:10px;color:var(--yellow-dark);font-weight:700;text-transform:uppercase}
+    .rec-val{font-size:30px;font-weight:800;color:var(--red-dark)}
+    .rec-day{font-size:11px;color:var(--muted);margin-top:2px}
+    .table-wrap{overflow:auto}
+    table{width:100%;border-collapse:collapse;font-size:12px;background:#fff;border-radius:12px;overflow:hidden}
+    th,td{padding:10px 8px;border-bottom:1px solid var(--border);text-align:left}
+    th{background:#f0f5ff;color:#30405e;font-size:11px;text-transform:uppercase;letter-spacing:.4px}
+    tr:hover td{background:#fafcff}
+    .sec-title{font-size:16px;font-weight:800;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+    .divider{height:2px;background:linear-gradient(90deg,var(--red),var(--yellow),var(--blue));border-radius:2px;margin:16px 0;opacity:.25}
+    .footer{text-align:center;padding:20px 16px;color:var(--muted);font-size:11px;
+      border-top:3px solid var(--yellow);margin-top:20px;background:#fff}
+    .footer strong{color:var(--red)}
+    .overlay{position:fixed;inset:0;background:rgba(255,255,255,.96);display:flex;
+      flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:16px}
+    .overlay.hidden{display:none}
+    .spinner{width:48px;height:48px;border:4px solid var(--border);border-top-color:var(--red);
+      border-radius:50%;animation:spin .8s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .overlay-txt{font-size:13px;font-weight:600;color:var(--muted)}
+    .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+      background:#1a1a2e;color:#fff;padding:10px 22px;border-radius:20px;
+      font-size:12px;font-weight:600;z-index:9999;opacity:0;transition:opacity .3s ease;pointer-events:none}
+    .toast.show{opacity:1}
+    #kpiValor{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+    .card-resultado-grande,.card-gap-grande{background:var(--card);border-radius:var(--radius);padding:16px;
+      box-shadow:var(--shadow);border:1px solid var(--border);transition:var(--transition);box-sizing:border-box}
+    .card-resultado-grande:hover,.card-gap-grande:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+  </style>
+</head>
+<body>
+<div class="overlay" id="overlay">
+  <svg width="80" height="60" viewBox="0 0 160 80" fill="none">
+    <path d="M8 72 A72 72 0 0 1 152 72" stroke="#CC1F1F" stroke-width="18" fill="none" stroke-linecap="round"/>
+    <path d="M22 72 A58 58 0 0 1 138 72" stroke="#F5C800" stroke-width="15" fill="none" stroke-linecap="round"/>
+    <path d="M38 72 A42 42 0 0 1 122 72" stroke="#1B4FBF" stroke-width="13" fill="none" stroke-linecap="round"/>
+  </svg>
+  <div class="spinner"></div>
+  <div class="overlay-txt" id="overlayTxt">Carregando dados...</div>
+</div>
+<div class="toast" id="toast"></div>
+
+<header class="header">
+  <div class="header-top">
+
+    <!-- Logo esquerda -->
+    <div class="logo-wrap">
+      <svg class="logo-svg" viewBox="0 0 160 80" fill="none">
+        <path d="M10 74 A70 70 0 0 1 150 74" stroke="#7a0000" stroke-width="20" fill="none" stroke-linecap="round" opacity="0.3"/>
+        <path d="M8 72 A72 72 0 0 1 152 72" stroke="#CC1F1F" stroke-width="18" fill="none" stroke-linecap="round"/>
+        <path d="M20 52 A72 72 0 0 1 90 36" stroke="rgba(255,120,120,0.4)" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M24 74 A56 56 0 0 1 136 74" stroke="#7a6000" stroke-width="17" fill="none" stroke-linecap="round" opacity="0.3"/>
+        <path d="M22 72 A58 58 0 0 1 138 72" stroke="#F5C800" stroke-width="15" fill="none" stroke-linecap="round"/>
+        <path d="M34 57 A58 58 0 0 1 90 44" stroke="rgba(255,240,120,0.5)" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <path d="M40 74 A42 42 0 0 1 120 74" stroke="#001060" stroke-width="15" fill="none" stroke-linecap="round" opacity="0.3"/>
+        <path d="M38 72 A42 42 0 0 1 122 72" stroke="#1B4FBF" stroke-width="13" fill="none" stroke-linecap="round"/>
+        <path d="M48 63 A42 42 0 0 1 90 53" stroke="rgba(100,160,255,0.5)" stroke-width="4" fill="none" stroke-linecap="round"/>
+      </svg>
+      <div class="logo-text">ARCO-MIX</div>
+      <div class="logo-sub">O Supermercado da Família</div>
+    </div>
+
+    <!-- ── AJUSTE 1: Título branco, maior, sem caixa separada ── -->
+    <div class="header-title">
+      <div class="hd-line1">Comparativo</div>
+      <div class="hd-sep"></div>
+      <div class="hd-line2">Demanda &times; Produção</div>
+    </div>
+
+    <!-- Botões direita -->
+    <div class="header-actions">
+      <button class="btn btn-sheets" onclick="loadFromSheets()">📡 <span class="btn-lbl">Atualizar Sheets</span></button>
+      <label class="btn btn-upload" for="fileInput">📂 <span class="btn-lbl">Excel</span></label>
+      <input type="file" id="fileInput" accept=".xlsx,.xls" onchange="loadFile(event)">
+      <button class="btn btn-reset" onclick="resetDemo()" title="Limpar dados">🔄</button>
+    </div>
+
+  </div>
+  <div class="header-period">
+    <span class="period-text">📅 <span id="periodText">—</span></span>
+    <span class="badge-var" id="varBadge">— Demanda vs sem. anterior</span>
+  </div>
+  <div class="status-bar">
+    <div class="file-status" id="fileStatus">Carregando...</div>
+    <div class="sheets-badge">
+      <span class="dot dot-yellow" id="statusDot"></span>
+      <span id="statusTxt">Conectando...</span>
+    </div>
+  </div>
+</header>
+
+<div class="tabs-wrapper">
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('resumo',this)">📊 Semana</button>
+    <button class="tab" onclick="switchTab('pordia',this)">📅 Por Dia</button>
+    <button class="tab" onclick="switchTab('mix',this)">🔄 Comparativo</button>
+    <button class="tab" onclick="switchTab('evolucao',this)">📈 Evolução da Demanda</button>
+    <button class="tab" onclick="switchTab('insights',this)">💡 Insights</button>
+    <button class="tab" onclick="switchTab('demandadia',this)">📦 Demanda Dia</button>
+  </div>
+</div>
+
+<main class="main">
+  <div class="tab-content active" id="tab-resumo">
+    <div class="web-row">
+      <div><p class="sec-hd">💰 Valor (R$)</p><div id="kpiValor"></div><div id="kpiResultado"></div></div>
+      <div><p class="sec-hd">⚖️ Peso (kg)</p><div id="kpiPeso"></div><div id="kpiGap"></div></div>
+    </div>
+    <div class="divider"></div>
+    <p class="sec-title">🏆 Recordes da Semana</p>
+    <div class="rec-grid" id="records"></div>
+  </div>
+  <div class="tab-content" id="tab-pordia">
+    <p class="sec-title">📅 Análise Diária</p>
+    <div class="days-grid" id="dayCards"></div>
+  </div>
+  <div class="tab-content" id="tab-mix">
+    <p class="sec-title">🔄 Comparativo Automático × Digitado</p>
+    <div class="mix-grid" id="mixContent"></div>
+  </div>
+  <div class="tab-content" id="tab-evolucao">
+    <p class="sec-title">📈 Evolução da Demanda</p>
+    <div class="card" id="evolucaoContent"></div>
+  </div>
+  <div class="tab-content" id="tab-insights">
+    <p class="sec-title">💡 Insights da Semana</p>
+    <div class="ins-grid" id="insightsContent"></div>
+  </div>
+  <div class="tab-content" id="tab-demandadia">
+    <div id="ddTitleWrap"></div>
+    <div class="dd-nine-grid" id="ddNineCards"></div>
+    <div class="mix-grid" style="margin-top:16px">
+      <div class="card"><div style="font-size:14px;font-weight:800;margin-bottom:16px">⚖️ Participação em kg</div><div id="ddKgMix"></div></div>
+      <div class="card"><div style="font-size:14px;font-weight:800;margin-bottom:16px">💰 Participação em R$</div><div id="ddValueMix"></div></div>
+    </div>
+    <div class="divider"></div>
+    <div class="dd-tables">
+      <div class="card">
+        <div style="font-size:14px;font-weight:800;margin-bottom:14px">
+          <svg style="vertical-align:middle;margin-right:6px" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/><path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>Ressuprimento Automático
+        </div>
+        <div class="table-wrap"><table><thead><tr><th>Categoria</th><th>Gestor</th><th>Itens</th><th>Peso (kg)</th><th>Total Pedido (R$)</th></tr></thead><tbody id="ddAutoTable"></tbody></table></div>
+      </div>
+      <div class="card">
+        <div style="font-size:14px;font-weight:800;margin-bottom:14px">
+          <svg style="vertical-align:middle;margin-right:6px" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Ressuprimento Digitado
+        </div>
+        <div class="table-wrap"><table><thead><tr><th>Categoria</th><th>Gestor</th><th>Itens</th><th>Peso (kg)</th><th>Total Pedido (R$)</th></tr></thead><tbody id="ddDigTable"></tbody></table></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  <strong>ARCO-MIX</strong> — O Supermercado da Família<br>
+  Dashboard Demanda × Produção · <span id="footerPeriod">—</span>
+</footer>
+
+<script>
+'use strict';
+
+const SHEETS_CSV='https://docs.google.com/spreadsheets/d/e/2PACX-1vT2kJGzytbQ6-WZs1fEsaD7AoCmkNkuWC626i0DU2MkY7Xixyhz3cpEfbGpIs0ZHVXHa7-Z_0IzFVud/pub?gid=1712919962&single=true&output=csv';
+const SHEETS_CSV_DEMANDA_DIA='https://docs.google.com/spreadsheets/d/e/2PACX-1vT2kJGzytbQ6-WZs1fEsaD7AoCmkNkuWC626i0DU2MkY7Xixyhz3cpEfbGpIs0ZHVXHa7-Z_0IzFVud/pub?gid=1384527200&single=true&output=csv';
+const CORS_PROXIES=[
+  url=>url,
+  url=>`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+  url=>`https://corsproxy.io/?url=${encodeURIComponent(url)}`,
+  url=>`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`
+];
+const EMPTY={
+  periodo:'',variacao:0,
+  valor:{demanda:0,producao:0,resultado:0,atendimento:0,demanda_auto:0,demanda_digit:0,producao_auto:0,producao_digit:0},
+  peso:{demanda:0,producao:0,gap:0,gapPct:0,demanda_auto:0,demanda_digit:0,producao_auto:0,producao_digit:0},
+  dias:[],
+  demandaDia:{data:'',totalRessuprimentoKg:0,totalDigitadoKg:0,totalGeralKg:0,
+    percRessuprimento:0,percDigitado:0,percTotal:0,
+    totalRessuprimentoRs:0,totalDigitadoRs:0,totalGeralRs:0,
+    itensAuto:0,itensDigit:0,itensTotal:0,automatico:[],digitado:[]}
+};
+let D=JSON.parse(JSON.stringify(EMPTY));
+
+const fmt =n=>Number(n||0).toLocaleString('pt-BR');
+const fmtR=n=>'R$ '+Number(n||0).toLocaleString('pt-BR');
+const fmtK=n=>Number(n||0).toLocaleString('pt-BR')+' kg';
+const pct =(a,b)=>(b&&b>0)?(a/b*100):0;
+const sign=n=>n>0?'+':'';
+const bc  =n=>n>0?'bs':n<0?'bd':'bi';
+
+function normalizeText(v){
+  return String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .replace(/[\u00a0\s]+/g,' ').trim().toUpperCase();
+}
+function toNum(v){
+  if(v===null||v===undefined||v==='') return 0;
+  if(typeof v==='number') return isNaN(v)?0:v;
+  let s=String(v).trim();
+  s=s.replace(/R\$/gi,'').replace(/%/g,'').replace(/\s/g,'');
+  if(!s) return 0;
+  let neg=false;
+  if(/^\(.*\)$/.test(s)){neg=true;s=s.slice(1,-1);}
+  if(s.startsWith('-')){neg=true;s=s.slice(1);}
+  if(/^\d{1,3}(\.\d{3})*,\d+$/.test(s)){s=s.replace(/\./g,'').replace(',','.');}
+  else if(/^\d+,\d+$/.test(s)){s=s.replace(',','.');}
+  else if(/^\d{1,3}(\.\d{3})+$/.test(s)){s=s.replace(/\./g,'');}
+  else s=s.replace(/,/g,'');
+  const n=parseFloat(s);
+  return isNaN(n)?0:neg?-n:n;
+}
+function toDate(v){
+  if(!v) return '';
+  if(typeof v==='number'&&v>40000&&v<60000){
+    const d=new Date(Math.round((v-25569)*86400*1000));
+    return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'});
+  }
+  const s=String(v).trim();
+  const m1=s.match(/(\d{1,2})\s+de\s+(\w+)\s+de\s+(\d{4})/i);
+  if(m1){
+    const meses={janeiro:0,fevereiro:1,marco:2,abril:3,maio:4,junho:5,julho:6,agosto:7,setembro:8,outubro:9,novembro:10,dezembro:11};
+    const d=new Date(+m1[3],meses[normalizeText(m1[2]).toLowerCase()]??0,+m1[1]);
+    if(!isNaN(d.getTime())) return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'});
+  }
+  const m2=s.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})$/);
+  if(m2){
+    const d=new Date(+m2[3],+m2[2]-1,+m2[1]);
+    if(!isNaN(d.getTime())) return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'});
+  }
+  return s;
+}
+function isDiaSemana(v){
+  const s=normalizeText(v);
+  return ['SEGUNDA','TERCA','QUARTA','QUINTA','SEXTA','SABADO','DOMINGO'].some(d=>s.startsWith(d));
+}
+function diaKey(v){return normalizeText(v).substring(0,5);}
+function ordemDia(v){
+  const s=normalizeText(v);
+  const o=['SEGUNDA','TERCA','QUARTA','QUINTA','SEXTA','SABADO','DOMINGO'];
+  const i=o.findIndex(d=>s.startsWith(d));
+  return i===-1?99:i;
+}
+function rowToText(r){return (r||[]).map(normalizeText).join(' | ');}
+function rowHasAll(r,terms){const t=rowToText(r);return terms.every(x=>t.includes(normalizeText(x)));}
+function rowHasSome(r,terms){const t=rowToText(r);return terms.some(x=>t.includes(normalizeText(x)));}
+function findRowIndex(rows,pred,start=0,end=null){
+  const lim=end??rows.length;
+  for(let i=start;i<lim;i++){if(pred(rows[i]||[],i)) return i;}
+  return -1;
+}
+function findRowContaining(rows,terms,start=0,end=null){return findRowIndex(rows,r=>rowHasAll(r,terms),start,end);}
+function findRowContainingSome(rows,terms,start=0,end=null){return findRowIndex(rows,r=>rowHasSome(r,terms),start,end);}
+
+let _tt=null;
+function showToast(msg,ms=3000){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(_tt);_tt=setTimeout(()=>t.classList.remove('show'),ms);}
+function showOverlay(txt){document.getElementById('overlayTxt').textContent=txt||'Carregando...';document.getElementById('overlay').classList.remove('hidden');}
+function hideOverlay(){document.getElementById('overlay').classList.add('hidden');}
+function setStatus(txt,color){document.getElementById('statusTxt').textContent=txt;document.getElementById('statusDot').className='dot dot-'+color;}
+
+function parseCSVRows(text){
+  const rows=[];let row=[];let field='';let inQ=false;
+  for(let i=0;i<text.length;i++){
+    const ch=text[i];
+    if(inQ){if(ch==='"'){if(text[i+1]==='"'){field+='"';i++;}else inQ=false;}else field+=ch;}
+    else{if(ch==='"')inQ=true;else if(ch===','){row.push(field);field='';}else if(ch==='\r'){}else if(ch==='\n'){row.push(field);rows.push(row);row=[];field='';}else field+=ch;}
+  }
+  row.push(field);rows.push(row);
+  return rows.map(r=>r.map(c=>c.trim()));
+}
+function parseCSV(t){return parseRowsRobusto(parseCSVRows(t));}
+
+function chooseBestSheet(wb){
+  let best=null,bestScore=-1;
+  for(const name of wb.SheetNames){
+    const rows=XLSX.utils.sheet_to_json(wb.Sheets[name],{header:1,defval:null,raw:true});
+    const txt=rows.flat().map(normalizeText).join(' | ');
+    let score=0;
+    ['COMPARATIVO','DEMANDA','PRODUCAO','DIA DA SEMANA','EVOLUCAO','KG','RESSUPRIMENTO'].forEach(k=>{if(txt.includes(k))score+=3;});
+    if(score>bestScore){bestScore=score;best={name,rows};}
+  }
+  return best;
+}
+function parseExcelWorkbook(wb){
+  const cs=wb.SheetNames.find(n=>normalizeText(n).includes('DEMANDA X PRODUCAO'))||wb.SheetNames.find(n=>normalizeText(n).includes('DEMANDA VS PRODUCAO'));
+  const ds=wb.SheetNames.find(n=>normalizeText(n).includes('DEMANDA DIA'))||wb.SheetNames.find(n=>normalizeText(n).includes('DEMANDA DO DIA'));
+  let dataBase=null,demandaDia=null;
+  if(cs){dataBase=parseRowsRobusto(XLSX.utils.sheet_to_json(wb.Sheets[cs],{header:1,defval:null,raw:true}));}
+  else{const ch=chooseBestSheet(wb);if(ch)dataBase=parseRowsRobusto(ch.rows);}
+  if(ds){demandaDia=parseDemandaDia(XLSX.utils.sheet_to_json(wb.Sheets[ds],{header:1,defval:null,raw:true}));}
+  if(dataBase)dataBase.demandaDia=demandaDia||EMPTY.demandaDia;
+  return dataBase;
+}
+
+function parseRowsRobusto(rows){
+  try{
+    const periodo=parsePeriodo(rows);
+    const fin=parseFinanceiro(rows);
+    const peso=parsePeso(rows);
+    let diasMap=parseDias(rows);
+    const evo=parseEvolucao(rows,diasMap);
+    diasMap=evo.diasMap;
+    const dias=Object.values(diasMap).sort((a,b)=>ordemDia(a.nome)-ordemDia(b.nome));
+    if(dias.length)dias.reduce((a,b)=>a.demanda>b.demanda?a:b,dias[0]).emoji='🏆';
+    const dR_tot=fin?.dR_tot||0,pR_tot=fin?.pR_tot||0;
+    const dK_tot=peso?.dK_tot||0,pK_tot=peso?.pK_tot||0;
+    const dR_auto=fin?.dR_auto||0,dR_dig=fin?.dR_dig||0;
+    const pR_auto=fin?.pR_auto||0,pR_dig=fin?.pR_dig||0;
+    const resultado=pR_tot-dR_tot;
+    const atendimento=dR_tot>0?Math.round((pR_tot/dR_tot)*1000)/10:0;
+    const gap=pK_tot-dK_tot;
+    const gapPct=dK_tot>0?(gap/dK_tot*100):0;
+    if(!(dR_tot>0||dK_tot>0||dias.length>0)) return null;
+    return{
+      periodo:periodo.inicio?`${periodo.inicio}${periodo.fim?' – '+periodo.fim:''}`:'—',
+      variacao:evo.variacao||0,
+      valor:{demanda:dR_tot,producao:pR_tot,resultado,atendimento,
+             demanda_auto:dR_auto,demanda_digit:dR_dig,producao_auto:pR_auto,producao_digit:pR_dig},
+      peso:{demanda:dK_tot,producao:pK_tot,gap,gapPct,
+            demanda_auto:peso?.dK_auto||0,demanda_digit:peso?.dK_dig||0,
+            producao_auto:peso?.pK_auto||0,producao_digit:peso?.pK_dig||0},
+      dias,demandaDia:EMPTY.demandaDia
+    };
+  }catch(e){console.error('parseRowsRobusto:',e);return null;}
+}
+function parsePeriodo(rows){
+  const idx=findRowContainingSome(rows,['PERIODO'],0);
+  if(idx===-1) return{inicio:'',fim:''};
+  const vals=(rows[idx]||[]).filter(v=>{const n=normalizeText(v);return n&&!n.includes('PERIODO')&&!n.includes('COMPARATIVO');});
+  return{inicio:vals[0]?toDate(vals[0]):'',fim:vals[1]?toDate(vals[1]):''};
+}
+function parseFinanceiro(rows){
+  const idx=findRowIndex(rows,r=>{const t=rowToText(r);return t.includes('DEMANDA')&&(t.includes('R$')||t.includes('RS'));});
+  if(idx===-1) return null;
+  for(const threshold of [10000,1000,100,0]){
+    for(let i=idx+1;i<Math.min(rows.length,idx+8);i++){
+      const nums=(rows[i]||[]).map(v=>toNum(v)).filter(n=>Math.abs(n)>threshold);
+      if(nums.length>=6) return{dR_auto:nums[0]||0,dR_dig:nums[1]||0,dR_tot:nums[2]||0,pR_tot:nums[5]||0,pR_dig:nums[6]||0,pR_auto:nums[7]||0};
+    }
+  }
+  return null;
+}
+function parsePeso(rows){
+  const idx=findRowIndex(rows,r=>{const t=rowToText(r);return t.includes('DEMANDA')&&t.includes('KG');});
+  if(idx===-1) return null;
+  for(const threshold of [1000,100,10,0]){
+    for(let i=idx+1;i<Math.min(rows.length,idx+8);i++){
+      const nums=(rows[i]||[]).map(v=>toNum(v)).filter(n=>n>threshold&&n<100000000);
+      if(nums.length>=6) return{dK_auto:nums[0]||0,dK_dig:nums[1]||0,dK_tot:nums[2]||0,pK_tot:nums[5]||0,pK_dig:nums[6]||0,pK_auto:nums[7]||0};
+    }
+  }
+  return null;
+}
+function parseDias(rows){
+  const diasMap={};
+  const idxDia=findRowContaining(rows,['DIA DA SEMANA'],0);
+  if(idxDia===-1) return diasMap;
+  const header=rows[idxDia]||[];
+  const nc=header.map((v,i)=>({v:normalizeText(v),i})).filter(x=>x.v&&x.i>0);
+  let colDem=1,colProd=2,colCarros=3;
+  if(nc.length>=1&&nc[0].v.includes('DEMANDA'))colDem=nc[0].i;
+  if(nc.length>=2&&nc[1].v.includes('PRODUCAO'))colProd=nc[1].i;
+  if(nc.length>=3&&nc[2].v.includes('CARROS'))colCarros=nc[2].i;
+  let dl=0;
+  for(let i=idxDia+1;i<rows.length&&dl<7;i++){
+    const row=rows[i]||[];
+    if(!row[0]) continue;
+    if(isDiaSemana(row[0])){
+      const nome=String(row[0]).trim(),key=diaKey(nome),nums=row.map(toNum);
+      diasMap[key]={nome,emoji:'',demanda:nums[colDem]||0,producao:nums[colProd]||0,carros:nums[colCarros]||0,ant:0};
+      dl++;
+    }
+  }
+  return diasMap;
+}
+function parseEvolucao(rows,diasMap){
+  const idx=findRowContainingSome(rows,['EVOLUCAO'],0);
+  if(idx===-1) return{variacao:0,diasMap};
+  const hIdx=findRowContaining(rows,['DIA DA SEMANA'],idx);
+  if(hIdx===-1) return{variacao:0,diasMap};
+  const header=rows[hIdx]||[];
+  const cols=header.map((v,i)=>({v:normalizeText(v),i})).filter(x=>x.v);
+  const totCols=cols.filter(x=>x.v.includes('TOTAL'));
+  let colAtual=totCols[0]?.i??3;
+  let colAnt  =totCols[1]?.i??(colAtual+1);
+  let variacao=0;
+  for(let i=hIdx+1;i<rows.length;i++){
+    const row=rows[i]||[];
+    const first=normalizeText(row[0]||'');
+    if(row[0]&&isDiaSemana(row[0])){
+      const key=diaKey(String(row[0]).trim());
+      if(!diasMap[key])diasMap[key]={nome:String(row[0]).trim(),emoji:'',demanda:0,producao:0,carros:0,ant:0};
+      const vA=toNum(row[colAtual]),vB=toNum(row[colAnt]);
+      if(vA>0&&vA!==vB) diasMap[key].demanda=vA;
+      else if(vA>0&&diasMap[key].demanda===0) diasMap[key].demanda=vA;
+      if(vB>0) diasMap[key].ant=vB;
+      continue;
+    }
+    if(first==='TOTAL'||(first===''&&row.some(v=>toNum(v)>1000))){
+      for(let c=row.length-1;c>=0;c--){
+        const raw=String(row[c]||'').trim();if(!raw)continue;
+        const v=toNum(raw);
+        if(v!==0&&Math.abs(v)<500){variacao=Math.abs(v)<2?v*100:v;break;}
+      }
+      break;
+    }
+  }
+  return{variacao,diasMap};
+}
+function parseDemandaDia(rows){
+  try{
+    const res={data:'',totalRessuprimentoKg:0,totalDigitadoKg:0,totalGeralKg:0,
+      percRessuprimento:0,percDigitado:0,percTotal:100,
+      totalRessuprimentoRs:0,totalDigitadoRs:0,totalGeralRs:0,
+      itensAuto:0,itensDigit:0,itensTotal:0,automatico:[],digitado:[]};
+    const clean=v=>String(v??'').trim();
+    const upper=v=>clean(v).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase();
+    const rt2=r=>(r||[]).map(upper).join(' | ');
+    const notE=r=>(r||[]).some(v=>clean(v)!=='');
+    const fne=s=>{for(let i=s;i<rows.length;i++){if(notE(rows[i]))return i;}return -1;};
+    const num=v=>toNum(v);
+    for(let i=0;i<Math.min(rows.length,15);i++){
+      const t=rt2(rows[i]);
+      if(['SABADO','SEGUNDA','TERCA','QUARTA','QUINTA','SEXTA','DOMINGO'].some(x=>t.includes(x))){
+        const vals=(rows[i]||[]).filter(v=>clean(v)!=='');
+        if(vals.length){const raw=String(vals[0]).trim();const m=raw.match(/(\d{1,2})\s+de\s+\w+\s+de\s+\d{4}/i);res.data=m?toDate(m[0]):toDate(raw);break;}
+      }
+    }
+    let idxT=-1;
+    for(let i=0;i<rows.length;i++){const t=rt2(rows[i]);if(t.includes('TOTAL RESSUPRIMENTO')&&(t.includes('TOTAL DIGITADO')||t.includes('DIGITADO'))){idxT=i;break;}}
+    if(idxT!==-1){
+      const ki=fne(idxT+1),pi=fne(ki+1),ri=fne(pi+1),ti=fne(ri+1),ii=fne(ti+1);
+      const lk=rows[ki]||[],lp=rows[pi]||[],lr=rows[ri]||[],li=rows[ii]||[];
+      res.totalRessuprimentoKg=num(lk[0]);res.totalDigitadoKg=num(lk[1]);res.totalGeralKg=num(lk[2])||num(lk[3]);
+      res.percRessuprimento=num(lp[0])*(num(lp[0])<=1?100:1);
+      res.percDigitado=num(lp[1])*(num(lp[1])<=1?100:1);
+      res.percTotal=(num(lp[2]||lp[3])||1)*(((num(lp[2]||lp[3])||1)<=1)?100:1);
+      res.totalRessuprimentoRs=num(lr[0]);res.totalDigitadoRs=num(lr[1]);res.totalGeralRs=num(lr[2]||lr[3]);
+      res.itensAuto=num(li[0]);res.itensDigit=num(li[1]);res.itensTotal=num(li[2]||li[3]);
+    }
+    let idxA=-1;
+    for(let i=0;i<rows.length;i++){const t=rt2(rows[i]);if(t.includes('RESSUPRIMENTO AUTOMATICO')||(t.includes('AUTOMATICO')&&t.includes('RESSUPRIMENTO'))){idxA=i;break;}}
+    if(idxA!==-1){
+      let hi=-1;for(let i=idxA+1;i<Math.min(rows.length,idxA+5);i++){const t=rt2(rows[i]);if(t.includes('CATEGORIA')||t.includes('GESTOR')){hi=i;break;}}
+      if(hi===-1)hi=idxA+1;
+      for(let i=hi+1;i<rows.length;i++){
+        const row=rows[i]||[];const t=rt2(row);
+        if(t.includes('RESSUPRIMENTO DIGITADO')||(t.includes('DIGITADO')&&t.includes('RESSUPRIMENTO')))break;
+        if(!notE(row))continue;
+        const c=clean(row[0]),g=clean(row[1]);if(c||g)res.automatico.push({categoria:c,gestor:g,itens:num(row[2]),peso:num(row[3]),total:num(row[4])});
+      }
+    }
+    let idxD=-1;
+    for(let i=0;i<rows.length;i++){const t=rt2(rows[i]);if(t.includes('RESSUPRIMENTO DIGITADO')||(t.includes('DIGITADO')&&t.includes('RESSUPRIMENTO')&&i>(idxA>-1?idxA:0))){idxD=i;break;}}
+    if(idxD!==-1){
+      let hi=-1;for(let i=idxD+1;i<Math.min(rows.length,idxD+5);i++){const t=rt2(rows[i]);if(t.includes('CATEGORIA')||t.includes('GESTOR')){hi=i;break;}}
+      if(hi===-1)hi=idxD+1;
+      for(let i=hi+1;i<rows.length;i++){
+        const row=rows[i]||[];if(!notE(row))continue;
+        const c=clean(row[0]),g=clean(row[1]);if(c||g)res.digitado.push({categoria:c,gestor:g,itens:num(row[2]),peso:num(row[3]),total:num(row[4])});
+      }
+    }
+    return res;
+  }catch(e){console.error('parseDemandaDia:',e);return EMPTY.demandaDia;}
+}
+
+function fetchWithTimeout(url,opts={},ms=12000){
+  return new Promise((res,rej)=>{const t=setTimeout(()=>rej(new Error('Timeout')),ms);fetch(url,opts).then(r=>{clearTimeout(t);res(r);}).catch(e=>{clearTimeout(t);rej(e);});});
+}
+async function fetchTextWithFallback(url){
+  let lastErr=new Error('Erro');
+  for(const build of CORS_PROXIES){
+    const target=build(url);
+    try{
+      const res=await fetchWithTimeout(target,{method:'GET',cache:'no-store',mode:'cors'});
+      if(!res.ok)throw new Error(`HTTP ${res.status}`);
+      const text=await res.text();
+      if(!text||text.trim().length<20)throw new Error('CSV vazio');
+      const lower=text.toLowerCase();
+      if(lower.includes('<html')||lower.includes('<!doctype html'))throw new Error('HTML em vez de CSV');
+      return text;
+    }catch(err){console.warn('Proxy falhou ('+target+'):',err.message);lastErr=err;}
+  }
+  throw lastErr;
+}
+async function fetchDemandaDiaFromSheets(){
+  try{const text=await fetchTextWithFallback(SHEETS_CSV_DEMANDA_DIA+'&cacheBust='+Date.now());return parseDemandaDia(parseCSVRows(text));}
+  catch(e){console.warn('fetchDemandaDia:',e);return null;}
+}
+async function loadFromSheets(){
+  showOverlay('Buscando dados do Google Sheets...');
+  setStatus('Sincronizando...','yellow');
+  document.getElementById('fileStatus').textContent='⏳ Buscando dados...';
+  try{
+    const text=await fetchTextWithFallback(SHEETS_CSV+'&cacheBust='+Date.now());
+    const upper=text.toUpperCase();
+    if(!upper.includes('DEMANDA')&&!upper.includes('PRODU')&&!upper.includes('DIA DA SEMANA')&&!upper.includes('EVOLU'))
+      throw new Error('Conteúdo do CSV não reconhecido');
+    const parsed=parseCSV(text);
+    if(!parsed) throw new Error('Parser não reconheceu o conteúdo');
+    const demandaDia=await fetchDemandaDiaFromSheets();
+    parsed.demandaDia=demandaDia||JSON.parse(JSON.stringify(EMPTY.demandaDia));
+    D=JSON.parse(JSON.stringify(parsed));
+    renderAll();
+    const now=new Date().toLocaleTimeString('pt-BR');
+    document.getElementById('fileStatus').textContent=`✅ Atualizado às ${now} via Google Sheets${demandaDia?'':' · ⚠️ Demanda Dia não atualizada'}`;
+    setStatus('Google Sheets · ao vivo','green');showToast(`✅ Dados atualizados às ${now}`);
+  }catch(err){
+    let msg=err.message||'Erro';if(msg==='Failed to fetch')msg='Falha de conexão com o Google Sheets';
+    document.getElementById('fileStatus').textContent=`⚠️ ${msg}`;
+    setStatus('Sheets offline','red');showToast(`⚠️ ${msg}`);
+    D=JSON.parse(JSON.stringify(EMPTY));renderAll();
+  }finally{hideOverlay();}
+}
+function loadFile(event){
+  const file=event.target.files[0];if(!file)return;
+  showOverlay(`Lendo: ${file.name}...`);
+  document.getElementById('fileStatus').textContent=`⏳ Lendo: ${file.name}...`;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      const wb=XLSX.read(e.target.result,{type:'binary',raw:true,cellDates:false});
+      const parsed=parseExcelWorkbook(wb);
+      if(parsed&&((parsed.valor&&parsed.valor.demanda>0)||(parsed.peso&&parsed.peso.demanda>0)||(parsed.dias&&parsed.dias.length>0))){
+        D=JSON.parse(JSON.stringify(parsed));renderAll();
+        document.getElementById('fileStatus').textContent=`✅ ${file.name} carregado com sucesso`;
+        setStatus('Excel local','yellow');showToast('✅ Planilha carregada com sucesso');
+      }else{document.getElementById('fileStatus').textContent='⚠️ Estrutura não reconhecida';showToast('⚠️ Estrutura não reconhecida');}
+    }catch(err){document.getElementById('fileStatus').textContent=`❌ ${err.message}`;showToast(`❌ ${err.message}`);}
+    finally{hideOverlay();event.target.value='';}
+  };
+  reader.onerror=function(){hideOverlay();document.getElementById('fileStatus').textContent='❌ Erro ao ler o arquivo';showToast('❌ Erro ao ler o arquivo');};
+  reader.readAsBinaryString(file);
+}
+function switchTab(name,btn){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function resetDemo(){D=JSON.parse(JSON.stringify(EMPTY));renderAll();document.getElementById('fileStatus').textContent='Aguardando dados...';setStatus('Sem dados','gray');showToast('🔄 Dados limpos');}
+
+const COR={demanda:{auto:'#1B4FBF',digit:'#CC1F1F'},producao:{auto:'#1B4FBF',digit:'#F5C800'}};
+function iconAuto(c){return `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.5" style="vertical-align:middle;margin-right:2px"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/><path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>`;}
+function iconDig(c){return `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.5" style="vertical-align:middle;margin-right:2px"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`;}
+function donutCardHtml(autoVal,digitVal,grupo,unit,formatVal){
+  const cA=COR[grupo].auto,cD=COR[grupo].digit,total=autoVal+digitVal||1;
+  const pA=autoVal/total,pD=digitVal/total,r=38,cx=50,cy=50,stroke=13,circ=2*Math.PI*r;
+  const dA=circ*pA,dD=circ*pD;
+  return `<div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+    <svg viewBox="0 0 100 100" width="120" height="120">
+      <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#eee" stroke-width="${stroke}"/>
+      <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${cA}" stroke-width="${stroke}" stroke-dasharray="${dA} ${circ-dA}" stroke-dashoffset="${circ/4}" stroke-linecap="butt"/>
+      <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${cD}" stroke-width="${stroke}" stroke-dasharray="${dD} ${circ-dD}" stroke-dashoffset="${circ/4-dA}" stroke-linecap="butt"/>
+      <text x="${cx}" y="${cy-8}" text-anchor="middle" font-size="9" font-weight="700" fill="${cA}">Auto ${Math.round(pA*100)}%</text>
+      <text x="${cx}" y="${cy+5}" text-anchor="middle" font-size="9" font-weight="700" fill="${cD}">Digit ${Math.round(pD*100)}%</text>
+      <text x="${cx}" y="${cy+17}" text-anchor="middle" font-size="8" font-weight="600" fill="#6b7280">${unit}</text>
+    </svg>
+    <div style="display:flex;gap:12px;font-size:11px;font-weight:600;margin-top:2px">
+      <span style="color:${cA}">${iconAuto(cA)}Auto: ${formatVal(autoVal)}</span>
+      <span style="color:${cD}">${iconDig(cD)}Digit: ${formatVal(digitVal)}</span>
+    </div>
+  </div>`;
+}
+
+function renderHeader(){
+  document.getElementById('periodText').textContent=D.periodo||'—';
+  document.getElementById('footerPeriod').textContent=D.periodo||'—';
+  const v=D.variacao||0;
+  document.getElementById('varBadge').textContent=`${v<0?'▼':'▲'} Demanda ${v>=0?'+':''}${Math.abs(v).toFixed(2).replace('.',',')}% vs sem. anterior`;
+}
+function renderKpiValor(){
+  const v=D.valor,mx=Math.max(v.demanda,v.producao)||1;
+  document.getElementById('kpiValor').innerHTML=`
+    <div class="card" style="border-top:3px solid var(--red);display:flex;flex-direction:column;align-items:center;gap:8px">
+      <div class="lbl" style="align-self:flex-start">Demanda Total</div>
+      <div class="val" style="color:var(--red);align-self:flex-start">${fmtR(v.demanda)}</div>
+      <div class="prog" style="width:100%"><div class="bar"><div class="fill fr" style="width:${pct(v.demanda,mx)}%"></div></div></div>
+      ${donutCardHtml(v.demanda_auto||0,v.demanda_digit||0,'demanda','R$',fmtR)}
+    </div>
+    <div class="card" style="border-top:3px solid var(--blue);display:flex;flex-direction:column;align-items:center;gap:8px">
+      <div class="lbl" style="align-self:flex-start">Produção Total</div>
+      <div class="val" style="color:var(--blue);align-self:flex-start">${fmtR(v.producao)}</div>
+      <div class="prog" style="width:100%"><div class="bar"><div class="fill fb" style="width:${pct(v.producao,mx)}%"></div></div></div>
+      ${donutCardHtml(v.producao_auto||0,v.producao_digit||0,'producao','R$',fmtR)}
+    </div>`;
+}
+function renderKpiResultado(){
+  const v=D.valor,at=v.atendimento||0,pctRes=Math.abs(pct(v.resultado,v.demanda)).toFixed(2);
+  document.getElementById('kpiResultado').innerHTML=`
+    <div class="card-resultado-grande" style="border-top:3px solid var(--yellow)">
+      <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px">
+        <div><div class="lbl">Resultado (R$)</div>
+          <div class="val" style="color:${v.resultado>=0?'#2e7d32':'var(--red)'}"> ${sign(v.resultado)}${fmtR(v.resultado)}</div>
+          <span class="badge ${bc(v.resultado)}">${v.resultado>=0?'▲':'▼'} ${pctRes}%</span></div>
+        <div style="text-align:right"><div class="lbl">Atendimento da Demanda (R$)</div>
+          <div class="val" style="color:${at>=100?'#2e7d32':'var(--red)'}">${at}%</div>
+          <span class="badge ${bc(at-100)}">${at>=100?'✅ Meta atingida':'⚠️ Abaixo da meta'}</span></div>
+      </div>
+      <div class="prog" style="margin-top:12px">
+        <div class="prog-lbl"><span>Atendimento da Demanda em Valor</span><span style="font-weight:700;color:${at>=100?'#2e7d32':'var(--red)'}">${at}%</span></div>
+        <div class="bar-lg"><div class="fill ${at>=100?'fg':'fo'}" style="width:${Math.min(100,at)}%"></div></div>
+      </div>
+    </div>`;
+}
+function renderKpiPeso(){
+  const p=D.peso,mx=Math.max(p.demanda,p.producao)||1;
+  document.getElementById('kpiPeso').innerHTML=`
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;align-items:stretch">
+      <div class="card" style="border-top:3px solid var(--red);display:flex;flex-direction:column;align-items:center;gap:8px">
+        <div class="lbl">Demanda (kg)</div><div class="val" style="color:var(--red)">${fmtK(p.demanda)}</div>
+        <div class="prog" style="width:100%"><div class="bar"><div class="fill fr" style="width:${pct(p.demanda,mx)}%"></div></div></div>
+        ${donutCardHtml(p.demanda_auto,p.demanda_digit,'demanda','kg',v=>fmt(v)+' kg')}
+      </div>
+      <div class="card" style="border-top:3px solid var(--blue);display:flex;flex-direction:column;align-items:center;gap:8px">
+        <div class="lbl">Produção (kg)</div><div class="val" style="color:var(--blue)">${fmtK(p.producao)}</div>
+        <div class="prog" style="width:100%"><div class="bar"><div class="fill fb" style="width:${pct(p.producao,mx)}%"></div></div></div>
+        ${donutCardHtml(p.producao_auto,p.producao_digit,'producao','kg',v=>fmt(v)+' kg')}
+      </div>
+    </div>`;
+}
+function renderKpiGap(){
+  const p=D.peso,ap=Math.round(pct(p.producao,p.demanda));
+  document.getElementById('kpiGap').innerHTML=`
+    <div class="card-gap-grande" style="border-top:3px solid var(--yellow)">
+      <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px">
+        <div><div class="lbl">Gap Total</div>
+          <div class="val" style="color:${p.gap>=0?'#2e7d32':'var(--red)'}"> ${sign(p.gap)}${fmtK(p.gap)}</div>
+          <span class="badge ${bc(p.gap)}">${p.gap>=0?'▲':'▼'} ${Math.abs(p.gapPct).toFixed(2)}%</span></div>
+        <div style="text-align:right"><div class="lbl">Atendimento da Demanda (kg)</div>
+          <div class="val" style="color:${ap>=100?'#2e7d32':'var(--red)'}">${ap}%</div>
+          <span class="badge ${bc(ap-100)}">${ap>=100?'✅ Meta atingida':'⚠️ Abaixo da meta'}</span></div>
+      </div>
+      <div class="prog" style="margin-top:12px">
+        <div class="prog-lbl"><span>Atendimento da Demanda em Peso</span><span style="font-weight:700;color:${ap>=100?'#2e7d32':'var(--red)'}">${ap}%</span></div>
+        <div class="bar-lg"><div class="fill ${ap>=100?'fg':'fo'}" style="width:${Math.min(100,ap)}%"></div></div>
+      </div>
+    </div>`;
+}
+function renderRecords(){
+  const dias=D.dias||[];
+  const mxD=dias.length?dias.reduce((a,b)=>a.demanda>b.demanda?a:b):{demanda:0,nome:'—'};
+  const cp=dias.filter(d=>d.producao>0);
+  const mxP=cp.length?cp.reduce((a,b)=>a.producao>b.producao?a:b):{producao:0,nome:'—'};
+  document.getElementById('records').innerHTML=`
+    <div class="rec-card"><div class="rec-icon">📦</div><div class="rec-lbl">Maior Demanda</div><div class="rec-val">${mxD.demanda>0?fmt(mxD.demanda):'—'}</div><div class="rec-day">${mxD.nome}</div></div>
+    <div class="rec-card"><div class="rec-icon">🏭</div><div class="rec-lbl">Maior Produção</div><div class="rec-val">${mxP.producao>0?fmt(mxP.producao):'—'}</div><div class="rec-day">${mxP.nome}</div></div>`;
+}
+function renderDayCards(){
+  const dias=D.dias||[];
+  if(!dias.length){document.getElementById('dayCards').innerHTML='<div style="color:var(--muted);font-size:13px;padding:20px">Nenhum dado diário disponível.</div>';return;}
+  const mx=Math.max(...dias.map(d=>Math.max(d.demanda||0,d.producao||0,1)));
+  let html='';
+  dias.forEach(day=>{
+    const gap=day.producao-day.demanda,hasProd=day.producao>0;
+    const gapCls=!hasProd?'bw':gap>=0?'bs':'bd';
+    const gapTxt=!hasProd?'⚠ Sem produção':(sign(gap)+fmt(gap)+' kg');
+    const cardCls=!hasProd?'np':gap>=0?'ok':'nok';
+    const atd=hasProd?Math.round(pct(day.producao,day.demanda)):0;
+    const pills=[];
+    if(hasProd){
+      if(day.carros>0)pills.push(day.carros<=23?'<span class="pill bs">✓ Dentro cap.</span>':'<span class="pill bd">✗ Excedeu cap.</span>');
+      pills.push(gap>=0?'<span class="pill bs">✓ Acima da demanda</span>':'<span class="pill bd">✗ Abaixo da demanda</span>');
+      pills.push(`<span class="pill ${atd>=100?'bs':'bd'}">📊 Atend.: ${atd}%</span>`);
+    }else pills.push('<span class="pill bw">⚠ Sem produção</span>');
+    if(day.carros>0)pills.push(`<span class="pill bi">🚗 ${day.carros} carros</span>`);
+    html+=`<div class="day-card ${cardCls}">
+      <div class="day-hdr"><div class="day-nm">${day.emoji||''} ${day.nome}</div><span class="day-bdg ${gapCls}">${gapTxt}</span></div>
+      <div class="day-grid">
+        <div class="dg-item"><div class="dg-lbl">Demanda</div><div class="dg-val" style="color:var(--red)">${fmt(day.demanda)}</div><div class="dg-sub">kg</div></div>
+        <div class="dg-item"><div class="dg-lbl">Produção</div><div class="dg-val" style="color:var(--blue)">${hasProd?fmt(day.producao):'—'}</div><div class="dg-sub">kg</div></div>
+        <div class="dg-item"><div class="dg-lbl">Atendimento</div><div class="dg-val" style="color:${hasProd&&atd>=100?'#2e7d32':'var(--red)'}">${hasProd?atd+'%':'—'}</div><div class="dg-sub">${hasProd?(atd>=100?'✅ OK':'⚠️ Gap'):'—'}</div></div>
+      </div>
+      <div>
+        <div class="hbar"><div class="hbar-lbl">Demanda</div><div class="hbar-track"><div class="hbar-fill fr" style="width:${pct(day.demanda,mx)}%"></div></div><div class="hbar-val" style="color:var(--red)">${fmt(day.demanda)} kg</div></div>
+        ${hasProd?`<div class="hbar"><div class="hbar-lbl">Produção</div><div class="hbar-track"><div class="hbar-fill fb" style="width:${pct(day.producao,mx)}%"></div></div><div class="hbar-val" style="color:var(--blue)">${fmt(day.producao)} kg</div></div>`:''}
+      </div>
+      ${hasProd?`<div class="prog" style="margin-top:8px"><div class="prog-lbl"><span>Atendimento da Demanda</span><span style="font-weight:700;color:${atd>=100?'#2e7d32':'var(--red)'}">${atd}%</span></div><div class="bar-lg"><div class="fill ${atd>=100?'fg':'fo'}" style="width:${Math.min(100,atd)}%"></div></div></div>`:''}
+      <div class="pills">${pills.join('')}</div>
+    </div>`;
+  });
+  document.getElementById('dayCards').innerHTML=html;
+}
+function calcPercent(v,t){if(!t||t<=0)return 0;return(Number(v)/Number(t))*100;}
+function clampPercent(p){if(isNaN(p)||!isFinite(p))return 0;return Math.max(0,Math.min(100,p));}
+function formatPercentFromValues(v,t,d=2){return clampPercent(calcPercent(v,t)).toFixed(d).replace('.',',');}
+function renderDonutFromValues({primaryLabel,primaryColor,primaryValue,secondaryLabel,secondaryColor,secondaryValue,totalLabel='Total',unit='kg',centerLabel=''}){
+  const total=Number(primaryValue||0)+Number(secondaryValue||0);
+  const p1=clampPercent(calcPercent(primaryValue,total)),p2=clampPercent(calcPercent(secondaryValue,total));
+  const r=46,c=2*Math.PI*r,d1=c*(p1/100),d2=c*(p2/100);
+  const fv=v=>unit==='R$'?fmtR(v):`${fmt(v)} ${unit}`;
+  return `<div class="donut-wrap">
+    <svg class="donut-svg" viewBox="0 0 110 110">
+      <circle cx="55" cy="55" r="${r}" fill="none" stroke="#e5e7eb" stroke-width="14"/>
+      <circle cx="55" cy="55" r="${r}" fill="none" stroke="${primaryColor}" stroke-width="14" stroke-linecap="round" stroke-dasharray="${d1} ${c-d1}" stroke-dashoffset="0" transform="rotate(-90 55 55)"/>
+      <circle cx="55" cy="55" r="${r}" fill="none" stroke="${secondaryColor}" stroke-width="14" stroke-linecap="round" stroke-dasharray="${d2} ${c-d2}" stroke-dashoffset="${-d1}" transform="rotate(-90 55 55)"/>
+      <text x="55" y="47" text-anchor="middle" font-size="16" font-weight="900" fill="${primaryColor}">${Math.round(p1)}%</text>
+      <text x="55" y="63" text-anchor="middle" font-size="14" font-weight="900" fill="${secondaryColor}">${Math.round(p2)}%</text>
+      <text x="55" y="78" text-anchor="middle" font-size="9" font-weight="700" fill="#6b7280">${centerLabel}</text>
+    </svg>
+    <div class="d-legend">
+      <div class="d-item"><div class="d-dot" style="background:${primaryColor}"></div><span class="d-lbl">${primaryLabel}</span><span class="d-val">${formatPercentFromValues(primaryValue,total)}% · ${fv(primaryValue)}</span></div>
+      <div class="d-item"><div class="d-dot" style="background:${secondaryColor}"></div><span class="d-lbl">${secondaryLabel}</span><span class="d-val">${formatPercentFromValues(secondaryValue,total)}% · ${fv(secondaryValue)}</span></div>
+      <div class="d-item" style="border-top:1px solid #e5e7eb;padding-top:8px;margin-top:4px"><div class="d-dot" style="background:#6b7280"></div><span class="d-lbl">${totalLabel}</span><span class="d-val">${fv(total)}</span></div>
+    </div>
+  </div>`;
+}
+function renderMix(){
+  const p=D.peso;
+  const secs=[
+    {title:'📦 Demanda — Automático × Digitado',auto:p.demanda_auto,digit:p.demanda_digit,total:p.demanda,c1:COR.demanda.auto,c2:COR.demanda.digit},
+    {title:'🏭 Produção — Automático × Digitado',auto:p.producao_auto,digit:p.producao_digit,total:p.producao,c1:COR.producao.auto,c2:COR.producao.digit}
+  ];
+  document.getElementById('mixContent').innerHTML=secs.map(s=>{
+    const ap=s.total>0?Math.round(pct(s.auto,s.total)):0,dp=100-ap;
+    const donut=renderDonutFromValues({primaryLabel:'Automático',primaryColor:s.c1,primaryValue:s.auto,secondaryLabel:'Digitado',secondaryColor:s.c2,secondaryValue:s.digit,unit:'kg',centerLabel:'kg'});
+    return `<div class="card" style="border-top:3px solid ${s.c1}">
+      <div style="font-size:14px;font-weight:800;margin-bottom:16px">${s.title}</div>${donut}
+      <div style="margin-top:16px">
+        <div class="bar" style="height:14px;border-radius:7px;overflow:hidden;display:flex">
+          <div style="width:${ap}%;background:${s.c1};height:100%"></div>
+          <div style="width:${dp}%;background:${s.c2};height:100%"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;margin-top:6px">
+          <span style="color:${s.c1};font-weight:700">● Auto ${ap}%</span>
+          <span style="color:${s.c2};font-weight:700">● Digit ${dp}%</span>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ══════════════════════════════════════════════
+   AJUSTE 2 — renderEvolucao: fontes aumentadas
+   usando as novas classes .evo-* definidas no CSS
+   ══════════════════════════════════════════════ */
+function renderEvolucao(){
+  const dias=D.dias||[];
+  if(!dias.length){
+    document.getElementById('evolucaoContent').innerHTML='<div style="color:var(--muted);font-size:13px;padding:16px">Nenhum dado de evolução disponível.</div>';
+    return;
+  }
+  const mx=Math.max(...dias.map(d=>Math.max(d.demanda||0,d.ant||0,1)));
+  let html='',totA=0,totP=0;
+  dias.forEach(day=>{
+    totA+=day.demanda||0;totP+=(day.ant||0);
+    const vp=(day.ant&&day.ant>0)?((day.demanda-day.ant)/day.ant*100):0;
+    html+=`<div class="evo-row">
+      <div class="evo-day">${day.nome.split('-')[0].trim()}</div>
+      <div class="evo-bars">
+        <div class="evo-br">
+          <div class="evo-lbl">Atual</div>
+          <div class="evo-track"><div class="evo-fill fr" style="width:${pct(day.demanda,mx)}%;height:10px"></div></div>
+        </div>
+        <div class="evo-br">
+          <div class="evo-lbl">Anterior</div>
+          <div class="evo-track"><div class="evo-fill" style="width:${pct(day.ant||0,mx)}%;height:10px;background:#bdbdbd;border-radius:5px"></div></div>
+        </div>
+      </div>
+      <div class="evo-vals">
+        <div class="evo-cur">${fmt(day.demanda)} kg</div>
+        <div class="evo-prv">ant: ${fmt(day.ant||0)} kg</div>
+        <span class="evo-pct ${vp<0?'bd':'bs'}">${vp<0?'▼':'▲'} ${Math.abs(vp).toFixed(1)}%</span>
+      </div>
+    </div>`;
+  });
+  const tv=totP>0?((totA-totP)/totP*100):0;
+  html+=`<div class="sum-row">
+    <div class="sum-row-lbl">TOTAL DEMANDA DA SEMANA</div>
+    <div style="text-align:right">
+      <div class="sum-row-val">${fmt(totA)} kg</div>
+      <div class="sum-row-ant">semana ant.: ${fmt(totP)} kg</div>
+      <span class="evo-pct ${tv<0?'bd':'bs'}" style="display:inline-block;padding:3px 10px;border-radius:10px;margin-top:4px">
+        ${tv<0?'▼':'▲'} ${Math.abs(tv).toFixed(2)}%
+      </span>
+    </div>
+  </div>`;
+  document.getElementById('evolucaoContent').innerHTML=html;
+}
+
+function renderInsights(){
+  const dias=D.dias||[],p=D.peso||{},v=D.valor||{};
+  const atG=Math.round(pct(p.producao||0,p.demanda||1));
+  const totA=dias.reduce((a,d)=>a+(d.demanda||0),0),totP=dias.reduce((a,d)=>a+(d.ant||0),0);
+  const somaC=dias.reduce((a,d)=>a+(d.carros||0),0);
+  const melhor=dias.filter(d=>d.producao>0).sort((a,b)=>b.producao-a.producao)[0]||null;
+  const diff=(p.producao||0)-(p.demanda||0),diffA=Math.abs(diff);
+  let tP='',dP='',iP='',cP='';
+  if(diff>0){tP='Produção acima da demanda na semana';dP=`Excedente de ${fmt(diffA)} kg · Atendimento: ${atG}%`;iP='✅';cP='#2e7d32';}
+  else if(diff<0){tP='Produção abaixo da demanda na semana';dP=`Déficit de ${fmt(diffA)} kg · Atendimento: ${atG}%`;iP='⚠️';cP='#f57f17';}
+  else{tP='Produção igual à demanda na semana';dP='A produção atendeu exatamente a demanda total da semana';iP='✅';cP='#2e7d32';}
+  const varAbs=Math.abs(D.variacao||0);
+  const items=[
+    {icon:'📉',bg:'#fff5f5',border:'#CC1F1F',title:(D.variacao||0)<0?`Demanda em queda: ${varAbs.toFixed(2)}%`:`Demanda em alta: ${varAbs.toFixed(2)}%`,desc:`Evolução: de ${fmt(totP)} → ${fmt(totA)} kg vs semana anterior`},
+    {icon:'🚚',bg:'#eef7ff',border:'#1B4FBF',title:'Carros entregues na semana',desc:`Total: ${fmt(somaC)}`},
+    {icon:'🏆',bg:'#fffde7',border:'#c9a800',title:melhor?`${melhor.nome}: melhor dia de produção`:'Nenhum dia com produção registrada',desc:melhor?`${fmt(melhor.producao)} kg · ${fmt(melhor.carros||0)} carros`:'Sem produção registrada na semana'},
+    {icon:iP,bg:diff>=0?'#eefaf1':'#fff8e1',border:cP,title:tP,desc:dP},
+    {icon:'🔄',bg:'#e8eaf6',border:'#1B4FBF',title:'Automático × digitado',desc:`Demanda: Auto ${Math.round(pct(p.demanda_auto||0,p.demanda||1))}% · Digit ${Math.round(pct(p.demanda_digit||0,p.demanda||1))}% | Produção: Auto ${Math.round(pct(p.producao_auto||0,p.producao||1))}% · Digit ${Math.round(pct(p.producao_digit||0,p.producao||1))}%`},
+    {icon:'📊',bg:'#e8f5e9',border:'#2e7d32',title:`Atendimento: ${v.atendimento||0}% (R$) · ${atG}% (kg)`,desc:`Resultado: ${sign(v.resultado||0)}${fmtR(v.resultado||0)} · Gap peso: ${sign(p.gap||0)}${fmtK(p.gap||0)} (${(p.gapPct||0).toFixed(2)}%)`}
+  ];
+  document.getElementById('insightsContent').innerHTML=items.map(i=>`
+    <div class="ins" style="background:${i.bg};border-left:3px solid ${i.border}">
+      <div class="ins-icon">${i.icon}</div>
+      <div><div class="ins-title">${i.title}</div><div class="ins-desc">${i.desc}</div></div>
+    </div>`).join('');
+}
+function renderDemandaDia(){
+  const d=D.demandaDia||EMPTY.demandaDia;
+  document.getElementById('ddTitleWrap').innerHTML=`
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px">
+      <div class="sec-title" style="margin-bottom:0">📦 Demanda Dia — Digitado x Automático</div>
+      <div style="font-size:13px;font-weight:800;color:var(--blue-dark);background:#eef4ff;border:1px solid #d8e3ff;padding:7px 12px;border-radius:999px;">📅 ${d.data||'—'}</div>
+    </div>`;
+  document.getElementById('ddNineCards').innerHTML=`
+    <div class="card" style="border-top:3px solid var(--red)"><div class="lbl">Total Ressuprimento (kg)</div><div class="val" style="color:var(--red)">${fmt(d.totalRessuprimentoKg)}</div><div class="sub">${(d.percRessuprimento||0).toFixed(2).replace('.',',')}%</div></div>
+    <div class="card" style="border-top:3px solid var(--blue)"><div class="lbl">Total Digitado (kg)</div><div class="val" style="color:var(--blue)">${fmt(d.totalDigitadoKg)}</div><div class="sub">${(d.percDigitado||0).toFixed(2).replace('.',',')}%</div></div>
+    <div class="card" style="border-top:3px solid var(--yellow)"><div class="lbl">Total Geral (kg)</div><div class="val">${fmt(d.totalGeralKg)}</div><div class="sub">${(d.percTotal||100).toFixed(2).replace('.',',')}%</div></div>
+    <div class="card"><div class="lbl">R$ Ressuprimento</div><div class="val" style="color:var(--red)">${fmtR(d.totalRessuprimentoRs)}</div></div>
+    <div class="card"><div class="lbl">R$ Digitado</div><div class="val" style="color:var(--blue)">${fmtR(d.totalDigitadoRs)}</div></div>
+    <div class="card"><div class="lbl">R$ Total</div><div class="val">${fmtR(d.totalGeralRs)}</div></div>
+    <div class="card"><div class="lbl">Itens Automático</div><div class="val" style="color:var(--red)">${fmt(d.itensAuto)}</div></div>
+    <div class="card"><div class="lbl">Itens Digitado</div><div class="val" style="color:var(--blue)">${fmt(d.itensDigit)}</div></div>
+    <div class="card"><div class="lbl">Total de Itens</div><div class="val">${fmt(d.itensTotal)}</div></div>`;
+  document.getElementById('ddKgMix').innerHTML=renderDonutFromValues({primaryLabel:'Ressuprimento',primaryColor:'#CC1F1F',primaryValue:d.totalRessuprimentoKg||0,secondaryLabel:'Digitado',secondaryColor:'#1B4FBF',secondaryValue:d.totalDigitadoKg||0,unit:'kg',centerLabel:'kg'});
+  document.getElementById('ddValueMix').innerHTML=renderDonutFromValues({primaryLabel:'Ressuprimento',primaryColor:'#1B4FBF',primaryValue:d.totalRessuprimentoRs||0,secondaryLabel:'Digitado',secondaryColor:'#F5C800',secondaryValue:d.totalDigitadoRs||0,unit:'R$',centerLabel:'R$'});
+  document.getElementById('ddAutoTable').innerHTML=(d.automatico||[]).map(r=>`<tr><td>${r.categoria||'—'}</td><td>${r.gestor||'—'}</td><td>${fmt(r.itens)}</td><td>${fmt(r.peso)}</td><td>${fmtR(r.total)}</td></tr>`).join('');
+  document.getElementById('ddDigTable').innerHTML=(d.digitado||[]).map(r=>`<tr><td>${r.categoria||'—'}</td><td>${r.gestor||'—'}</td><td>${fmt(r.itens)}</td><td>${fmt(r.peso)}</td><td>${fmtR(r.total)}</td></tr>`).join('');
+}
+function renderAll(){
+  renderHeader();renderKpiValor();renderKpiResultado();renderKpiPeso();renderKpiGap();
+  renderRecords();renderDayCards();renderMix();renderEvolucao();renderInsights();renderDemandaDia();
+}
+window.addEventListener('load',loadFromSheets);
+</script>
+</body>
+</html>
+<script></script>
+</body>
+</html>
+
+							<script>
+                            	
+							</script>
+                        </body>
+                        </html>
+                    
